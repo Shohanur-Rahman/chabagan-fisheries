@@ -75,7 +75,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft() {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [open, setOpen] = React.useState(true);
- 
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -88,14 +88,6 @@ export default function PersistentDrawerLeft() {
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleMenuClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
     setAnchorEl(null);
   };
   return (
@@ -164,28 +156,26 @@ export default function PersistentDrawerLeft() {
           open={open}
         >
           <DrawerHeader className='drawer-header'>
-            <img alt="Logo" src={logo} className='logo-img' />
+            <img alt="Logo" src={logo} className='logo-img'/>
             <IconButton onClick={handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
           </DrawerHeader>
           <Divider />
           <List>
-            <ListItem onClick={handleMenuClick}>
-              <ListItemText primary="Dropdown" />
-            </ListItem>
+            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+              <ListItem key={text} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            ))}
           </List>
           <Divider />
         </Drawer>
-        <Menu
-          anchorEl={anchorEl}
-          open={Boolean(anchorEl)}
-          onClose={handleMenuClose}
-        >
-          <MenuItem onClick={handleMenuClose}>Option 1</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Option 2</MenuItem>
-          <MenuItem onClick={handleMenuClose}>Option 3</MenuItem>
-        </Menu>
         <Main open={open} className='main'>
           asdf
         </Main>
