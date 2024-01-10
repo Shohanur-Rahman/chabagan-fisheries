@@ -1,0 +1,55 @@
+button:focus, button:focus-visible {
+    outline: none !important;
+}
+.w-90{
+    width: 90%; 
+}
+.w-100{
+    width: 100%;
+}
+
+.logo{
+    font-size: 25px !important;
+    color: #fff;
+    font-weight: bold;
+    text-align: left;
+    display: block;
+}
+.user-profile {
+    width: 165px;
+    float: right;
+}
+.user-title{
+    color: #fff;
+    font-size: 14px;
+    display: block;
+    font-weight: bold;
+    margin-right: 15px;
+}
+.main{
+    min-height: 600px;
+}
+.left-sdebar .MuiDrawer-paper{
+    background: #222B40 !important;
+}
+.drawer-header{
+    border-bottom: 1px solid #bdbdbd ;
+    color: #fff !important;
+}
+.logo-img {
+    max-width: 135px;
+    padding: 10px;
+}
+
+.left-sdebar .MuiIconButton-root,
+.left-sdebar .MuiListItemIcon-root,
+.left-sdebar .MuiListItemText-root{
+    color: #cfcfcf !important;
+}
+.left-sdebar .MuiListItem-root:hover{
+    background: #003365;
+}
+.left-sdebar .MuiListItem-root:hover .MuiListItemIcon-root,
+.left-sdebar .MuiListItem-root:hover .MuiListItemText-root{
+    color: #fff !important;
+}

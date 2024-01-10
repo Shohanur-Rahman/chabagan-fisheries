@@ -1,0 +1,6 @@
+@Chabagan.Fisheries.WebApi_HostAddress = http://localhost:5219
+
+GET {{Chabagan.Fisheries.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,11 @@
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Common/bin
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Common/obj
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Data/bin
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Data/obj
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Entities/bin
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.Entities/obj
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/bin
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/obj
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/*.user
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/.config
+/backend/Chabagan.Fisheries/.vs

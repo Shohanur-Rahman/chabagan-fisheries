@@ -1,0 +1,1 @@
+export const ProjectTitle = "Admin Panel";
