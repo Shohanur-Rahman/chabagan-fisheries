@@ -20,6 +20,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import userAvatar from '../../assets/img/img1.jpg';
 import logo from '../../assets/img/logo-default.png';
 import { Avatar, Menu, MenuItem } from '@mui/material';
+import { Outlet } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -156,14 +157,14 @@ export default function PersistentDrawerLeft() {
           open={open}
         >
           <DrawerHeader className='drawer-header'>
-            <img alt="Logo" src={logo} className='logo-img'/>
+            <img alt="Logo" src={logo} className='logo-img' />
             <IconButton onClick={handleDrawerClose}>
               <ChevronLeftIcon />
             </IconButton>
           </DrawerHeader>
           <Divider />
           <List>
-            {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+            {['Inbox', 'Starred'].map((text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton>
                   <ListItemIcon>
@@ -177,7 +178,7 @@ export default function PersistentDrawerLeft() {
           <Divider />
         </Drawer>
         <Main open={open} className='main'>
-          asdf
+          <Outlet />
         </Main>
       </Box>
     </>

@@ -3,9 +3,9 @@ import { Avatar, Box, Button, createTheme, CssBaseline, FormControlLabel, Grid, 
 
 const defaultTheme = createTheme();
 
-export default function SignInSide() {
+const SignInSide = () => {
 
-    const handleSubmit = () =>{
+    const handleSubmit = () => {
 
     }
 
@@ -65,7 +65,7 @@ export default function SignInSide() {
                                     id="password"
                                     autoComplete="current-password"
                                 />
-                                
+
                                 <Button
                                     type="submit"
                                     fullWidth
@@ -89,3 +89,5 @@ export default function SignInSide() {
         </>
     )
 }
+
+export default SignInSide;
