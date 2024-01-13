@@ -1,1 +1,1 @@
-export const ProjectTitle = "Admin Panel";
+export const ProjectTitle = "Chabagan Fisheries";
