@@ -6,6 +6,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import { IToggleState } from '../../interfaces/IToggleState';
 import logo from '../../assets/img/logo-default.png';
 import SideNavigation from './SideNavigation';
+import { Link } from 'react-router-dom';
 const drawerWidth = 240;
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
@@ -23,7 +24,7 @@ const Sidebar = ({ open, setOpen }: IToggleState) => {
     };
 
     return (
-        <Drawer className='left-sdebar'
+        <Drawer className='left-sidebar'
             sx={{
                 width: drawerWidth,
                 flexShrink: 0,
@@ -37,7 +38,9 @@ const Sidebar = ({ open, setOpen }: IToggleState) => {
             open={open}
         >
             <DrawerHeader className='drawer-header'>
-                <img alt="Logo" src={logo} className='logo-img' />
+                <Link to="/dashboard" className='w-100'>
+                    <img alt="Logo" src={logo} className='logo-img' />
+                </Link>
                 <IconButton onClick={handleDrawerClose}>
                     <ChevronLeftIcon />
                 </IconButton>

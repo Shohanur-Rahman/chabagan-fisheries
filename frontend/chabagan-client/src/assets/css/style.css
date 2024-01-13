@@ -32,7 +32,7 @@ button:focus-visible {
 }
 
 .user-profile {
-    width: 165px;
+    width: 170px;
     float: right;
 }
 
@@ -48,7 +48,7 @@ button:focus-visible {
     padding-top: 80px !important;
 }
 
-.left-sdebar .MuiDrawer-paper {
+.left-sidebar .MuiDrawer-paper {
     background: #233044 !important;
 }
 
@@ -59,21 +59,23 @@ button:focus-visible {
 
 .logo-img {
     max-width: 135px;
-    padding: 10px;
+    margin: 0px auto;
+    display: block;
+    padding-top: 5px;
 }
 
-.left-sdebar .MuiIconButton-root,
-.left-sdebar .MuiListItemIcon-root,
-.left-sdebar .MuiListItemText-root {
+.left-sidebar .MuiIconButton-root,
+.left-sidebar .MuiListItemIcon-root,
+.left-sidebar .MuiListItemText-root {
     color: #cfcfcf !important;
 }
 
-.left-sdebar .MuiListItem-root:hover {
+.left-sidebar .MuiListItem-root:hover {
     background: #1d2633;
 }
 
-.left-sdebar .MuiListItem-root:hover .MuiListItemIcon-root,
-.left-sdebar .MuiListItem-root:hover .MuiListItemText-root {
+.left-sidebar .MuiListItem-root:hover .MuiListItemIcon-root,
+.left-sidebar .MuiListItem-root:hover .MuiListItemText-root {
     color: #fff !important;
 }
 
@@ -98,7 +100,7 @@ sidebar
     color: #fff !important;
 }
 
-.nav-dropdown-items.open{
+.nav-dropdown-items.open {
     border-bottom: 1px solid #a5a5a5 !important;
 }
 

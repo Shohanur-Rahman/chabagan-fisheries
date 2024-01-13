@@ -1,0 +1,61 @@
+/* Portrait phones */
+@media (max-width: 767px) {
+
+    /* Styles for portrait phones */
+    .left-sidebar {
+        width: 0 !important;
+    }
+
+    .main {
+        margin-left: 0 !important;
+    }
+
+    .table-content {
+        width: calc(100vw - 50px);
+        display: block;
+    }
+}
+
+/* Landscape phones */
+@media (min-width: 768px) and (max-width: 991px) {
+
+    /* Styles for landscape phones */
+    .left-sidebar {
+        width: 0 !important;
+    }
+
+    .main {
+        margin-left: 0 !important;
+    }
+}
+
+
+/* Landscape tablets and larger */
+@media (min-width: 992px) and (max-width: 1199px) {
+
+    /* Styles for landscape tablets and larger */
+    .left-sidebar {
+        width: 0 !important;
+    }
+
+    .main {
+        margin-left: 0 !important;
+    }
+}
+
+
+/* Standard desktops and larger */
+@media (min-width: 1200px) {
+    /* Styles for standard desktops and larger */
+}
+
+/* High-resolution displays */
+@media only screen and (min-resolution: 192dpi),
+only screen and (min-resolution: 2dppx) {
+    /* Styles for high-resolution displays */
+}
+
+/* Print styles */
+@media print {
+    /* Styles for printing */
+}

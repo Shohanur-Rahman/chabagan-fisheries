@@ -8,6 +8,7 @@ import privateRoutes from "./routes/PrivateRoutes";
 
 // import css
 import "./assets/css/style.css";
+import "./assets/css/responsive.css";
 import { IRouteConfig } from './interfaces/IRouteConfig';
 import ProtectedRouteGuard from './routes/ProtectedRouteGuard';
 import PublicRouteGuard from "./routes/PublicRouteGuard";

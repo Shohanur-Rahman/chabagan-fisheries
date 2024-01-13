@@ -58,7 +58,7 @@ export default function FishSetup() {
         initialValues: [],
         validationSchema: [],
         onSubmit: (values) => {
-            
+
         }
     });
 
@@ -70,11 +70,11 @@ export default function FishSetup() {
             <IconBreadcrumbs props={fishBreadCrumb.fishBreadCrumb} />
             <Box mt={2}>
                 <Grid container spacing={2}>
-                    <Grid item xs={12} sm={12} md={4}>
-                        <Card sx={{ minWidth: 275 }} className="card">
+                    <Grid item xs={12} sm={12} md={4} lg={4}>
+                        <Card className="card w-100">
                             <CardHeader title="Add Fish" className="card-header" />
                             <CardContent>
-                                <Box component="form" className="w-100" noValidate onSubmit={formik.handleSubmit} sx={{ mt: 1 }}>
+                                <Box component="form" className="w-100 card-form" noValidate onSubmit={formik.handleSubmit}>
                                     <FormGroup>
                                         <TextField
                                             margin="normal"
@@ -108,10 +108,11 @@ export default function FishSetup() {
                         </Card>
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card">
+                        <Card sx={{ minWidth: 275 }} className="card w-100">
                             <CardHeader title="Fishes" className="card-header" />
-                            <CardContent>
+                            <CardContent className="table-content">
                                 <DataGrid
+                                    className="data-table"
                                     rows={rows}
                                     columns={columns}
                                     initialState={{
