@@ -47,7 +47,7 @@ const TopBar = ({ open, setOpen }: IToggleState) => {
                     <Avatar alt="Admin User" src={userAvatar} />
                 </IconButton>
                 <Menu
-                    sx={{ mt: '55px' }}
+                    sx={{ mt: '50px' }}
                     id="menu-appbar"
                     anchorEl={anchorEl}
                     anchorOrigin={{
