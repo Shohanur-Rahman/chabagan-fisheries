@@ -4,9 +4,12 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import TopBar from '../../components/layouts/TopBar';
 import Sidebar from '../../components/layouts/Sidebar';
+import { IUserResponse } from '../../interfaces/IUserResponse';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectUser } from '../../redux/features/auth/authSlice';
 
 const drawerWidth = 240;
 
@@ -52,8 +55,17 @@ const AppBar = styled(MuiAppBar, {
 
 
 
-export default function PersistentDrawerLeft() {
+export default function MainLayout() {
+  const navigate = useNavigate();
   const [open, setOpen] = React.useState(true);
+  const user: IUserResponse = useAppSelector(selectUser);
+
+
+  React.useEffect(() => {
+    if (!user) {
+      navigate("/SignIn");
+    }
+  }, []);
 
   return (
     <>

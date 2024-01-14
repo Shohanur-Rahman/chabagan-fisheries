@@ -32,7 +32,7 @@ export default function SignInForm() {
 
     useEffect(() => {
         if (isSuccess && data) {
-          navigate("/")
+          navigate("/dashboard");
         }
         if (isError && error) {
           alert("Something went wrong. Please try again");
@@ -79,6 +79,7 @@ export default function SignInForm() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                    disabled={isLoading}
                 >
                     Sign In
                 </Button>

@@ -1,14 +1,22 @@
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
+import VpnKeyIcon from '@mui/icons-material/VpnKey';
+import Person2Icon from '@mui/icons-material/Person2';
 import userAvatar from '../../assets/img/img1.jpg';
 import { Avatar, IconButton, Menu, MenuItem } from '@mui/material';
 import React from 'react';
 import { IToggleState } from '../../interfaces/IToggleState';
+import { useNavigate } from 'react-router-dom';
+import { IUserResponse } from '../../interfaces/IUserResponse';
+import { useAppSelector } from '../../redux/app/hooks';
+import { selectUser } from '../../redux/features/auth/authSlice';
 
 const TopBar = ({ open, setOpen }: IToggleState) => {
-
+    const navigate = useNavigate();
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const user: IUserResponse = useAppSelector(selectUser);
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -20,6 +28,17 @@ const TopBar = ({ open, setOpen }: IToggleState) => {
     const handleClose = () => {
         setAnchorEl(null);
     };
+    const handleLogout = () => {
+        localStorage.clear();
+        location.reload();
+    }
+
+    React.useEffect(() => {
+        if (!user) {
+            navigate("/SignIn");
+        }
+    }, []);
+
     return (
         <Toolbar className='top-bar'>
             <IconButton
@@ -43,7 +62,7 @@ const TopBar = ({ open, setOpen }: IToggleState) => {
                     onClick={handleMenu}
                     color="inherit"
                 >
-                    <span className='user-title'>Admin User</span>
+                    <span className='user-title'>{user?.unique_name}</span>
                     <Avatar alt="Admin User" src={userAvatar} />
                 </IconButton>
                 <Menu
@@ -62,8 +81,9 @@ const TopBar = ({ open, setOpen }: IToggleState) => {
                     open={Boolean(anchorEl)}
                     onClose={handleClose}
                 >
-                    <MenuItem onClick={handleClose}>Profile</MenuItem>
-                    <MenuItem onClick={handleClose}>My account</MenuItem>
+                    <MenuItem onClick={handleClose}><Person2Icon /> &nbsp; Profile</MenuItem>
+                    <MenuItem onClick={handleClose}><VpnKeyIcon /> &nbsp; Change Password</MenuItem>
+                    <MenuItem onClick={handleLogout}><LogoutIcon /> &nbsp; Sign Out</MenuItem>
                 </Menu>
             </div>
         </Toolbar>
