@@ -2,12 +2,14 @@ import './App.css'
 import { Routes, Route } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 import MainLayout from './layouts/admin/MainLayout'
+import 'react-toastify/dist/ReactToastify.css';
 
 import publicRoutes from "./routes/PublicRoutes";
 import privateRoutes from "./routes/PrivateRoutes";
 
 // import css
 import "./assets/css/style.css";
+import "./assets/css/responsive.css";
 import { IRouteConfig } from './interfaces/IRouteConfig';
 import ProtectedRouteGuard from './routes/ProtectedRouteGuard';
 import PublicRouteGuard from "./routes/PublicRouteGuard";

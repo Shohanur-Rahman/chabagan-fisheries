@@ -1,15 +1,10 @@
 import { IRouteConfig } from "../interfaces/IRouteConfig";
-import SignInSide from "../components/auth/SignInSide";
-import KeyIcon from '@mui/icons-material/Key';
+import SignIn from "../pages/auth/SignIn"; 
 
 const publicRoutes: IRouteConfig[] = [
     {
         path: '/SignIn',
-        element: <SignInSide />,
-        sidebarProps: {
-            displayText: "Sign In",
-            icon: KeyIcon
-        }
+        element: <SignIn />
     }
 ]
 

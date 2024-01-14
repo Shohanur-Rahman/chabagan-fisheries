@@ -1,55 +1,118 @@
-button:focus, button:focus-visible {
+body {
+    background: #efefef !important;
+}
+
+button:focus,
+button:focus-visible {
     outline: none !important;
 }
-.w-90{
-    width: 90%; 
+
+.w-90 {
+    width: 90%;
 }
-.w-100{
+.grid-btn {
+    padding: 5px !important;
+    min-width: fit-content !important;
+    margin: 1px !important;
+}
+.w-100 {
     width: 100%;
 }
 
-.logo{
+.text-danger {
+    color: red;
+}
+
+.validation-error {
+    margin: 0;
+}
+
+.logo {
     font-size: 25px !important;
     color: #fff;
     font-weight: bold;
     text-align: left;
     display: block;
 }
+
 .user-profile {
-    width: 165px;
+    width: 170px;
     float: right;
 }
-.user-title{
+
+.user-title {
     color: #fff;
     font-size: 14px;
     display: block;
     font-weight: bold;
     margin-right: 15px;
 }
-.main{
-    min-height: 600px;
-}
-.left-sdebar .MuiDrawer-paper{
-    background: #222B40 !important;
-}
-.drawer-header{
-    border-bottom: 1px solid #bdbdbd ;
-    color: #fff !important;
-}
-.logo-img {
-    max-width: 135px;
-    padding: 10px;
+
+.main {
+    padding-top: 80px !important;
 }
 
-.left-sdebar .MuiIconButton-root,
-.left-sdebar .MuiListItemIcon-root,
-.left-sdebar .MuiListItemText-root{
+.left-sidebar .MuiDrawer-paper {
+    background: #233044 !important;
+}
+
+.drawer-header {
+    border-bottom: 1px solid #bdbdbd;
+    color: #fff !important;
+}
+
+.logo-img {
+    max-width: 135px;
+    margin: 0px auto;
+    display: block;
+    padding-top: 5px;
+}
+
+.left-sidebar .MuiIconButton-root,
+.left-sidebar .MuiListItemIcon-root,
+.left-sidebar .MuiListItemText-root {
     color: #cfcfcf !important;
 }
-.left-sdebar .MuiListItem-root:hover{
-    background: #003365;
+
+.left-sidebar .MuiListItem-root:hover {
+    background: #1d2633;
 }
-.left-sdebar .MuiListItem-root:hover .MuiListItemIcon-root,
-.left-sdebar .MuiListItem-root:hover .MuiListItemText-root{
+
+.left-sidebar .MuiListItem-root:hover .MuiListItemIcon-root,
+.left-sidebar .MuiListItem-root:hover .MuiListItemText-root {
     color: #fff !important;
+}
+
+.card-header {
+    border-bottom: 1px solid #ddd;
+}
+
+/**
+sidebar
+**/
+
+.nav-dropdown {
+    width: 100%;
+    flex-grow: 0 !important;
+    color: #eeeeee !important;
+}
+
+.nav-dropdown:hover,
+.nav-dropdown.open,
+.nav-dropdown-items.open {
+    background-color: #1d2633 !important;
+    color: #fff !important;
+}
+
+.nav-dropdown-items.open {
+    border-bottom: 1px solid #a5a5a5 !important;
+}
+
+.sidebar-link {
+    color: #ddd !important;
+    padding: 5px 15px !important;
+}
+
+.sidebar-link:hover {
+    background: #1d2633 !important;
 }

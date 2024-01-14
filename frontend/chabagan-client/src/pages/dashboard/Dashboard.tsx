@@ -1,7 +1,15 @@
-export default function Dashboard(){
-    return(
+import { useEffect } from 'react';
+import { IconBreadcrumbs } from '../../components/common/IconBreadcrumbs';
+import dashboarBreadCrumb from '../../data/Breadcrumbs';
+import { ProjectTitle } from '../../data/Config';
+
+export default function Dashboard() {
+    useEffect(() => {
+        document.title = `Dashboard | ${ProjectTitle}`;
+    }, []);
+    return (
         <>
-            <h1>Hello User</h1>
+            <IconBreadcrumbs props={dashboarBreadCrumb.dashboarBreadCrumb} />
         </>
     )
 }
