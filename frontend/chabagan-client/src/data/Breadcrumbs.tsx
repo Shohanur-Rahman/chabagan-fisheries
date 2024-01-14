@@ -28,4 +28,17 @@ const fishBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
-export default { dashboarBreadCrumb, fishBreadCrumb }
+const roleBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Roles",
+        icon: <GrainIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+export default { dashboarBreadCrumb, fishBreadCrumb ,roleBreadCrumb}

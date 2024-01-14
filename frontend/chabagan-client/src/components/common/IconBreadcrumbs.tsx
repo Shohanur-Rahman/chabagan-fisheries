@@ -1,8 +1,8 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import { IIconBreadcrumbs } from '../../interfaces/IBreadcrumbs';
+import { Link } from 'react-router-dom';
 
 function handleClick(event: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     event.preventDefault();
@@ -29,11 +29,9 @@ export const IconBreadcrumbs: React.FC<{ props: IIconBreadcrumbs[] }> = ({ props
                     } else {
                         return (
                             <Link
-                                underline="hover"
-                                sx={{ display: 'flex', alignItems: 'center' }}
                                 color="inherit"
-                                href={item.path}
                                 key={index}
+                                to={`${item.path}`}
                             >
                                 {item.icon}
                                 {item.text}

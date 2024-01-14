@@ -18,12 +18,7 @@ export const apiSlice = createApi({
   }),
   tagTypes: [
     "user-list",
-    "contents-list",
-    "workspaces",
-    "single-content-list",
-    "content-file",
-    "licenses",
-    "courses",
+    "role-list"
   ],
   endpoints: (builder) => ({}),
 });
