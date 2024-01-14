@@ -56,7 +56,7 @@ export default function FishSetup() {
         initialValues: [],
         validationSchema: [],
         onSubmit: (values) => {
-
+            console.log(values);
         }
     });
 

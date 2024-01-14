@@ -20,5 +20,7 @@ export const apiSlice = createApi({
     "user-list",
     "role-list"
   ],
-  endpoints: (builder) => ({}),
+  endpoints: (builder) => ({
+    
+  }),
 });

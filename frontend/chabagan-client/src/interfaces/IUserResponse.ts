@@ -1,6 +1,6 @@
 export interface IUserResponse {
     nameid: string;
-    name: string;
+    unique_name: string;
     role: string;
     email: string;
 }

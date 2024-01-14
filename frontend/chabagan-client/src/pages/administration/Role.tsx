@@ -57,14 +57,14 @@ export default function Role() {
                     <>
                         <Button
                             className="grid-btn"
-                            onClick={(e) => onButtonClick(params.row)}
+                            onClick={() => onButtonClick(params.row)}
                             variant="contained"
                         >
                             <EditIcon />
                         </Button>
                         <Button
                             className="grid-btn"
-                            onClick={(e) => onDeleteClickEvent(params.row)}
+                            onClick={() => onDeleteClickEvent(params.row)}
                             variant="contained"
                             color="error"
                         >
@@ -85,7 +85,10 @@ export default function Role() {
     }, [data, isSuccess]);
 
     useEffect(() => {
-        if (isRoleSuccess && roleData) {
+        if (roleError) {
+            showErrorNotification();
+        }
+        else if (isRoleSuccess && roleData) {
             setFormTitle("Edit Role");
             initialValues.id = roleData.result.id;
             initialValues.name = roleData.result.name;
