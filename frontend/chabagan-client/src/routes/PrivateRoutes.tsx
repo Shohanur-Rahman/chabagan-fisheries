@@ -1,4 +1,5 @@
 import { IRouteConfig } from "../interfaces/IRouteConfig";
+import AddEditUser from "../pages/administration/AddEditUser";
 import Role from "../pages/administration/Role";
 import User from "../pages/administration/User";
 import Dashboard from "../pages/dashboard/Dashboard";
@@ -25,6 +26,14 @@ const privateRoutes: IRouteConfig[] = [
     {
         path: 'admin/users',
         element: <User />,
+    },
+    {
+        path: 'admin/users/add-user',
+        element: <AddEditUser />,
+    },
+    {
+        path: 'admin/users/edit-user',
+        element: <AddEditUser />,
     }
 ]
 

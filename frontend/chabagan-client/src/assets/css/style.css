@@ -18,7 +18,13 @@ button:focus-visible {
 .w-100 {
     width: 100%;
 }
-
+.d-block{
+    display: block;
+    overflow: hidden;
+}
+.pull-right{
+    float: right !important;
+}
 .text-danger {
     color: red;
 }
