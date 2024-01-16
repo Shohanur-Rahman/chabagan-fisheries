@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -8,6 +8,7 @@ import { ProjectTitle } from "../../data/Config";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import { useGetUsersQuery } from "../../redux/features/administration/userApi";
 
 const columns: GridColDef[] = [
     { field: 'id', headerName: 'ID', width: 90 },
@@ -54,20 +55,24 @@ const columns: GridColDef[] = [
     }
 ];
 
-const rows = [
-    { id: 1, name: 'Jon Snow', email: 'john@gmail.com', mobile: "+880 1XXXXXXXXX", role: "Super Admin" },
-    { id: 2, name: 'Jon Doe', email: 'doe@gmail.com', mobile: "+880 1XXXXXXXXX", role: "Admin" }
-];
-
 export default function User() {
-
+    const { data, isSuccess } = useGetUsersQuery(null);
     const navigate = useNavigate();
+    const [rows, setRows] = useState([]);
+
     const handleAddClick = () => {
         navigate('/admin/users/add-user');
     }
     useEffect(() => {
         document.title = `Users | ${ProjectTitle}`;
     }, []);
+
+    useEffect(() => {
+        if (isSuccess && data) {
+            console.log(data)
+            setRows(data?.result);
+        }
+    }, [data, isSuccess]);
 
     return (
         <>
