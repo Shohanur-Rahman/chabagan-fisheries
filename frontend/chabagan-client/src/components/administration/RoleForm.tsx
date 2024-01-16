@@ -72,7 +72,6 @@ const RoleForm: React.FC<{ props: IRoleModel, title: String }> = ({ props, title
                             label="Role Name"
                             {...formik.getFieldProps("name")}
                             autoComplete="role"
-                            autoFocus
                         />
                         {formik.touched.name && formik.errors.name ? (
                             <p className="validation-error text-danger">{formik.errors.name}</p>

@@ -122,3 +122,7 @@ sidebar
 .sidebar-link:hover {
     background: #1d2633 !important;
 }
+
+.table-content{
+    display: grid;
+}
