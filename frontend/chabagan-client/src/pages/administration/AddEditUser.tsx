@@ -5,12 +5,13 @@ import DoneAllIcon from '@mui/icons-material/DoneAll';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import userAddBreadCrumb from '../../data/Breadcrumbs';
-import { ProjectTitle } from "../../data/Config";
+import { ProjectTitle, showAddNotification, showErrorNotification } from "../../data/Config";
 import { Box, Button, Card, CardContent, CardHeader, FormGroup, Grid, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import { IUserModel } from "../../interfaces/model/user/IUserModel";
 import { useGetRolesQuery } from "../../redux/features/administration/rolesApi";
 import { IRoleModel } from "../../interfaces/model/user/IRoleModel";
 import { useNavigate } from "react-router-dom";
+import { useAddUserMutation } from "../../redux/features/administration/userApi";
 
 const initialValues: IUserModel = {
     id: 0,
@@ -19,7 +20,8 @@ const initialValues: IUserModel = {
     mobile: "",
     roleId: 0,
     password: "",
-    avatar: null
+    confirmPassword: "",
+    attachment: null
 }
 
 export default function AddEditUser() {
@@ -27,6 +29,7 @@ export default function AddEditUser() {
     const [pageTitle, setPageTitle] = useState("Add User");
     const { data: roles, isSuccess } = useGetRolesQuery(null);
     const navigate = useNavigate();
+    const [addUser, { isError, error, isSuccess : isAddSuccess }] = useAddUserMutation();
 
     const getCharacterValidationError = (str: string) => {
         return `Your password must have at least 1 ${str}`;
@@ -41,7 +44,9 @@ export default function AddEditUser() {
             .matches(/[0-9]/, getCharacterValidationError(`digit`))
             .matches(/[a-z]/, getCharacterValidationError(`lowercase`))
             .matches(/[A-Z]/, getCharacterValidationError(`uppercase`)),
-        roleId: Yup.number().min(1, 'Role is required')
+        roleId: Yup.number().min(1, 'Role is required'),
+        confirmPassword: Yup.string()
+            .required('Password not matched!').oneOf([Yup.ref("password")])
     });
 
 
@@ -50,11 +55,44 @@ export default function AddEditUser() {
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (values) => {
-            console.log(values);
+
+            const submitData: any = {
+                id: values.id,
+                name: values.name,
+                email: values.email,
+                mobile: values.mobile,
+                roleId: values.roleId,
+                password: values.password,
+                attachment: values.attachment
+            };
+
+            const formData = new FormData();
+
+            for (const key in submitData) {
+                if (Array.isArray(submitData[key])) {
+                    // ------If the value is an array, append each item individually
+                    submitData[key].forEach((item: any, index: number) => {
+                        formData.append(`${key}`, item);
+                    });
+                } else {
+                    formData.append(key, submitData[key]);
+                }
+            }
+
+            addUser(formData);
         }
     });
 
 
+    useEffect(() => {
+        if (isError) {
+          showErrorNotification();
+        }
+        if (isAddSuccess) {
+          showAddNotification()
+          navigate('/admin/users');
+        }
+      }, [isError, isSuccess]);
 
     useEffect(() => {
         if (isSuccess && roles) {
@@ -138,6 +176,9 @@ export default function AddEditUser() {
                                                 return (<MenuItem value={item.id} key={index}>{item.name}</MenuItem>)
                                             })}
                                         </Select>
+                                        {formik.touched.roleId && formik.errors.roleId ? (
+                                            <p className="validation-error text-danger">{formik.errors.roleId}</p>
+                                        ) : null}
                                     </FormGroup>
                                 </Grid>
                                 <Grid item xs={4}>
@@ -156,13 +197,43 @@ export default function AddEditUser() {
                                         ) : null}
                                     </FormGroup>
                                 </Grid>
+
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <TextField
+                                            type="password"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="txtConfirmedPassword"
+                                            label="Confirmed Password"
+                                            {...formik.getFieldProps("confirmPassword")}
+                                        />
+                                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                                            <p className="validation-error text-danger">{formik.errors.confirmPassword}</p>
+                                        ) : null}
+                                    </FormGroup>
+                                </Grid>
+
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <TextField
+                                            type="file"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="fileAttachement"
+                                            {...formik.getFieldProps("attachment")}
+                                        />
+                                    </FormGroup>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <hr />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button variant="outlined" onClick={() => navigate('/admin/users')}> <KeyboardDoubleArrowLeftIcon />Back</Button>
                                     <Button type="submit" variant="contained" color="success" className="pull-right">
-                                        Success&nbsp;<DoneAllIcon />
+                                        Save Changes &nbsp;<DoneAllIcon />
                                     </Button>
                                 </Grid>
                             </Grid>

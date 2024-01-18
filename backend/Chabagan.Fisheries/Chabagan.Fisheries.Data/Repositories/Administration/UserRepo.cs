@@ -45,7 +45,7 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
         /// <returns></returns>
         public async Task<IEnumerable<VwUserResponse>> GetAllUsersAsync()
         {
-            return _mapper.Map<IEnumerable<VwUserResponse>>(await _dbContext.Users.AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwUserResponse>>(await _dbContext.Users.Include(x=> x.Role).AsNoTracking().ToListAsync());
         }
 
         /// <summary>

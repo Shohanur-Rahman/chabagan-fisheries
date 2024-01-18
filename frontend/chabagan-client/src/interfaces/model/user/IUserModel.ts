@@ -5,5 +5,6 @@ export interface IUserModel {
     mobile: string,
     roleId: number,
     password: string,
-    avatar: any
+    confirmPassword: string,
+    attachment: any
 }

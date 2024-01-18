@@ -28,4 +28,8 @@
     <ProjectReference Include="..\Chabagan.Fisheries.Data\Chabagan.Fisheries.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>
