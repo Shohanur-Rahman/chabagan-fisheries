@@ -15,7 +15,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
 {
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
+    [Authorize]
     public class UsersController : ControllerBase
     {
         #region Private Properties and Variables
