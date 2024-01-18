@@ -19,7 +19,8 @@ const initialValues: IUserModel = {
     mobile: "",
     roleId: 0,
     password: "",
-    avatar: null
+    confirmPassword: "",
+    attachment: null
 }
 
 export default function AddEditUser() {
@@ -41,7 +42,9 @@ export default function AddEditUser() {
             .matches(/[0-9]/, getCharacterValidationError(`digit`))
             .matches(/[a-z]/, getCharacterValidationError(`lowercase`))
             .matches(/[A-Z]/, getCharacterValidationError(`uppercase`)),
-        roleId: Yup.number().min(1, 'Role is required')
+        roleId: Yup.number().min(1, 'Role is required'),
+        confirmPassword: Yup.string()
+            .required('Password not matched!').oneOf([Yup.ref("password")])
     });
 
 
@@ -156,13 +159,43 @@ export default function AddEditUser() {
                                         ) : null}
                                     </FormGroup>
                                 </Grid>
+
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <TextField
+                                            type="password"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="txtConfirmedPassword"
+                                            label="Confirmed Password"
+                                            {...formik.getFieldProps("confirmPassword")}
+                                        />
+                                        {formik.touched.confirmPassword && formik.errors.confirmPassword ? (
+                                            <p className="validation-error text-danger">{formik.errors.confirmPassword}</p>
+                                        ) : null}
+                                    </FormGroup>
+                                </Grid>
+
+                                <Grid item xs={4}>
+                                    <FormGroup>
+                                        <TextField
+                                            type="file"
+                                            margin="normal"
+                                            required
+                                            fullWidth
+                                            id="fileAttachement"
+                                            {...formik.getFieldProps("attachment")}
+                                        />
+                                    </FormGroup>
+                                </Grid>
                                 <Grid item xs={12}>
                                     <hr />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <Button variant="outlined" onClick={() => navigate('/admin/users')}> <KeyboardDoubleArrowLeftIcon />Back</Button>
                                     <Button type="submit" variant="contained" color="success" className="pull-right">
-                                        Success&nbsp;<DoneAllIcon />
+                                        Save Changes &nbsp;<DoneAllIcon />
                                     </Button>
                                 </Grid>
                             </Grid>
