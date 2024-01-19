@@ -6,7 +6,7 @@ import { IRoleModel } from "../../interfaces/model/user/IRoleModel";
 import { useEffect } from "react";
 import { showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
 
-
+ 
 
 const RoleForm: React.FC<{ props: IRoleModel, title: String }> = ({ props, title }) => {
 

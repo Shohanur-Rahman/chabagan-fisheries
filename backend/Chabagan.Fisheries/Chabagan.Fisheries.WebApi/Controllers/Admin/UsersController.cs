@@ -93,6 +93,27 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         }
 
         /// <summary>
+        /// Get user by registered email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        [HttpGet("by-email/{email}")]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<VwUserResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIOperationResultGeneric<VwUserResponse>>> GetUserByEmailAsync(string email)
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(await _userRepo.GetUserByEmailAsync(email)));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+        /// <summary>
         /// Save user
         /// </summary>
         /// <param name="model"></param>

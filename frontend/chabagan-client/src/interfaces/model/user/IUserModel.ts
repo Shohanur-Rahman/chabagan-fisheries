@@ -6,5 +6,6 @@ export interface IUserModel {
     roleId: number,
     password: string,
     confirmPassword: string,
-    attachment: any
+    attachment: File | null,
+    address: String
 }

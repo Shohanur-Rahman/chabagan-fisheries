@@ -24,7 +24,7 @@ export default function Role() {
     const [rows, setRows] = useState([]);
     const [formTitle, setFormTitle] = useState("Add Role");
 
-    const onButtonClick = (row: GridCellParams) => {
+    const onEditClick = (row: GridCellParams) => {
         getRole(row.id);
     }
 
@@ -57,7 +57,7 @@ export default function Role() {
                     <>
                         <Button
                             className="grid-btn"
-                            onClick={() => onButtonClick(params.row)}
+                            onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
                             <EditIcon />

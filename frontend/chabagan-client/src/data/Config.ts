@@ -29,10 +29,10 @@ export const showDeleteNotification = () => {
     });
 }
 
-export const showErrorNotification = () => {
+export const showErrorNotification = (msg = "Something went wrong!") => {
     Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: "Something went wrong!",
+        text: msg,
     });
 }
