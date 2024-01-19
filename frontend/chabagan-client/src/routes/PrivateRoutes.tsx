@@ -32,7 +32,7 @@ const privateRoutes: IRouteConfig[] = [
         element: <AddEditUser />,
     },
     {
-        path: 'admin/users/edit-user',
+        path: 'admin/users/edit-user/:id',
         element: <AddEditUser />,
     }
 ]

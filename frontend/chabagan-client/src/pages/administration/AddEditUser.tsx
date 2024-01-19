@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
@@ -10,10 +10,10 @@ import { Box, Button, Card, CardContent, CardHeader, FormGroup, Grid, InputLabel
 import { IUserModel } from "../../interfaces/model/user/IUserModel";
 import { useGetRolesQuery } from "../../redux/features/administration/rolesApi";
 import { IRoleModel } from "../../interfaces/model/user/IRoleModel";
-import { useNavigate } from "react-router-dom";
-import { useAddUserMutation } from "../../redux/features/administration/userApi";
+import { useNavigate, useParams } from "react-router-dom";
+import { useAddUserMutation, useGetUserQuery } from "../../redux/features/administration/userApi";
 
-const initialValues: IUserModel = {
+let initialValues: IUserModel = {
     id: 0,
     name: "",
     email: "",
@@ -21,16 +21,19 @@ const initialValues: IUserModel = {
     roleId: 0,
     password: "",
     confirmPassword: "",
-    attachment: null
+    attachment: null,
+    address: ""
 }
 
 export default function AddEditUser() {
-
+    const { id } = useParams();
     const [pageTitle, setPageTitle] = useState("Add User");
     const { data: roles, isSuccess } = useGetRolesQuery(null);
+    const { data: users, isSuccess: isUserSuccess } = useGetUserQuery(id);
+    const [attachment, setUserAttachment] = useState<any>(null);
     const navigate = useNavigate();
-    const [addUser, { isError, error, isSuccess : isAddSuccess }] = useAddUserMutation();
-
+    const [addUser, { isError, error, isSuccess: isAddSuccess }] = useAddUserMutation();
+    const [userInfo, setUserInfo] = useState<IUserModel>({} as IUserModel);
     const getCharacterValidationError = (str: string) => {
         return `Your password must have at least 1 ${str}`;
     };
@@ -49,61 +52,84 @@ export default function AddEditUser() {
             .required('Password not matched!').oneOf([Yup.ref("password")])
     });
 
-
+    /*const getInitialValues = () => {
+        if (id && userInfo) {
+            return userInfo;
+        } else {
+            return initialValues;
+        }
+    }
+*/
 
     const formik = useFormik({
         initialValues: initialValues,
         validationSchema: validationSchema,
         onSubmit: (values) => {
 
-            const submitData: any = {
+            const submitData: Record<string, any> = {
                 id: values.id,
                 name: values.name,
                 email: values.email,
                 mobile: values.mobile,
                 roleId: values.roleId,
                 password: values.password,
-                attachment: values.attachment
+                attachment: attachment,
+                address: values.address
             };
 
             const formData = new FormData();
 
             for (const key in submitData) {
-                if (Array.isArray(submitData[key])) {
-                    // ------If the value is an array, append each item individually
-                    submitData[key].forEach((item: any, index: number) => {
-                        formData.append(`${key}`, item);
-                    });
-                } else {
-                    formData.append(key, submitData[key]);
-                }
+                formData.append(key, submitData[key]);
             }
 
             addUser(formData);
         }
     });
 
+    const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files?.length) {
+            setUserAttachment(e.target.files[0]);
+        } else {
+            setUserAttachment(null);
+        }
+
+    }
 
     useEffect(() => {
-        if (isError) {
-          showErrorNotification();
+        console.log(error)
+        if (isError && error) {
+            showErrorNotification();
         }
         if (isAddSuccess) {
-          showAddNotification()
-          navigate('/admin/users');
+            showAddNotification()
+            navigate('/admin/users');
         }
-      }, [isError, isSuccess]);
+    }, [isError, isAddSuccess]);
+
+    useEffect(() => {
+        if (isUserSuccess && users) {
+            if (users?.result) {
+                setUserInfo(users?.result);
+                initialValues = userInfo;
+            }
+        }
+    }, [users, isUserSuccess]);
 
     useEffect(() => {
         if (isSuccess && roles) {
             if (roles?.result) {
-
             }
         }
     }, [roles, isSuccess]);
 
     useEffect(() => {
         document.title = `Add User | ${ProjectTitle}`;
+        if (id) {
+            document.title = `Edit User | ${ProjectTitle}`;
+            setPageTitle(`Edit User`);
+        }
+
     }, []);
 
     return (
@@ -223,7 +249,19 @@ export default function AddEditUser() {
                                             required
                                             fullWidth
                                             id="fileAttachement"
-                                            {...formik.getFieldProps("attachment")}
+                                            onChange={handleFileChange}
+                                        />
+                                    </FormGroup>
+                                </Grid>
+
+                                <Grid item xs={8}>
+                                    <FormGroup>
+                                        <TextField
+                                            margin="normal"
+                                            fullWidth
+                                            id="txtAddress"
+                                            label="Address"
+                                            {...formik.getFieldProps("address")}
                                         />
                                     </FormGroup>
                                 </Grid>
