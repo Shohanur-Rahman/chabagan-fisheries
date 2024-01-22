@@ -19,6 +19,10 @@ namespace Chabagan.Fisheries.Data.Utilities
 
             services.AddTransient<IBrandRepo, BrandRepo>();
             services.AddTransient<IStockCategoryRepo, StockCategoryRepo>();
+            services.AddTransient<IProductRepo, ProductRepo>();
+            services.AddTransient<IProductRepo, ProductRepo>();
+            services.AddTransient<IPurchaseRepo, PurchaseRepo>();
+            services.AddTransient<IPurchaseItemRepo, PurchaseItemRepo>();
             return services;
         }
     }
