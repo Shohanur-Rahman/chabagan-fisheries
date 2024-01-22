@@ -6,6 +6,7 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import FishSetup from "../pages/setup/FishSetup";
 import Setup from "../pages/setup/Setup";
 import Brands from "../pages/stock/Brands";
+import StockCategory from "../pages/stock/StockCategory";
 
 const privateRoutes: IRouteConfig[] = [
     {
@@ -39,6 +40,10 @@ const privateRoutes: IRouteConfig[] = [
     {
         path: 'stock/brands',
         element: <Brands />,
+    },
+    {
+        path: 'stock/category',
+        element: <StockCategory />,
     }
 ]
 

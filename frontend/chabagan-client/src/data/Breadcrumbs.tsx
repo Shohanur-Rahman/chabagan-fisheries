@@ -85,4 +85,25 @@ const brandsBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
-export default { dashboarBreadCrumb, fishBreadCrumb, roleBreadCrumb, userBreadCrumb, userAddBreadCrumb, brandsBreadCrumb }
+const categoryBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Categories",
+        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+export default { 
+    dashboarBreadCrumb, 
+    fishBreadCrumb, 
+    roleBreadCrumb, 
+    userBreadCrumb, 
+    userAddBreadCrumb, 
+    brandsBreadCrumb,
+    categoryBreadCrumb 
+}

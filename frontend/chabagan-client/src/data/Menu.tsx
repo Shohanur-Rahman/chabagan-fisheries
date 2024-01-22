@@ -52,6 +52,11 @@ const sidebarMenus: IMenu[] = [
                 label: "Brands",
                 link: "/stock/brands",
                 icon: <ArrowRight />
+            },
+            {
+                label: "Categories",
+                link: "/stock/category",
+                icon: <ArrowRight />
             }
         ]
     },

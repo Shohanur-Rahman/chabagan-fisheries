@@ -13,11 +13,9 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
     const emptyModel: IBrandModel = {
         id: 0,
         name: ""
-    }
-
-
+    } 
     const validationSchema = Yup.object({
-        name: Yup.string().required('Role name is required')
+        name: Yup.string().required('Brand name is required')
     });
     const formik = useFormik({
         initialValues: info,
