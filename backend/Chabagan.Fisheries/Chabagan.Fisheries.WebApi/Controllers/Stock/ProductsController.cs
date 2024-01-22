@@ -9,11 +9,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ProductsController : BaseController
     {
         #region Private Properties and Variables
