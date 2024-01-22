@@ -26,7 +26,7 @@ export default function Role() {
 
     const onEditClick = (row: GridCellParams) => {
         getRole(row.id);
-    }
+    } 
 
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({

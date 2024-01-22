@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import ChecklistIcon from '@mui/icons-material/Checklist';
 import { ArrowRight } from "@mui/icons-material";
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 export interface IMenu {
@@ -39,6 +40,17 @@ const sidebarMenus: IMenu[] = [
             {
                 label: "Projects",
                 link: "/setup/projects",
+                icon: <ArrowRight />
+            }
+        ]
+    },
+    {
+        label: "Stock",
+        icon: <AddShoppingCartIcon />,
+        submenu: [
+            {
+                label: "Brands",
+                link: "/stock/brands",
                 icon: <ArrowRight />
             }
         ]
