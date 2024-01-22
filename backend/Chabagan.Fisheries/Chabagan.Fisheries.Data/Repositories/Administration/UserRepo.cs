@@ -7,6 +7,7 @@ using Chabagan.Chabagan.Fisheries.Repositories.Administration.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.User;
 using Chabagan.Fisheries.Mapping.User;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
 {
@@ -45,7 +46,7 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
         /// <returns></returns>
         public async Task<IEnumerable<VwUserResponse>> GetAllUsersAsync()
         {
-            return _mapper.Map<IEnumerable<VwUserResponse>>(await _dbContext.Users.AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwUserResponse>>(await _dbContext.Users.Where(x => !x.IsDeleted).Include(x=> x.Role).AsNoTracking().ToListAsync());
         }
 
         /// <summary>
@@ -56,6 +57,18 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
         public async Task<VwUserResponse> GetUserByUserIdAsync(long UserId)
         {
             return _mapper.Map<VwUserResponse>(await _dbContext.Users.Where(x => x.Id == UserId).Include(x => x.Role)
+                .AsNoTracking()
+                .SingleOrDefaultAsync());
+        }
+
+        /// <summary>
+        /// Get user by registered email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public async Task<VwUserResponse> GetUserByEmailAsync(string email)
+        {
+            return _mapper.Map<VwUserResponse>(await _dbContext.Users.Where(x => x.Email == email).Include(x => x.Role)
                 .AsNoTracking()
                 .SingleOrDefaultAsync());
         }
@@ -71,6 +84,11 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
+
+            bool isEmailExist = await _dbContext.Users.AnyAsync(x => x.Email.ToLower().Trim() == model.Email.ToLower());
+
+            if (isEmailExist)
+                throw new DuplicateNameException(ResponseMessage.ExistingData);
 
             DbUser dbUser = _mapper.Map<DbUser>(model);
             await _dbContext.Users.AddAsync(dbUser);

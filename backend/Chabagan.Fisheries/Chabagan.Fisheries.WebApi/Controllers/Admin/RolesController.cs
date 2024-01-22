@@ -1,15 +1,8 @@
-﻿using Chabagan.Chabagan.Fisheries.Repositories.Administration;
-using Chabagan.Chabagan.Fisheries.Repositories.Administration.Interfaces;
-using Chabagan.Fisheries.Common.APIResponse.Generic;
+﻿using Chabagan.Fisheries.Common.APIResponse.Generic;
 using Chabagan.Fisheries.Common.APIResponse;
 using Chabagan.Fisheries.Common.Constants;
-using Chabagan.Fisheries.Common.Enums;
-using Chabagan.Fisheries.Common.Models;
-using Chabagan.Fisheries.Data.Repositories.Administration;
 using Chabagan.Fisheries.Data.Repositories.Administration.Interfaces;
-using Chabagan.Fisheries.Mapping.User;
 using Chabagan.Fisheries.WebApi.Services.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Chabagan.Fisheries.Entities.Models.User;
 using Microsoft.AspNetCore.Authorization;

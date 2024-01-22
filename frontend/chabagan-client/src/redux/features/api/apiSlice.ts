@@ -18,9 +18,16 @@ export const apiSlice = createApi({
   }),
   tagTypes: [
     "user-list",
-    "role-list"
+    "role-list",
+    "brand-list",
+    "stockcategory-list",
   ],
   endpoints: (builder) => ({
-    
+    getRoles: builder.query({
+      query: () => ({
+        url: `test`
+      }),
+      providesTags: ["role-list"]
+    })
   }),
 });

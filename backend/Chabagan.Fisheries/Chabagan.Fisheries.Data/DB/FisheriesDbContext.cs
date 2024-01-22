@@ -1,12 +1,8 @@
 ﻿using Chabagan.Chabagan.Fisheries.Models.User;
 using Chabagan.Chabagan.Fisheries.Utilities;
+using Chabagan.Fisheries.Entities.Models.Stock;
 using Chabagan.Fisheries.Entities.Models.User;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chabagan.Chabagan.Fisheries.DB
 {
@@ -34,6 +30,15 @@ namespace Chabagan.Chabagan.Fisheries.DB
        
         public virtual DbSet<DbUser> Users { get; set; }
         public virtual DbSet<DbRole> Roles { get; set; }
+        #endregion
+
+        #region Stock Entities
+        public virtual DbSet<DbBrand> Brands { get; set; }
+        public virtual DbSet<DbStockCategory> StockCategories { get; set; }
+        public virtual DbSet<DbProduct> Products { get; set; }
+        public virtual DbSet<DbPurchase> Purchases { get; set; }
+        public virtual DbSet<DbPurchaseItem> PurchaseItems { get; set; }
+
         #endregion
     }
 }

@@ -14,11 +14,18 @@ button:focus-visible {
     padding: 5px !important;
     min-width: fit-content !important;
     margin: 1px !important;
+    cursor: pointer;
 }
 .w-100 {
     width: 100%;
 }
-
+.d-block{
+    display: block;
+    overflow: hidden;
+}
+.pull-right{
+    float: right !important;
+}
 .text-danger {
     color: red;
 }
@@ -115,4 +122,8 @@ sidebar
 
 .sidebar-link:hover {
     background: #1d2633 !important;
+}
+
+.table-content{
+    display: grid;
 }

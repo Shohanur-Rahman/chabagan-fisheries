@@ -25,6 +25,13 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration.Interfaces
         Task<VwUserResponse> GetUserByUserIdAsync(long UserId);
 
         /// <summary>
+        /// Get user by registered email
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        Task<VwUserResponse> GetUserByEmailAsync(string email);
+
+        /// <summary>
         /// Save User information in database
         /// </summary>
         /// <param name="model"></param>
