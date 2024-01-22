@@ -18,10 +18,11 @@ namespace Chabagan.Fisheries.Entities.Mapping.User
         public string Name { get; set; } = string.Empty;
         [StringLength(15)]
         public string Email { get; set; } = string.Empty;
+        public int RoleId { get; set; }
         public string? Mobile { get; set; }
         public string? Address { get; set; }
         public string? Avatar { get; set; }
         public IFormFile? Attachment { get; set; }
-        public DbRole Role { get; set; }
+        public DbRole? Role { get; set; }
     }
 }

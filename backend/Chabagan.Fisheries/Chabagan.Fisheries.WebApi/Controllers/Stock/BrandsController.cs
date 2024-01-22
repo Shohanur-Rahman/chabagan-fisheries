@@ -1,18 +1,18 @@
 ﻿using Chabagan.Fisheries.Common.APIResponse.Generic;
 using Chabagan.Fisheries.Common.APIResponse;
 using Chabagan.Fisheries.Common.Constants;
-using Chabagan.Fisheries.Data.Repositories.Administration.Interfaces;
+using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Chabagan.Fisheries.Entities.Models.User;
+using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Microsoft.AspNetCore.Authorization;
 
-namespace Chabagan.Fisheries.WebApi.Controllers.Admin
+namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 {
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class RolesController : ControllerBase
+    public class BrandsController : BaseController
     {
         #region Private Properties and Variables
         /// <summary>
@@ -22,7 +22,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         /// <summary>
         /// Interface for access data
         /// </summary>
-        private readonly IRoleRepo _roleRepo;
+        private readonly IBrandRepo _brandRepo;
         /// <summary>
         /// Helper service for access helper methods
         /// </summary>
@@ -30,35 +30,29 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         #endregion
 
         #region Constructors
-
-        /// <summary>
-        /// Call instantly
-        /// </summary>
-        /// <param name="logger">Inject Logger</param>
-        /// <param name="roleRepo">Inject User</param>
-        /// <param name="helperService">Inject helpers</param>
-        public RolesController(ILogger<RolesController> logger, IRoleRepo roleRepo, IHelperService helperService)
+        public BrandsController(ILogger<BrandsController> logger, IBrandRepo brandRepo, IHelperService helperService)
         {
-            _roleRepo = roleRepo;
+            _brandRepo = brandRepo;
             _logger = logger;
             _helperService = helperService;
 
         }
         #endregion
 
+
         #region Public Methods and Endpoints
         /// <summary>
-        /// Get all roles
+        /// Get all Brands data from database
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<DbRole>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<VwBrand>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<DbRole>>>> GetAllRolesAsync()
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<VwBrand>>>> GetAllBrandsAsync()
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _roleRepo.GetAllRolesAsync()));
+                return Ok(APIOperationResult.Success(await _brandRepo.GetAllBrandsAsync()));
             }
             catch (Exception ex)
             {
@@ -68,18 +62,17 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         }
 
         /// <summary>
-        /// Get role by id
+        /// Get a single Brand data from database by brand id
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="brandId"></param>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbRole>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<VwBrand>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbRole>>> GetRoleByRoleIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<VwBrand>>> GetBrandByBrandIdAsync(long id)
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _roleRepo.GetRoleByRoleIdAsync(id)));
+                return Ok(APIOperationResult.Success(await _brandRepo.GetBrandByBrandIdAsync(id)));
             }
             catch (Exception ex)
             {
@@ -89,20 +82,21 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         }
 
         /// <summary>
-        /// Save role
+        /// Save Brand information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbRole>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<VwBrand>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbRole>>> SaveUserAsync([FromBody] DbRole model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwBrand>>> SaveBrandAsync([FromBody] VwBrand model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    return Ok(APIOperationResult.Success(await _roleRepo.SaveRoleAsync(model)));
+                    model.CreatedBy = GetLoggedInUserId();
+                    return Ok(APIOperationResult.Success(await _brandRepo.SaveBrandAsync(model)));
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
@@ -115,20 +109,21 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
         }
 
         /// <summary>
-        /// Update role
+        /// Update Brand information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbRole>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<VwBrand>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbRole>>> UpdateRoleAsync([FromBody] DbRole model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwBrand>>> UpdateBrandAsync([FromBody] VwBrand model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
-                    return Ok(APIOperationResult.Success(await _roleRepo.UpdateRoleAsync(model)));
+                    model.UpdatedBy = GetLoggedInUserId();
+                    return Ok(APIOperationResult.Success(await _brandRepo.UpdateBrandAsync(model)));
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
@@ -142,18 +137,18 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Admin
 
 
         /// <summary>
-        /// Delete user
+        /// Delete category
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
         [ProducesResponseType(typeof(APIOperationResultGeneric<bool>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<bool>>> DeleteRoleByRoleIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<bool>>> DeleteBrandByBrandIdAsync(long id)
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _roleRepo.DeleteRoleByRoleIdAsync(id)));
+                return Ok(APIOperationResult.Success(await _brandRepo.DeleteBrandByBrandIdAsync(id)));
             }
             catch (Exception ex)
             {

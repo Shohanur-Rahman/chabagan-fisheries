@@ -3,6 +3,8 @@ using Chabagan.Chabagan.Fisheries.Repositories.Administration;
 using Microsoft.Extensions.DependencyInjection;
 using Chabagan.Fisheries.Data.Repositories.Administration.Interfaces;
 using Chabagan.Fisheries.Data.Repositories.Administration;
+using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
+using Chabagan.Fisheries.Data.Repositories.Stock;
 
 namespace Chabagan.Fisheries.Data.Utilities
 {
@@ -13,6 +15,10 @@ namespace Chabagan.Fisheries.Data.Utilities
         {
             services.AddTransient<IUserRepo, UserRepo>();
             services.AddTransient<IRoleRepo, RoleRepo>();
+
+
+            services.AddTransient<IBrandRepo, BrandRepo>();
+            services.AddTransient<IStockCategoryRepo, StockCategoryRepo>();
             return services;
         }
     }

@@ -82,26 +82,18 @@ namespace Chabagan.Chabagan.Fisheries.Repositories.Administration
         /// <exception cref="ArgumentNullException"></exception>
         public async Task<VwUserResponse> SaveUserAsync(VwUser model)
         {
-            try
-            {
-                if (model is null)
-                    throw new ArgumentNullException(nameof(model));
+            if (model is null)
+                throw new ArgumentNullException(nameof(model));
 
-                bool isEmailExist = await _dbContext.Users.AnyAsync(x => x.Email.ToLower().Trim() == model.Email.ToLower());    
+            bool isEmailExist = await _dbContext.Users.AnyAsync(x => x.Email.ToLower().Trim() == model.Email.ToLower());
 
-                if(isEmailExist)
-                    throw new DuplicateNameException(ResponseMessage.ExistingData);
+            if (isEmailExist)
+                throw new DuplicateNameException(ResponseMessage.ExistingData);
 
-                DbUser dbUser = _mapper.Map<DbUser>(model);
-                await _dbContext.Users.AddAsync(dbUser);
-                await _dbContext.SaveChangesAsync();
-                return await GetUserByUserIdAsync(dbUser.Id);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+            DbUser dbUser = _mapper.Map<DbUser>(model);
+            await _dbContext.Users.AddAsync(dbUser);
+            await _dbContext.SaveChangesAsync();
+            return await GetUserByUserIdAsync(dbUser.Id);
         }
 
 
