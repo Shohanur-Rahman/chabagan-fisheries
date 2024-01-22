@@ -13,7 +13,8 @@ import { IRoleModel } from "../../interfaces/model/user/IRoleModel";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAddUserMutation, useGetUserQuery } from "../../redux/features/administration/userApi";
 
-let initialValues: IUserModel = {
+
+const initialValues: IUserModel = {
     id: 0,
     name: "",
     email: "",
@@ -62,7 +63,8 @@ export default function AddEditUser() {
 */
 
     const formik = useFormik({
-        initialValues: initialValues,
+        initialValues: userInfo,
+        enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values) => {
 
@@ -111,10 +113,15 @@ export default function AddEditUser() {
         if (isUserSuccess && users) {
             if (users?.result) {
                 setUserInfo(users?.result);
-                initialValues = userInfo;
+                console.log(userInfo);
+                console.log("users", users?.result);
             }
         }
     }, [users, isUserSuccess]);
+
+    useEffect(() => {
+        console.log("userInfo", userInfo);
+    }, [userInfo]);
 
     useEffect(() => {
         if (isSuccess && roles) {
@@ -197,6 +204,7 @@ export default function AddEditUser() {
                                             id="ddlRole"
                                             {...formik.getFieldProps("roleId")}
                                             label="Role"
+                                            value={formik.values.roleId}
                                         >
                                             {roles?.result.map((item: IRoleModel, index: number) => {
                                                 return (<MenuItem value={item.id} key={index}>{item.name}</MenuItem>)

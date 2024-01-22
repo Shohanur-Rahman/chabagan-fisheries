@@ -4,6 +4,7 @@ using Chabagan.Chabagan.Fisheries.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chabagan.Fisheries.Data.Migrations
 {
     [DbContext(typeof(FisheriesDbContext))]
-    partial class FisheriesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240122091038_addStocksTablesData")]
+    partial class addStocksTablesData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,37 +99,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 1, 22, 15, 56, 25, 399, DateTimeKind.Local).AddTicks(3948),
+                            CreatedDate = new DateTime(2024, 1, 22, 15, 10, 35, 321, DateTimeKind.Local).AddTicks(3713),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "qYoY0I43OQxxEowDdKKcwybAtBa5puzQtcUwpirku44=",
-                            PasswordSalt = "m7U/J0PykrCb/eUIUDZ2UQ==",
+                            Password = "7UaTfi1q2G3LePfz75Oe+xL/kDWP+tgBjomZyVDxLwo=",
+                            PasswordSalt = "jyCWitSTKtTtlmX3FeWTPg==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 1, 22, 15, 56, 25, 413, DateTimeKind.Local).AddTicks(8987),
+                            CreatedDate = new DateTime(2024, 1, 22, 15, 10, 35, 339, DateTimeKind.Local).AddTicks(9932),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "eLMi63dOBmtp9bawOoz+rtoMx6tcUtG37m8PeV2MT7E=",
-                            PasswordSalt = "m7U/J0PykrCb/eUIUDZ2UQ==",
+                            Password = "HnIsExf5nNoZqFQdGghIcmgwPIGBF6uqx2yM2pPk1sM=",
+                            PasswordSalt = "jyCWitSTKtTtlmX3FeWTPg==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 1, 22, 15, 56, 25, 428, DateTimeKind.Local).AddTicks(3928),
+                            CreatedDate = new DateTime(2024, 1, 22, 15, 10, 35, 358, DateTimeKind.Local).AddTicks(2692),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "qYoY0I43OQxxEowDdKKcwybAtBa5puzQtcUwpirku44=",
-                            PasswordSalt = "m7U/J0PykrCb/eUIUDZ2UQ==",
+                            Password = "7UaTfi1q2G3LePfz75Oe+xL/kDWP+tgBjomZyVDxLwo=",
+                            PasswordSalt = "jyCWitSTKtTtlmX3FeWTPg==",
                             RoleId = 3
                         });
                 });
@@ -361,26 +364,6 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("StockCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            IsDeleted = false,
-                            Name = "Medicine"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            IsDeleted = false,
-                            Name = "Feed"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            IsDeleted = false,
-                            Name = "Accessories"
-                        });
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.User.DbRole", b =>

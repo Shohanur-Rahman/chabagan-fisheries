@@ -1,5 +1,6 @@
 ﻿using Chabagan.Chabagan.Fisheries.Models.User;
 using Chabagan.Fisheries.Common.Encription;
+using Chabagan.Fisheries.Entities.Models.Stock;
 using Chabagan.Fisheries.Entities.Models.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -27,6 +28,7 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
         {
             this.SetupRoleData();
             this.SetupUserData();
+            this.SetupStockData();
         }
 
         #endregion
@@ -87,6 +89,47 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
                     Password = EncryptPassword.GetHas("Password1!", salt),
                     RoleId = 3,
                     CreatedDate = DateTime.Now
+                }
+            );
+        }
+        #endregion
+
+        #region Setup Stock Data
+        private void SetupStockData()
+        {
+            this.modelBuilder.Entity<DbBrand>().HasData(
+                new DbBrand
+                {
+                    Id = 1,
+                    Name = "Squre"
+                },
+                new DbBrand
+                {
+                    Id = 2,
+                    Name = "Beximco",
+                },
+                new DbBrand
+                {
+                    Id = 3,
+                    Name = "Ibn Sina",
+                }
+            );
+
+            this.modelBuilder.Entity<DbStockCategory>().HasData(
+                new DbStockCategory
+                {
+                    Id = 1,
+                    Name = "Medicine"
+                },
+                new DbStockCategory
+                {
+                    Id = 2,
+                    Name = "Feed",
+                },
+                new DbStockCategory
+                {
+                    Id = 3,
+                    Name = "Accessories",
                 }
             );
         }
