@@ -1,32 +1,26 @@
 import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
+import categoryBreadCrumb from '../../data/Breadcrumbs';
+import StockCategoryForm from "../../components/stock/StockCategoryForm";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
-import { IRoleModel } from "../../interfaces/model/user/IRoleModel";
-import roleBreadCrumb from '../../data/Breadcrumbs';
-import RoleForm from "../../components/administration/RoleForm";
-import { DataGrid, GridCellParams, GridColDef } from '@mui/x-data-grid';
 import { useEffect, useState } from "react";
+import { IStockCatModel } from "../../interfaces/model/stock/IStockCatModel";
+import Swal from "sweetalert2";
+import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/stock/stockCategoryApi";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-import { useDeleteRoleMutation, useGetRoleMutation, useGetRolesQuery } from "../../redux/features/administration/rolesApi";
-import Swal from 'sweetalert2'
-
-const initialValues: IRoleModel = {
-    id: 0,
-    name: ""
-}
-
-export default function Role() {
-
-    const { data, isSuccess } = useGetRolesQuery(null);
-    const [deleteRole, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteRoleMutation();
-    const [getRole, { isSuccess: isRoleSuccess, data: roleData, error: roleError }] = useGetRoleMutation();
+export default function StockCategory() {
+    const [formTitle, setFormTitle] = useState("Add Category");
+    const [initialValues, setInitialValues] = useState<IStockCatModel>({} as IStockCatModel);
     const [rows, setRows] = useState([]);
-    const [formTitle, setFormTitle] = useState("Add Role");
+    const { data, isSuccess } = useGetStockCategoryQuery(null);
+    const [getStockCategoryById, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetStockCategoryByIdMutation();
+    const [deleteStockCategory, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteStockCategoryMutation();
 
-    const onEditClick = (row: GridCellParams) => {
-        getRole(row.id);
-    } 
+    const onEditClick = (row: GridCellParams<IStockCatModel>) => {
+        getStockCategoryById(row.id);
+    }
 
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({
@@ -39,16 +33,15 @@ export default function Role() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteRole(row.id);
+                deleteStockCategory(row.id);
             }
         });
     }
-
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
             field: 'name',
-            headerName: 'Role',
+            headerName: 'Brand',
             width: 500
         },
         {
@@ -76,24 +69,26 @@ export default function Role() {
         }
     ];
 
+    useEffect(() => {
+        document.title = `Categories | ${ProjectTitle}`;
+    }, []);
 
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Role");
+            setFormTitle("Add Category");
         }
     }, [data, isSuccess]);
 
     useEffect(() => {
-        if (roleError) {
+        if (singleError) {
             showErrorNotification();
         }
-        else if (isRoleSuccess && roleData) {
-            setFormTitle("Edit Role");
-            initialValues.id = roleData.result.id;
-            initialValues.name = roleData.result.name;
+        else if (isSingleSuccess && singleData) {
+            setFormTitle("Edit Category");
+            setInitialValues(singleData.result as IStockCatModel)
         }
-    }, [roleData, isRoleSuccess]);
+    }, [singleData, isSingleSuccess]);
 
     useEffect(() => {
         if (deleteError) {
@@ -101,25 +96,22 @@ export default function Role() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Role");
+            setFormTitle("Add Brand");
+            setInitialValues({} as IStockCatModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
 
-    useEffect(() => {
-        document.title = `Roles | ${ProjectTitle}`;
-    }, []);
-
     return (
         <>
-            <IconBreadcrumbs props={roleBreadCrumb.roleBreadCrumb} />
+            <IconBreadcrumbs props={categoryBreadCrumb.categoryBreadCrumb} />
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <RoleForm props={initialValues} title={formTitle} />
+                        <StockCategoryForm info={initialValues} title={formTitle} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Roles" className="card-header" />
+                            <CardHeader title="Categories" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
                                     className="data-table"
@@ -144,7 +136,6 @@ export default function Role() {
                             </CardContent>
                         </Card>
                     </Grid>
-
                 </Grid>
             </Box>
         </>

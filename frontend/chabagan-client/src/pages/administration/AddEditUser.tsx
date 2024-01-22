@@ -14,7 +14,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAddUserMutation, useGetUserQuery } from "../../redux/features/administration/userApi";
 
 
-const initialValues: IUserModel = {
+/*const initialValues: IUserModel = {
     id: 0,
     name: "",
     email: "",
@@ -25,6 +25,7 @@ const initialValues: IUserModel = {
     attachment: null,
     address: ""
 }
+*/
 
 export default function AddEditUser() {
     const { id } = useParams();

@@ -3,7 +3,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://localhost:7195/api/",
+    baseUrl: "http://gewilen510-001-site1.ctempurl.com/api/",
     credentials: "include",
     prepareHeaders: (headers) => {
       let tokenString = localStorage.getItem("result");
@@ -18,9 +18,16 @@ export const apiSlice = createApi({
   }),
   tagTypes: [
     "user-list",
-    "role-list"
+    "role-list",
+    "brand-list",
+    "stockcategory-list",
   ],
   endpoints: (builder) => ({
-    
+    getRoles: builder.query({
+      query: () => ({
+        url: `test`
+      }),
+      providesTags: ["role-list"]
+    })
   }),
 });
