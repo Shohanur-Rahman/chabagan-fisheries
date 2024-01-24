@@ -159,6 +159,32 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
                     Description = "First, make sure you have Material-UI installed in your project:"
                 }
             );
+
+
+            this.modelBuilder.Entity<DbSupplier>().HasData(
+                new DbSupplier
+                {
+                    Id = 1,
+                    Name = "Abdullah Al Mamun",
+                    ShopName = "Mamun Hatchary and Feeds",
+                    Mobile = "017XX XXXX"
+                },
+                new DbSupplier
+                {
+                    Id = 2,
+                    Name = "Sohel Tanvir",
+                    ShopName = "Tanvir Hatchary and Feeds",
+                    Mobile = "017XX XXXX"
+                },
+                new DbSupplier
+                {
+                    Id = 3,
+                    Name = "Nusrat Imroz",
+                    ShopName = "Nusrat Hatchary and Feeds",
+                    Mobile = "017XX XXXX"
+                }
+            );
+
         }
         #endregion
     }

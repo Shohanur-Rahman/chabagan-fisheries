@@ -38,6 +38,7 @@ namespace Chabagan.Chabagan.Fisheries.DB
         public virtual DbSet<DbProduct> Products { get; set; }
         public virtual DbSet<DbPurchase> Purchases { get; set; }
         public virtual DbSet<DbPurchaseItem> PurchaseItems { get; set; }
+        public virtual DbSet<DbSupplier> Suppliers { get; set; }
 
         #endregion
     }

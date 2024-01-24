@@ -10,22 +10,27 @@ button:focus-visible {
 .w-90 {
     width: 90%;
 }
+
 .grid-btn {
     padding: 5px !important;
     min-width: fit-content !important;
     margin: 1px !important;
     cursor: pointer;
 }
+
 .w-100 {
     width: 100%;
 }
-.d-block{
+
+.d-block {
     display: block;
     overflow: hidden;
 }
-.pull-right{
+
+.pull-right {
     float: right !important;
 }
+
 .text-danger {
     color: red;
 }
@@ -124,6 +129,33 @@ sidebar
     background: #1d2633 !important;
 }
 
-.table-content{
+.table-content {
     display: grid;
+}
+
+.g-search {
+    float: right;
+}
+
+.g-search label {
+    line-height: 12px;
+}
+
+.g-search input {
+    padding: 8px 8px;
+}
+
+.mt-15 {
+    margin-top: 15px;
+}
+.mt-0 {
+    margin-top: 0px !important;
+}
+.bg-tblue {
+    background-color: #d9edf7;
+}
+
+.hov-table tr:hover{
+    background-color: #eeeeee;
+    cursor: pointer;
 }

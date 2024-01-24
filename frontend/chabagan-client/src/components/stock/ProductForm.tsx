@@ -38,7 +38,6 @@ const ProductForm: React.FC<
             enableReinitialize: true,
             validationSchema: validationSchema,
             onSubmit: (values) => {
-                console.log(values)
                 if (values.id > 0) {
                     updateProduct(values);
                 } else {

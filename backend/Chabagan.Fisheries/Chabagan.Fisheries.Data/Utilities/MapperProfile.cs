@@ -46,6 +46,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             CreateMap<DbProduct, VwProduct>().ReverseMap();
             CreateMap<DbPurchase, VwPurchase>().ReverseMap();
             CreateMap<DbPurchaseItem, VwPurchaseItem>().ReverseMap();
+            CreateMap<DbSupplier, VwSupplier>().ReverseMap();
             #endregion
         }
     }
