@@ -127,7 +127,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         [HttpPut]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwProduct>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> UpdateProductAsync([FromForm] VwProduct model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> UpdateProductAsync([FromBody] VwProduct model)
         {
             try
             {

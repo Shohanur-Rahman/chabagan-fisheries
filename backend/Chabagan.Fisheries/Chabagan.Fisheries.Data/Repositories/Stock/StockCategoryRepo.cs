@@ -101,7 +101,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbStockCategory? dbCategory = await _dbContext.StockCategories.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbCategory is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbCategory = _mapper.Map<DbStockCategory>(model);
             _dbContext.StockCategories.Update(dbCategory);
@@ -124,7 +124,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbStockCategory? dbCategory = await _dbContext.StockCategories.Where(x => x.Id == catId).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbCategory is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbCategory.IsDeleted = true;
             _dbContext.StockCategories.Update(dbCategory);

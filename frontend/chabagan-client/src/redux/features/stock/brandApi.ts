@@ -31,7 +31,7 @@ const brandsApi = apiSlice.injectEndpoints({
         }),
         deleteBrand: builder.mutation({
             query: (id) =>({
-                url: `brands/${id}`,
+                url: `/brands/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["brand-list"],
