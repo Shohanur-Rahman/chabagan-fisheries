@@ -57,6 +57,31 @@ const sidebarMenus: IMenu[] = [
                 label: "Categories",
                 link: "/stock/category",
                 icon: <ArrowRight />
+            },
+            {
+                label: "Products",
+                link: "/stock/products",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Purchases",
+                link: "/stock/purchases",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Purchase Returns",
+                link: "/stock/purchase-returns",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Sales",
+                link: "/stock/sales",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Sales Returns",
+                link: "/stock/sales-returns",
+                icon: <ArrowRight />
             }
         ]
     },
