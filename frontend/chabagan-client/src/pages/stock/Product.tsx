@@ -8,16 +8,18 @@ import { IProductModel } from "../../interfaces/model/stock/IProductModel";
 import ProductForm from "../../components/stock/ProductForm";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
-import { useGetProductsQuery } from "../../redux/features/stock/productApi";
-import { ProjectTitle } from "../../data/Config";
+import { useDeleteProductMutation, useGetProductMutation, useGetProductsQuery } from "../../redux/features/stock/productApi";
+import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 export default function Product() {
     const [rows, setRows] = useState([]);
     const [formTitle, setFormTitle] = useState("Add Product");
     const [initialValues, setInitialValues] = useState<IProductModel>({} as IProductModel);
     const { data, isSuccess } = useGetProductsQuery(null);
+    const [getProduct, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetProductMutation();
+    const [deleteProduct, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteProductMutation();
 
     const onEditClick = (row: GridCellParams<IProductModel>) => {
-        console.log(row.id);
+        getProduct(row.id);
     }
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({
@@ -30,7 +32,7 @@ export default function Product() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                console.log(row.id);
+                deleteProduct(row.id);
             }
         });
     }
@@ -80,6 +82,27 @@ export default function Product() {
             setFormTitle("Add Product");
         }
     }, [data, isSuccess]);
+
+    useEffect(() => {
+        if (singleError) {
+            showErrorNotification();
+        }
+        else if (isSingleSuccess && singleData) {
+            setFormTitle("Edit Product");
+            setInitialValues(singleData.result as IProductModel || {})
+        }
+    }, [singleData, isSingleSuccess]);
+
+    useEffect(() => {
+        if (deleteError) {
+            showErrorNotification();
+        }
+        else if (isDeleteSuccess && deleteData) {
+            showDeleteNotification();
+            setFormTitle("Add Product");
+            setInitialValues({} as IProductModel || {})
+        }
+    }, [deleteData, isDeleteSuccess, deleteError]);
 
     return (
         <>

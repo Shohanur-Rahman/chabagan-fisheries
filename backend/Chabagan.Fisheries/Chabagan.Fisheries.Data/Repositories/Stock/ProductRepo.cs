@@ -70,10 +70,10 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower());
+            //bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower());
 
-            if (isExist)
-                throw new DuplicateNameException(ResponseMessage.ExistingData);
+            //if (isExist)
+            //    throw new DuplicateNameException(ResponseMessage.ExistingData);
 
             DbProduct dbProduct = _mapper.Map<DbProduct>(model);
             await _dbContext.Products.AddAsync(dbProduct);
@@ -93,15 +93,15 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower() && x.Id != model.Id);
+            //bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower() && x.Id != model.Id);
 
-            if (isExist)
-                throw new DuplicateNameException(ResponseMessage.ExistingData);
+            //if (isExist)
+            //    throw new DuplicateNameException(ResponseMessage.ExistingData);
 
             DbProduct? dbProduct = await _dbContext.Products.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbProduct is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbProduct = _mapper.Map<DbProduct>(model);
             _dbContext.Products.Update(dbProduct);
@@ -124,7 +124,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbProduct? dbProduct = await _dbContext.Products.Where(x => x.Id == productId).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbProduct is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbProduct.IsDeleted = true;
             _dbContext.Products.Update(dbProduct);

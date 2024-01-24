@@ -102,7 +102,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbBrand? dbBrand = await _dbContext.Brands.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbBrand is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbBrand = _mapper.Map<DbBrand>(model);
             _dbContext.Brands.Update(dbBrand);
@@ -125,7 +125,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbBrand? dbBrand = await _dbContext.Brands.Where(x => x.Id == brandId).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbBrand is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbBrand.IsDeleted = true;
             _dbContext.Brands.Update(dbBrand);

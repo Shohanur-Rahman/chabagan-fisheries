@@ -1,9 +1,11 @@
 import Swal from 'sweetalert2'
+import { IApiResponse } from '../interfaces/IApiResponse';
 
 export const ProjectTitle = "Chabagan Fisheries";
 export const AddSuccessMessage = "Data successfully saved.";
 export const UpdateSuccessMessage = "Data successfully updated.";
 export const DeleteSuccessMessage = "Data successfully deleted.";
+
 
 export const showAddNotification = () => {
     Swal.fire({
@@ -29,10 +31,21 @@ export const showDeleteNotification = () => {
     });
 }
 
-export const showErrorNotification = (msg = "Something went wrong!") => {
+export const showErrorNotification = (error: any = "Something went wrong!", isServer = true) => {
+    let msg = "Something went wrong!"
+    let errorMessage = ``;
+    let errorObject = {} as IApiResponse;
+    if (isServer) {
+        errorObject = error as IApiResponse;
+    }
+    if (errorObject && errorObject.data && errorObject.data.errors) {
+        errorMessage = errorObject.data.errors[0];
+    } else {
+        errorMessage = msg;
+    }
     Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: msg,
+        text: errorMessage,
     });
 }

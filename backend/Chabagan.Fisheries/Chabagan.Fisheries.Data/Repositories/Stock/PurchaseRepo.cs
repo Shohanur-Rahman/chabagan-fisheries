@@ -90,7 +90,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbPurchase is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbPurchase = _mapper.Map<DbPurchase>(model);
             _dbContext.Purchases.Update(dbPurchase);
@@ -113,7 +113,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbPurchase is null)
-                throw new ArgumentNullException(ResponseMessage.FailRetrieve);
+                throw new Exception(ResponseMessage.FailRetrieve);
 
             dbPurchase.IsDeleted = true;
             _dbContext.Purchases.Update(dbPurchase);

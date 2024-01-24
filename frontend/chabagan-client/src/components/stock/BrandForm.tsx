@@ -13,7 +13,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
     const emptyModel: IBrandModel = {
         id: 0,
         name: ""
-    }  
+    }
     const validationSchema = Yup.object({
         name: Yup.string().required('Brand name is required')
     });
@@ -35,6 +35,9 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
         title = "Add Brand";
         setState(emptyModel);
     }
+    const getShrink = (value: any) => {
+        return value ? true : false;
+    }
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -42,7 +45,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
             resetFields();
         }
         if (isError && error) {
-            showErrorNotification();
+            showErrorNotification(error);
         }
     }, [isSuccess, isError, data, error]);
 
@@ -52,7 +55,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
             resetFields();
         }
         if (isUpdateError && updateError) {
-            showErrorNotification();
+            showErrorNotification(updateError);
         }
     }, [isUpdateSuccess, isUpdateError, updateData, updateError]);
 
@@ -66,10 +69,10 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
                             margin="normal"
                             required
                             fullWidth
-                            id="txtRoleName"
+                            id="txtBrandName"
                             label="Brand Name"
                             {...formik.getFieldProps("name")}
-                            autoComplete="role"
+                            InputLabelProps={{ shrink: getShrink(formik.values.name) }}
                         />
                         {formik.touched.name && formik.errors.name ? (
                             <p className="validation-error text-danger">{formik.errors.name}</p>
