@@ -14,23 +14,23 @@ const stockCategoryApi = apiSlice.injectEndpoints({
             invalidatesTags: ["stockcategory-list"]
         }),
         addStockCategory: builder.mutation({
-            query: (roleData) => ({
+            query: (data) => ({
                 url: `/stockcategories`,
                 method: "POST",
-                body: roleData
+                body: data
             }),
             invalidatesTags: ["stockcategory-list"]
         }),
         updateStockCategory: builder.mutation({
-            query: (roledata) =>({
+            query: (data) => ({
                 url: `/stockcategories`,
                 method: "PUT",
-                body: roledata
+                body: data
             }),
             invalidatesTags: ["stockcategory-list"]
         }),
         deleteStockCategory: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `stockcategories/${id}`,
                 method: "DELETE"
             }),
@@ -39,7 +39,7 @@ const stockCategoryApi = apiSlice.injectEndpoints({
     })
 });
 
-export const { 
+export const {
     useGetStockCategoryQuery,
     useGetStockCategoryByIdMutation,
     useAddStockCategoryMutation,

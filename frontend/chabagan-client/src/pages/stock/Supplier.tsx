@@ -1,26 +1,27 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
-import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
-import productBreadCrumb from '../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
+import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
+import supplierBreadCrumb from '../../data/Breadcrumbs';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { IProductModel } from "../../interfaces/model/stock/IProductModel";
-import ProductForm from "../../components/stock/ProductForm";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { ISupplierModel } from "../../interfaces/model/stock/ISupplierModel";
 import Swal from "sweetalert2";
-import { useDeleteProductMutation, useGetProductMutation, useGetProductsQuery } from "../../redux/features/stock/productApi";
+import { useDeleteSupplierMutation, useGetSupplierMutation, useGetSuppliersQuery } from "../../redux/features/stock/supplierApi";
+import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-export default function Product() {
+import SupplierForm from "../../components/stock/SupplierForm";
+export default function Supplier() {
+    const [formTitle, setFormTitle] = useState("Add Supplier");
     const [rows, setRows] = useState([]);
-    const [formTitle, setFormTitle] = useState("Add Product");
-    const [initialValues, setInitialValues] = useState<IProductModel>({} as IProductModel);
-    const { data, isSuccess } = useGetProductsQuery(null);
-    const [getProduct, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetProductMutation();
-    const [deleteProduct, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteProductMutation();
+    const [initialValues, setInitialValues] = useState<ISupplierModel>({} as ISupplierModel);
+    const { data, isSuccess } = useGetSuppliersQuery(null);
+    const [getSupplier, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetSupplierMutation();
+    const [deleteSupplier, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteSupplierMutation();
 
-    const onEditClick = (row: GridCellParams<IProductModel>) => {
-        getProduct(row.id);
+    const onEditClick = (row: GridCellParams<ISupplierModel>) => {
+        getSupplier(row.id);
     }
+
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({
             title: "Are you sure?",
@@ -32,30 +33,28 @@ export default function Product() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteProduct(row.id);
+                deleteSupplier(row.id);
             }
         });
     }
+
+
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
             field: 'name',
-            headerName: 'Name',
+            headerName: 'Brand',
             width: 200
         },
         {
-            field: 'mrp',
-            headerName: 'Price',
-            width: 150
+            field: 'shopName',
+            headerName: 'Shop',
+            width: 250
         },
         {
-            field: 'category', headerName: 'Category', width: 200, renderCell: (params) => {
-                return (
-                    <>
-                        {params.row?.category?.name}
-                    </>
-                );
-            }
+            field: 'mobile',
+            headerName: 'Mobile',
+            width: 150
         },
         {
             field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
@@ -82,13 +81,15 @@ export default function Product() {
         }
     ];
 
+
     useEffect(() => {
-        document.title = `Products | ${ProjectTitle}`;
+        document.title = `Suppliers | ${ProjectTitle}`;
     }, []);
+
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Product");
+            setFormTitle("Add Supplier");
         }
     }, [data, isSuccess]);
 
@@ -97,8 +98,8 @@ export default function Product() {
             showErrorNotification();
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Product");
-            setInitialValues(singleData.result as IProductModel || {})
+            setFormTitle("Edit Supplier");
+            setInitialValues(singleData.result as ISupplierModel)
         }
     }, [singleData, isSingleSuccess]);
 
@@ -108,22 +109,24 @@ export default function Product() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Product");
-            setInitialValues({} as IProductModel || {})
+            setFormTitle("Add Supplier");
+            setInitialValues({} as ISupplierModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
 
     return (
         <>
-            <IconBreadcrumbs props={productBreadCrumb.productBreadCrumb} />
+            <IconBreadcrumbs props={supplierBreadCrumb.supplierBreadCrumb} />
+
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <ProductForm info={initialValues} setState={setInitialValues} title={formTitle} />
+                        <SupplierForm info={initialValues} title={formTitle} setState={setInitialValues} />
                     </Grid>
+
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Products" className="card-header" />
+                            <CardHeader title="Suppliers" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
                                     className="data-table"
@@ -148,9 +151,9 @@ export default function Product() {
                             </CardContent>
                         </Card>
                     </Grid>
-
                 </Grid>
             </Box>
+
         </>
     )
 }

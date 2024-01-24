@@ -23,6 +23,26 @@ const sidebarMenus: IMenu[] = [
         icon: <ChecklistIcon />,
         submenu: [
             {
+                label: "Brands",
+                link: "/setup/brands",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Categories",
+                link: "/setup/category",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Products",
+                link: "/setup/products",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Supplier",
+                link: "/setup/suppliers",
+                icon: <ArrowRight />
+            },
+            {
                 label: "Fishes",
                 link: "/setup/fishes",
                 icon: <ArrowRight />
@@ -48,21 +68,6 @@ const sidebarMenus: IMenu[] = [
         label: "Stock",
         icon: <AddShoppingCartIcon />,
         submenu: [
-            {
-                label: "Brands",
-                link: "/stock/brands",
-                icon: <ArrowRight />
-            },
-            {
-                label: "Categories",
-                link: "/stock/category",
-                icon: <ArrowRight />
-            },
-            {
-                label: "Products",
-                link: "/stock/products",
-                icon: <ArrowRight />
-            },
             {
                 label: "Purchases",
                 link: "/stock/purchases",

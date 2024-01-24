@@ -39,6 +39,7 @@ export default function Brands() {
             }
         });
     }
+    
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
