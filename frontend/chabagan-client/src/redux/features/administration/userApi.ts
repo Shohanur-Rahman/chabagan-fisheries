@@ -15,10 +15,10 @@ const userApi = apiSlice.injectEndpoints({
             providesTags: ["user-list"]
         }),
         addUser: builder.mutation({
-            query: (userData) => ({
+            query: (data) => ({
                 url: `/users`,
                 method: "POST",
-                body: userData,
+                body: data,
             }),
             invalidatesTags: ["user-list"],
         }),

@@ -1,4 +1,4 @@
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, FormGroup, Grid, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Autocomplete, Box, Button, Card, CardContent, CardHeader, FormGroup, Grid, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -38,8 +38,8 @@ export default function Purchase() {
                                     <Grid md={3} item xs={6}>
                                         <FormGroup>
                                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DatePicker value={dayjs('2024-01-25T15:30')} 
-                                                className="mt-0" />
+                                                <DatePicker value={dayjs('2024-01-25T15:30')}
+                                                    className="mt-0" />
                                             </LocalizationProvider>
                                         </FormGroup>
                                     </Grid>

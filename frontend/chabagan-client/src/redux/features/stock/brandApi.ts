@@ -14,18 +14,18 @@ const brandsApi = apiSlice.injectEndpoints({
             invalidatesTags: ["brand-list"]
         }),
         addBrand: builder.mutation({
-            query: (roleData) => ({
+            query: (data) => ({
                 url: `/brands`,
                 method: "POST",
-                body: roleData
+                body: data
             }),
             invalidatesTags: ["brand-list"]
         }),
         updateBrand: builder.mutation({
-            query: (roledata) =>({
+            query: (data) =>({
                 url: `/brands`,
                 method: "PUT",
-                body: roledata
+                body: data
             }),
             invalidatesTags: ["brand-list"]
         }),

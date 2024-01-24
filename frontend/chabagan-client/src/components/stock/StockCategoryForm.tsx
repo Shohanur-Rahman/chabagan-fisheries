@@ -92,8 +92,9 @@ const StockCategoryForm: React.FC<{
                             fullWidth
                             variant="contained"
                             sx={{ mt: 3, mb: 2 }}
+                            disabled={(isLoading || isUpdateLoading)}
                         >
-                            Save Changes
+                            {(isLoading || isUpdateLoading) ? <span>Processing...</span> : "Save Changes"}
                         </Button>
                     </Box>
                 </CardContent>

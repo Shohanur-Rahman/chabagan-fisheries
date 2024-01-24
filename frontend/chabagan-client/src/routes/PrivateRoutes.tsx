@@ -12,11 +12,28 @@ import PurchaseReturn from "../pages/stock/PurchaseReturn";
 import Sales from "../pages/stock/Sales";
 import SalesReturn from "../pages/stock/SalesReturn";
 import StockCategory from "../pages/stock/StockCategory";
+import Supplier from "../pages/stock/Supplier";
 
 const privateRoutes: IRouteConfig[] = [
     {
         path: 'dashboard',
         element: <Dashboard />,
+    },
+    {
+        path: 'setup/suppliers',
+        element: <Supplier />,
+    },
+    {
+        path: 'setup/brands',
+        element: <Brands />,
+    },
+    {
+        path: 'setup/category',
+        element: <StockCategory />,
+    },
+    {
+        path: 'setup/products',
+        element: <Product />,
     },
     {
         path: 'setup/fishes',
@@ -41,18 +58,6 @@ const privateRoutes: IRouteConfig[] = [
     {
         path: 'admin/users/edit-user/:id',
         element: <AddEditUser />,
-    },
-    {
-        path: 'stock/brands',
-        element: <Brands />,
-    },
-    {
-        path: 'stock/category',
-        element: <StockCategory />,
-    },
-    {
-        path: 'stock/products',
-        element: <Product />,
     },
     {
         path: 'stock/purchases',

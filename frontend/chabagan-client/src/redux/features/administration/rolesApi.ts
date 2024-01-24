@@ -9,29 +9,29 @@ const rolesApi = apiSlice.injectEndpoints({
             providesTags: ["role-list"]
         }),
         getRole: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `roles/${id}`
             }),
             invalidatesTags: ["role-list"]
         }),
         addRole: builder.mutation({
-            query: (roleData) => ({
+            query: (data) => ({
                 url: `/roles`,
                 method: "POST",
-                body: roleData
+                body: data
             }),
             invalidatesTags: ["role-list"]
         }),
         updateRole: builder.mutation({
-            query: (roledata) =>({
+            query: (data) => ({
                 url: `/roles`,
                 method: "PUT",
-                body: roledata
+                body: data
             }),
             invalidatesTags: ["role-list"]
         }),
         deleteRole: builder.mutation({
-            query: (id) =>({
+            query: (id) => ({
                 url: `roles/${id}`,
                 method: "DELETE"
             }),
@@ -40,4 +40,4 @@ const rolesApi = apiSlice.injectEndpoints({
     })
 });
 
-export const { useAddRoleMutation, useGetRolesQuery, useDeleteRoleMutation, useGetRoleMutation, useUpdateRoleMutation} = rolesApi;
+export const { useAddRoleMutation, useGetRolesQuery, useDeleteRoleMutation, useGetRoleMutation, useUpdateRoleMutation } = rolesApi;
