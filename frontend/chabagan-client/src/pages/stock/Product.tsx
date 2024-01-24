@@ -1,29 +1,24 @@
 import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
-import brandsBreadCrumb from '../../data/Breadcrumbs';
-import BrandForm from "../../components/stock/BrandForm";
+import productBreadCrumb from '../../data/Breadcrumbs';
+import { useEffect, useState } from "react";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { IBrandModel } from "../../interfaces/model/stock/IBrandModel";
-import { useEffect, useState } from "react";
+import { IProductModel } from "../../interfaces/model/stock/IProductModel";
+import ProductForm from "../../components/stock/ProductForm";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/stock/brandApi";
 import Swal from "sweetalert2";
+import { useGetProductsQuery } from "../../redux/features/stock/productApi";
+import { ProjectTitle } from "../../data/Config";
+export default function Product() {
+    const [rows, setRows] = useState([]);
+    const [formTitle, setFormTitle] = useState("Add Product");
+    const [initialValues, setInitialValues] = useState<IProductModel>({} as IProductModel);
+    const { data, isSuccess } = useGetProductsQuery(null);
 
-export default function Brands() {
-    const [formTitle, setFormTitle] = useState("Add Brand");
-    const [rows, setRows] = useState([]); 
-    const [initialValues, setInitialValues] = useState<IBrandModel>({} as IBrandModel);
-    const { data, isSuccess } = useGetBrandsQuery(null);
-    const [getBrand, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetBrandMutation();
-    const [deleteBrand, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteBrandMutation();
-
- 
-    const onEditClick = (row: GridCellParams<IBrandModel>) => {
-        getBrand(row.id);
+    const onEditClick = (row: GridCellParams<IProductModel>) => {
+        console.log(row.id);
     }
-
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({
             title: "Are you sure?",
@@ -35,7 +30,7 @@ export default function Brands() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteBrand(row.id);
+                console.log(row.id);
             }
         });
     }
@@ -43,8 +38,13 @@ export default function Brands() {
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
             field: 'name',
-            headerName: 'Brand',
-            width: 500
+            headerName: 'Name',
+            width: 300
+        },
+        {
+            field: 'mrp',
+            headerName: 'Price',
+            width: 200
         },
         {
             field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
@@ -72,49 +72,26 @@ export default function Brands() {
     ];
 
     useEffect(() => {
+        document.title = `Products | ${ProjectTitle}`;
+    }, []);
+    useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Brand");
+            setFormTitle("Add Product");
         }
     }, [data, isSuccess]);
 
-    useEffect(() => {
-        document.title = `Brands | ${ProjectTitle}`;
-    }, []);
-
-    useEffect(() => {
-        if (singleError) {
-            showErrorNotification();
-        }
-        else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Brand");
-            setInitialValues(singleData.result as IBrandModel)
-        }
-    }, [singleData, isSingleSuccess]);
-
-    useEffect(() => {
-        if (deleteError) {
-            showErrorNotification();
-        }
-        else if (isDeleteSuccess && deleteData) {
-            showDeleteNotification();
-            setFormTitle("Add Brand");
-            setInitialValues({} as IBrandModel)
-        }
-    }, [deleteData, isDeleteSuccess, deleteError]);
-
     return (
         <>
-            <IconBreadcrumbs props={brandsBreadCrumb.brandsBreadCrumb} />
+            <IconBreadcrumbs props={productBreadCrumb.productBreadCrumb} />
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <BrandForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <ProductForm info={initialValues} setState={setInitialValues} title={formTitle} />
                     </Grid>
-
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Brands" className="card-header" />
+                            <CardHeader title="Products" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
                                     className="data-table"
@@ -139,6 +116,7 @@ export default function Brands() {
                             </CardContent>
                         </Card>
                     </Grid>
+
                 </Grid>
             </Box>
         </>

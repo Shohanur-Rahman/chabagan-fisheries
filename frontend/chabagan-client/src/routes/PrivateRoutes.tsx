@@ -6,6 +6,11 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import FishSetup from "../pages/setup/FishSetup";
 import Setup from "../pages/setup/Setup";
 import Brands from "../pages/stock/Brands";
+import Product from "../pages/stock/Product";
+import Purchase from "../pages/stock/Purchase";
+import PurchaseReturn from "../pages/stock/PurchaseReturn";
+import Sales from "../pages/stock/Sales";
+import SalesReturn from "../pages/stock/SalesReturn";
 import StockCategory from "../pages/stock/StockCategory";
 
 const privateRoutes: IRouteConfig[] = [
@@ -44,6 +49,26 @@ const privateRoutes: IRouteConfig[] = [
     {
         path: 'stock/category',
         element: <StockCategory />,
+    },
+    {
+        path: 'stock/products',
+        element: <Product />,
+    },
+    {
+        path: 'stock/purchases',
+        element: <Purchase />,
+    },
+    {
+        path: 'stock/purchase-returns',
+        element: <PurchaseReturn />,
+    },
+    {
+        path: 'stock/sales',
+        element: <Sales />,
+    },
+    {
+        path: 'stock/sales-returns',
+        element: <SalesReturn />,
     }
 ]
 

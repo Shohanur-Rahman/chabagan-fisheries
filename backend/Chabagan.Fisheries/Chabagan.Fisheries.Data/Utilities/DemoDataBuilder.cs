@@ -132,6 +132,33 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
                     Name = "Accessories",
                 }
             );
+
+            this.modelBuilder.Entity<DbProduct>().HasData(
+                new DbProduct
+                {
+                    Id = 1,
+                    Name = "Napa Extra",
+                    CategoryId=1,
+                    MRP= Convert.ToDecimal(50.65),
+                    Description= "First, make sure you have Material-UI installed in your project:"
+                },
+                new DbProduct
+                {
+                    Id = 2,
+                    Name = "Peracitamol",
+                    CategoryId = 1,
+                    MRP = Convert.ToDecimal(50.65),
+                    Description = "First, make sure you have Material-UI installed in your project:"
+                },
+                new DbProduct
+                {
+                    Id = 3,
+                    Name = "Filmate",
+                    CategoryId = 1,
+                    MRP = Convert.ToDecimal(50.65),
+                    Description = "First, make sure you have Material-UI installed in your project:"
+                }
+            );
         }
         #endregion
     }

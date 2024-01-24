@@ -97,13 +97,55 @@ const categoryBreadCrumb: IIconBreadcrumbs[] = [
         isLast: true
     }
 ]
+const productBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Products",
+        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+const purchaseBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchase",
+        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
 
-export default { 
-    dashboarBreadCrumb, 
-    fishBreadCrumb, 
-    roleBreadCrumb, 
-    userBreadCrumb, 
-    userAddBreadCrumb, 
+const purchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchase Returns",
+        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+
+
+export default {
+    dashboarBreadCrumb,
+    fishBreadCrumb,
+    roleBreadCrumb,
+    userBreadCrumb,
+    userAddBreadCrumb,
     brandsBreadCrumb,
-    categoryBreadCrumb 
+    categoryBreadCrumb,
+    productBreadCrumb,
+    purchaseBreadCrumb,
+    purchaseReturnBreadCrumb
 }
