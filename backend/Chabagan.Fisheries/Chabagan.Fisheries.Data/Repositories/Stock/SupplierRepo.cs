@@ -5,11 +5,16 @@ using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Data;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace Chabagan.Fisheries.Data.Repositories.Stock
 {
-    public class ProductRepo: IProductRepo
+    public class SupplierRepo: ISupplierRepo
     {
         #region Properties and Variables
         /// <summary>
@@ -29,7 +34,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public ProductRepo(FisheriesDbContext dbContext, IMapper mapper)
+        public SupplierRepo(FisheriesDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -39,97 +44,87 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
 
         #region Public Methods
         /// <summary>
-        /// Get all products data from database
+        /// Get all supplier data from database
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<VwProduct>> GetAllProductsAsync()
+        public async Task<IEnumerable<VwSupplier>> GetAllSupplierAsync()
         {
-            return _mapper.Map<IEnumerable<VwProduct>>(await _dbContext.Products.Where(x => !x.IsDeleted).Include(x => x.Category).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwSupplier>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
         }
 
         /// <summary>
-        /// Get a single product data from database by product id
+        /// Get a single Supplier data from database by Supplier id
         /// </summary>
-        /// <param name="productId"></param>
+        /// <param name="supplierId"></param>
         /// <returns></returns>
-        public async Task<VwProduct> GetProductByProductIdAsync(long productId)
+        public async Task<VwSupplier> GetSupplierBySupplierIdAsync(long supplierId)
         {
-            return _mapper.Map<VwProduct>(await _dbContext.Products.Where(x => x.Id == productId)
+            return _mapper.Map<VwSupplier>(await _dbContext.Suppliers.Where(x => x.Id == supplierId)
                 .AsNoTracking()
                 .SingleOrDefaultAsync());
         }
 
         /// <summary>
-        /// Save Product information in database
+        /// Save Supplier information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwProduct> SaveProductAsync(VwProduct model)
+        public async Task<VwSupplier> SaveSupplierAsync(VwSupplier model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            //bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower());
-
-            //if (isExist)
-            //    throw new DuplicateNameException(ResponseMessage.ExistingData);
-
-            DbProduct dbProduct = _mapper.Map<DbProduct>(model);
-            await _dbContext.Products.AddAsync(dbProduct);
+            DbSupplier dbSupplier = _mapper.Map<DbSupplier>(model);
+            await _dbContext.Suppliers.AddAsync(dbSupplier);
             await _dbContext.SaveChangesAsync();
-            return await GetProductByProductIdAsync(dbProduct.Id);
+            return await GetSupplierBySupplierIdAsync(dbSupplier.Id);
         }
 
 
         /// <summary>
-        /// Update Product information in database
+        /// Update Supplier information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwProduct> UpdateProductAsync(VwProduct model)
+        public async Task<VwSupplier> UpdateSupplierAsync(VwSupplier model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            //bool isExist = await _dbContext.Products.AnyAsync(x => x.Name.ToLower().Trim() == model.Name.ToLower() && x.Id != model.Id);
+            DbSupplier? dbSupplier = await _dbContext.Suppliers.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
-            //if (isExist)
-            //    throw new DuplicateNameException(ResponseMessage.ExistingData);
-
-            DbProduct? dbProduct = await _dbContext.Products.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
-
-            if (dbProduct is null)
+            if (dbSupplier is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            dbProduct = _mapper.Map<DbProduct>(model);
-            _dbContext.Products.Update(dbProduct);
+            dbSupplier = _mapper.Map<DbSupplier>(model);
+            _dbContext.Suppliers.Update(dbSupplier);
             await _dbContext.SaveChangesAsync();
-            return await GetProductByProductIdAsync(dbProduct.Id);
+            return await GetSupplierBySupplierIdAsync(dbSupplier.Id);
         }
 
 
         /// <summary>
-        /// Delete a Product data by User id
+        /// Delete a Supplier data by User id
         /// </summary>
-        /// <param name="productId"></param>
+        /// <param name="supplierId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwProduct> DeleteProductByProductIdAsync(long productId)
+        public async Task<VwSupplier> DeleteSupplierBySupplierIdAsync(long supplierId)
         {
-            if (productId == 0)
+            if (supplierId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
 
-            DbProduct? dbProduct = await _dbContext.Products.Where(x => x.Id == productId).AsNoTracking().SingleOrDefaultAsync();
+            DbSupplier? dbSupplier = await _dbContext.Suppliers.Where(x => x.Id == supplierId).AsNoTracking().SingleOrDefaultAsync();
 
-            if (dbProduct is null)
+            if (dbSupplier is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            dbProduct.IsDeleted = true;
-            _dbContext.Products.Update(dbProduct);
+            dbSupplier.IsDeleted = true;
+            _dbContext.Suppliers.Update(dbSupplier);
             await _dbContext.SaveChangesAsync();
-            return await GetProductByProductIdAsync(dbProduct.Id);
+            return await GetSupplierBySupplierIdAsync(dbSupplier.Id);
         }
 
         #endregion

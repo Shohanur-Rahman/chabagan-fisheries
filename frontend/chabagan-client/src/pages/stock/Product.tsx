@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Button, Card, CardContent, CardHeader, Grid, TextField } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import productBreadCrumb from '../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
@@ -41,12 +41,21 @@ export default function Product() {
         {
             field: 'name',
             headerName: 'Name',
-            width: 300
+            width: 200
         },
         {
             field: 'mrp',
             headerName: 'Price',
-            width: 200
+            width: 150
+        },
+        {
+            field: 'category', headerName: 'Category', width: 200, renderCell: (params) => {
+                return (
+                    <>
+                        {params.row?.category?.name}
+                    </>
+                );
+            }
         },
         {
             field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {

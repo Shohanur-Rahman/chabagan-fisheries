@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Chabagan.Fisheries.Models.Category;
+using Microsoft.AspNetCore.Http;
 
 namespace Chabagan.Fisheries.Entities.Mapping.Stock
 {
@@ -10,5 +11,6 @@ namespace Chabagan.Fisheries.Entities.Mapping.Stock
         public string? Avatar { get; set; }
         public string? Description { get; set; }
         public IFormFile? Attachment { get; set; }
+        public VwStockCategory? Category { get; set; }
     }
 }

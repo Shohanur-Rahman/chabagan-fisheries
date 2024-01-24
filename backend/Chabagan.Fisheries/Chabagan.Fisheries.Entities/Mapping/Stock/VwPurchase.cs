@@ -4,7 +4,6 @@
     {
         public DateTime RegDate { get; set; }
         public long SupplierId { get; set; }
-        public string? Location { get; set; }
         public decimal TotalAmount { get; set; }
         public decimal Discount { get; set; }
         public decimal GrandTotal { get; set; }
