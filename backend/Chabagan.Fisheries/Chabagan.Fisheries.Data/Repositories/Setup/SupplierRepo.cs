@@ -2,6 +2,7 @@
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
+using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
@@ -48,6 +49,17 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
             return _mapper.Map<IEnumerable<VwSupplier>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
         }
 
+        /// <summary>
+        /// Get supplier auto complete
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AutoCompleteModel>> GetSupplierAutocompleteAsync()
+        {
+            return await _dbContext.Suppliers.Where(x => !x.IsDeleted)
+                .AsNoTracking()
+                .Select(x => new AutoCompleteModel { Label = x.Name, Value = x.Id.ToString() })
+                .ToListAsync();
+        }
 
         /// <summary>
         /// Get all supplier dropdown

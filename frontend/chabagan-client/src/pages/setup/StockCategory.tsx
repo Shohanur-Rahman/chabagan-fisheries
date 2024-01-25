@@ -1,25 +1,25 @@
-import { useEffect, useState } from "react";
+import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
-import supplierBreadCrumb from '../../data/Breadcrumbs';
+import categoryBreadCrumb from '../../data/Breadcrumbs';
+import StockCategoryForm from "../../components/setup/StockCategoryForm";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { ISupplierModel } from "../../interfaces/model/stock/ISupplierModel";
+import { useEffect, useState } from "react";
+import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
 import Swal from "sweetalert2";
-import { useDeleteSupplierMutation, useGetSupplierMutation, useGetSuppliersQuery } from "../../redux/features/stock/supplierApi";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/setup/stockCategoryApi";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-import SupplierForm from "../../components/stock/SupplierForm";
-export default function Supplier() {
-    const [formTitle, setFormTitle] = useState("Add Supplier");
+export default function StockCategory() {
+    const [formTitle, setFormTitle] = useState("Add Category");
+    const [initialValues, setInitialValues] = useState<IStockCatModel>({} as IStockCatModel);
     const [rows, setRows] = useState([]);
-    const [initialValues, setInitialValues] = useState<ISupplierModel>({} as ISupplierModel);
-    const { data, isSuccess } = useGetSuppliersQuery(null);
-    const [getSupplier, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetSupplierMutation();
-    const [deleteSupplier, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteSupplierMutation();
+    const { data, isSuccess } = useGetStockCategoryQuery(null);
+    const [getStockCategoryById, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetStockCategoryByIdMutation();
+    const [deleteStockCategory, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteStockCategoryMutation();
 
-    const onEditClick = (row: GridCellParams<ISupplierModel>) => {
-        getSupplier(row.id);
+    const onEditClick = (row: GridCellParams<IStockCatModel>) => {
+        getStockCategoryById(row.id);
     }
 
     const onDeleteClickEvent = (row: GridCellParams) => {
@@ -33,28 +33,16 @@ export default function Supplier() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteSupplier(row.id);
+                deleteStockCategory(row.id);
             }
         });
     }
-
-
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
             field: 'name',
-            headerName: 'Brand',
-            width: 200
-        },
-        {
-            field: 'shopName',
-            headerName: 'Shop',
-            width: 250
-        },
-        {
-            field: 'mobile',
-            headerName: 'Mobile',
-            width: 150
+            headerName: 'Category',
+            width: 500
         },
         {
             field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
@@ -81,15 +69,14 @@ export default function Supplier() {
         }
     ];
 
-
     useEffect(() => {
-        document.title = `Suppliers | ${ProjectTitle}`;
+        document.title = `Categories | ${ProjectTitle}`;
     }, []);
 
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Supplier");
+            setFormTitle("Add Category");
         }
     }, [data, isSuccess]);
 
@@ -98,8 +85,8 @@ export default function Supplier() {
             showErrorNotification();
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Supplier");
-            setInitialValues(singleData.result as ISupplierModel)
+            setFormTitle("Edit Category");
+            setInitialValues(singleData.result as IStockCatModel)
         }
     }, [singleData, isSingleSuccess]);
 
@@ -109,24 +96,22 @@ export default function Supplier() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Supplier");
-            setInitialValues({} as ISupplierModel)
+            setFormTitle("Add Brand");
+            setInitialValues({} as IStockCatModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
 
     return (
         <>
-            <IconBreadcrumbs props={supplierBreadCrumb.supplierBreadCrumb} />
-
+            <IconBreadcrumbs props={categoryBreadCrumb.categoryBreadCrumb} />
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <SupplierForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <StockCategoryForm info={initialValues} title={formTitle} setState={setInitialValues} />
                     </Grid>
-
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Suppliers" className="card-header" />
+                            <CardHeader title="Categories" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
                                     className="data-table"
@@ -153,7 +138,6 @@ export default function Supplier() {
                     </Grid>
                 </Grid>
             </Box>
-
         </>
     )
 }

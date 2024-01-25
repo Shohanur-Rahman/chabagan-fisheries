@@ -1,18 +1,18 @@
-import { Autocomplete, Box, Button, Card, CardContent, CardHeader, FormGroup, Grid, Table, TableBody, TableCell, TableHead, TableRow, TextField } from "@mui/material";
+import { Box, Button, Card, CardContent, CardHeader, Grid, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import purchaseBreadCrumb from '../../data/Breadcrumbs';
-import dayjs from "dayjs";
+import { useEffect } from "react";
+import { ProjectTitle } from "../../data/Config";
+import PurchaseInfo from "../../components/stock/PurchaseInfo";
+import PurchaseCalculation from "../../components/stock/PurchaseCalculation";
+import PurchaseForm from "./PurchaseForm";
 export default function Purchase() {
-    const products = [
-        { label: 'Option 1', value: 'option1' },
-        { label: 'Option 2', value: 'option2' },
-        { label: 'Option 3', value: 'option3' },
-    ];
+
+    useEffect(() => {
+        document.title = `Purchase | ${ProjectTitle}`;
+    }, []);
 
     return (
         <>
@@ -23,119 +23,9 @@ export default function Purchase() {
                         <Card sx={{ minWidth: 275 }} className="card w-100">
                             <CardHeader title="Purchase" className="card-header" />
                             <CardContent className="table-content">
-                                <Grid container spacing={2}>
-                                    <Grid md={3} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Bill No"
-                                                className="mt-0"
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={3} item xs={6}>
-                                        <FormGroup>
-                                            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                                <DatePicker value={dayjs('2024-01-25T15:30')}
-                                                    className="mt-0" />
-                                            </LocalizationProvider>
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={3} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Location"
-                                                className="mt-0"
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-
-                                    <Grid md={3} item xs={6}>
-                                        <FormGroup>
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={products}
-                                                sx={{ width: 300 }}
-                                                renderInput={(params) => <TextField {...params} label="Supplier" />}
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={2}>
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup className="mt-15">
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={products}
-                                                renderInput={(params) => <TextField {...params} label="Product" />}
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup className="mt-15">
-                                            <Autocomplete
-                                                disablePortal
-                                                id="combo-box-demo"
-                                                options={products}
-                                                renderInput={(params) => <TextField {...params} label="Brand" />}
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                type="number"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Qty"
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                type="number"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Rate"
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                type="number"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Discount"
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                    <Grid md={2} item xs={6}>
-                                        <FormGroup>
-                                            <TextField
-                                                type="number"
-                                                margin="normal"
-                                                required
-                                                fullWidth
-                                                label="Total"
-                                                disabled={true}
-                                            />
-                                        </FormGroup>
-                                    </Grid>
-                                </Grid>
-                                <Grid container spacing={2} mt={2}>
+                                <PurchaseInfo />
+                                <PurchaseForm />
+                                <Grid container spacing={2} mt={0}>
                                     <Grid md={8} item xs={6}>
                                         <Table size="small" className="hov-table">
                                             <TableHead>
@@ -196,73 +86,7 @@ export default function Purchase() {
                                             </TableBody>
                                         </Table>
                                     </Grid>
-                                    <Grid md={4} item xs={6}>
-                                        <Grid md={12} item xs={12}>
-                                            <FormGroup className="mt-0">
-                                                <TextField
-                                                    type="number"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    label="Total"
-                                                    size="small"
-                                                    className="mt-0"
-                                                />
-                                            </FormGroup>
-                                        </Grid>
-                                        <Grid md={12} item xs={12}>
-                                            <FormGroup>
-                                                <TextField
-                                                    type="number"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    label="Discount"
-                                                    size="small"
-                                                    className="mt-0"
-                                                />
-                                            </FormGroup>
-                                        </Grid>
-                                        <Grid md={12} item xs={12}>
-                                            <FormGroup>
-                                                <TextField
-                                                    type="number"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    label="Net Amount"
-                                                    size="small"
-                                                    className="mt-0"
-                                                />
-                                            </FormGroup>
-                                        </Grid>
-                                        <Grid md={12} item xs={12}>
-                                            <FormGroup>
-                                                <TextField
-                                                    type="number"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    label="Paid"
-                                                    size="small"
-                                                    className="mt-0"
-                                                />
-                                            </FormGroup>
-                                        </Grid>
-                                        <Grid md={12} item xs={12}>
-                                            <FormGroup>
-                                                <TextField
-                                                    type="number"
-                                                    margin="normal"
-                                                    required
-                                                    fullWidth
-                                                    label="Dues"
-                                                    size="small"
-                                                    className="mt-0"
-                                                />
-                                            </FormGroup>
-                                        </Grid>
-                                    </Grid>
+                                    <PurchaseCalculation />
                                 </Grid>
                                 <Grid item xs={12}>
                                     <hr />

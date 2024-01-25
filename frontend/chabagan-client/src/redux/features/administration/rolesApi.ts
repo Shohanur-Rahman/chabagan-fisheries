@@ -16,7 +16,7 @@ const rolesApi = apiSlice.injectEndpoints({
         }),
         addRole: builder.mutation({
             query: (data) => ({
-                url: `/roles`,
+                url: `roles`,
                 method: "POST",
                 body: data
             }),
@@ -24,7 +24,7 @@ const rolesApi = apiSlice.injectEndpoints({
         }),
         updateRole: builder.mutation({
             query: (data) => ({
-                url: `/roles`,
+                url: `roles`,
                 method: "PUT",
                 body: data
             }),

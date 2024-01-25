@@ -2,6 +2,7 @@
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
+using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
@@ -46,6 +47,18 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         public async Task<IEnumerable<VwProduct>> GetAllProductsAsync()
         {
             return _mapper.Map<IEnumerable<VwProduct>>(await _dbContext.Products.Where(x => !x.IsDeleted).Include(x => x.Category).AsNoTracking().ToListAsync());
+        }
+
+        /// <summary>
+        /// Get product auto complete data
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AutoCompleteModel>> GetProductAutocompleteAsync()
+        {
+            return await _dbContext.Products.Where(x => !x.IsDeleted)
+                .AsNoTracking()
+                .Select(x => new AutoCompleteModel { Label = x.Name, Value=x.Id.ToString()})
+                .ToListAsync();
         }
 
         /// <summary>
@@ -112,7 +125,6 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
 
             if (dbProduct is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
-
             dbProduct = _mapper.Map<DbProduct>(model);
             _dbContext.Products.Update(dbProduct);
             await _dbContext.SaveChangesAsync();

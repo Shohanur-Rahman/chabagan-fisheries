@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
+using Chabagan.Fisheries.Entities.Mapping;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -54,6 +55,28 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
             try
             {
                 return Ok(APIOperationResult.Success(await _supplierRepo.GetAllSupplierAsync()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+
+        /// <summary>
+        /// Get supplier auto complete
+        /// </summary>
+        /// <returns></returns>
+        [Route("autocomplete")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<AutoCompleteModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<AutoCompleteModel>>>> GetSupplierAutocompleteAsync()
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(await _supplierRepo.GetSupplierAutocompleteAsync()));
             }
             catch (Exception ex)
             {

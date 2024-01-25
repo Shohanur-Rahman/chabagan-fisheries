@@ -2,6 +2,7 @@ import Swal from 'sweetalert2'
 import { IApiResponse } from '../interfaces/IApiResponse';
 
 export const ProjectTitle = "Chabagan Fisheries";
+export const FileURL = "http://gewilen510-001-site1.ctempurl.com/";
 export const AddSuccessMessage = "Data successfully saved.";
 export const UpdateSuccessMessage = "Data successfully updated.";
 export const DeleteSuccessMessage = "Data successfully deleted.";

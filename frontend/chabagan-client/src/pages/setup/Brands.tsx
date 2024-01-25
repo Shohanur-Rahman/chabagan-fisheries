@@ -1,14 +1,14 @@
 import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import brandsBreadCrumb from '../../data/Breadcrumbs';
-import BrandForm from "../../components/stock/BrandForm";
+import BrandForm from "../../components/setup/BrandForm";
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { IBrandModel } from "../../interfaces/model/stock/IBrandModel";
+import { IBrandModel } from "../../interfaces/model/setup/IBrandModel";
 import { useEffect, useState } from "react";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/stock/brandApi";
+import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/setup/brandApi";
 import Swal from "sweetalert2";
 
 export default function Brands() {

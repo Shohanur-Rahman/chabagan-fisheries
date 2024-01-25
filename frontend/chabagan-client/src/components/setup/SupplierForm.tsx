@@ -1,38 +1,48 @@
+import { SetStateAction, useEffect } from "react";
+import { ISupplierModel } from "../../interfaces/model/setup/ISupplierModel";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Box, Button, Card, CardContent, CardHeader, FormGroup, TextField } from "@mui/material";
-import { IBrandModel } from "../../interfaces/model/stock/IBrandModel";
-import { useAddBrandMutation, useUpdateBrandMutation } from "../../redux/features/stock/brandApi";
+import { useAddSupplierMutation, useUpdateSupplierMutation } from "../../redux/features/setup/supplierApi";
 import { showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
-import { SetStateAction, useEffect } from "react";
 
-const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Dispatch<SetStateAction<IBrandModel>> }> = ({ info, title, setState }) => {
+const SupplierForm: React.FC<{
+    info: ISupplierModel,
+    title: String,
+    setState: React.Dispatch<SetStateAction<ISupplierModel>>
+}> = ({ info, title, setState }) => {
 
-    const [addBrand, { isLoading, isError, isSuccess, data, error }] = useAddBrandMutation();
-    const [updateBrand, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateBrandMutation();
-    const emptyModel: IBrandModel = {
+
+    const [addSupplier, { isLoading, isError, isSuccess, data, error }] = useAddSupplierMutation();
+    const [updateSupplier, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateSupplierMutation();
+    const emptyModel: ISupplierModel = {
         id: 0,
-        name: ""
+        name: "",
+        shopName: "",
+        mobile: ""
     }
     const validationSchema = Yup.object({
-        name: Yup.string().required('Brand name is required')
+        name: Yup.string().required('Supplier name is required'),
+        shopName: Yup.string().required('Shop name is required'),
+        mobile: Yup.string().required('Mobile is required')
     });
+
     const formik = useFormik({
         initialValues: info,
         enableReinitialize: true,
         validationSchema: validationSchema,
         onSubmit: (values) => {
             if (values.id > 0) {
-                updateBrand(values);
+                updateSupplier(values);
             } else {
-                addBrand(values);
+                addSupplier(values);
             }
         }
     });
 
     const resetFields = () => {
         formik.resetForm();
-        title = "Add Brand";
+        title = "Add Supplier";
         setState(emptyModel);
     }
     const getShrink = (value: any) => {
@@ -59,6 +69,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
         }
     }, [isUpdateSuccess, isUpdateError, updateData, updateError]);
 
+
     return (
         <Card className="card w-100">
             <CardHeader title={title} className="card-header" />
@@ -69,8 +80,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
                             margin="normal"
                             required
                             fullWidth
-                            id="txtBrandName"
-                            label="Brand Name"
+                            label="Supplier Name"
                             {...formik.getFieldProps("name")}
                             InputLabelProps={{ shrink: getShrink(formik.values.name) }}
                         />
@@ -78,6 +88,35 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
                             <p className="validation-error text-danger">{formik.errors.name}</p>
                         ) : null}
                     </FormGroup>
+
+                    <FormGroup>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Shop Name"
+                            {...formik.getFieldProps("shopName")}
+                            InputLabelProps={{ shrink: getShrink(formik.values.shopName) }}
+                        />
+                        {formik.touched.shopName && formik.errors.shopName ? (
+                            <p className="validation-error text-danger">{formik.errors.shopName}</p>
+                        ) : null}
+                    </FormGroup>
+
+                    <FormGroup>
+                        <TextField
+                            margin="normal"
+                            required
+                            fullWidth
+                            label="Mobile"
+                            {...formik.getFieldProps("mobile")}
+                            InputLabelProps={{ shrink: getShrink(formik.values.mobile) }}
+                        />
+                        {formik.touched.mobile && formik.errors.mobile ? (
+                            <p className="validation-error text-danger">{formik.errors.mobile}</p>
+                        ) : null}
+                    </FormGroup>
+
                     <Button
                         type="submit"
                         fullWidth
@@ -93,4 +132,4 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
     )
 }
 
-export default BrandForm;
+export default SupplierForm;

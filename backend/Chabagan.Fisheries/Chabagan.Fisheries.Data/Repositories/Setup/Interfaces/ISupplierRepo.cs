@@ -1,4 +1,5 @@
-﻿using Chabagan.Fisheries.Entities.Mapping.Setup;
+﻿using Chabagan.Fisheries.Entities.Mapping;
+using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
@@ -12,6 +13,12 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<VwSupplier>> GetAllSupplierAsync();
+
+        /// <summary>
+        /// Get supplier auto complete
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<AutoCompleteModel>> GetSupplierAutocompleteAsync();
 
         /// <summary>
         /// Get all supplier dropdown

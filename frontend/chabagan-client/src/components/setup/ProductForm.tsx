@@ -1,31 +1,35 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IProductModel } from "../../interfaces/model/stock/IProductModel"
-import { SetStateAction, useEffect } from "react";
+import { IProductModel } from "../../interfaces/model/setup/IProductModel"
+import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { Box, Button, Card, CardContent, CardHeader, FormGroup, InputLabel, MenuItem, Select, TextField } from "@mui/material";
-import { useAddProductMutation, useUpdateProductMutation } from "../../redux/features/stock/productApi";
-import { showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
-import { useGetStockCategoryQuery } from "../../redux/features/stock/stockCategoryApi";
-import { IStockCatModel } from "../../interfaces/model/stock/IStockCatModel";
-
+import { useAddProductMutation, useUpdateProductMutation } from "../../redux/features/setup/productApi";
+import { FileURL, showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
+import { useGetStockCategoryQuery } from "../../redux/features/setup/stockCategoryApi";
+import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
+import noImage from './../../assets/img/no-image-found.png';
 
 const ProductForm: React.FC<
     {
         info: IProductModel,
-        title: String,
         setState: React.Dispatch<SetStateAction<IProductModel>>
-    }> = ({ info, title, setState }) => {
+    }> = ({ info, setState }) => {
 
+        const [attachment, setAttachment] = useState<any>(null);
+        const [preview, setPreview] = useState<string | ArrayBuffer | null>((info.id > 0 && info.avatar) ? `${FileURL}${info.avatar}` : noImage);
         const [addProduct, { isLoading, isError, isSuccess, data, error }] = useAddProductMutation();
         const [updateProduct, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateProductMutation();
         const { data: categories, isSuccess: isCategorySuccess } = useGetStockCategoryQuery(null);
+        const [formTitle, setFormTitle] = useState((info.id > 0) ? `Edit Product` : `Add Product`);
 
         const emptyModel: IProductModel = {
             id: 0,
             name: '',
             categoryId: 0,
             description: '',
-            mrp: 0.00
+            mrp: 0,
+            avatar: '',
+            attachment: null
         }
 
         const validationSchema = Yup.object({
@@ -38,22 +42,56 @@ const ProductForm: React.FC<
             enableReinitialize: true,
             validationSchema: validationSchema,
             onSubmit: (values) => {
+                const submitData: Record<string, any> = {
+                    id: values.id ?? 0,
+                    name: values.name,
+                    categoryId: values.categoryId,
+                    description: values.description,
+                    mrp: values.mrp,
+                    attachment: attachment,
+                    avatar: values.avatar
+                };
+
+                const formData = new FormData();
+                for (const key in submitData) {
+                    formData.append(key, submitData[key]);
+                }
+
                 if (values.id > 0) {
-                    updateProduct(values);
+                    updateProduct(formData);
                 } else {
-                    addProduct(values);
+                    addProduct(formData);
                 }
             }
         });
 
+        const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files && event.target.files[0];
+
+            if (file) {
+                setAttachment(file);
+                const reader = new FileReader();
+
+                reader.onloadend = () => {
+                    setPreview(reader.result);
+                };
+
+                reader.readAsDataURL(file);
+            }
+        };
+
         const resetFields = () => {
             formik.resetForm();
-            title = "Add Product";
+            setFormTitle("Add Product");
             setState(emptyModel);
         }
         const getShrink = (value: any) => {
             return value ? true : false;
         }
+        useEffect(() => {
+            setPreview((info.id > 0 && info.avatar) ? `${FileURL}${info.avatar}` : noImage);
+            setFormTitle((info.id > 0) ? `Edit Product` : `Add Product`);
+        }, [info]);
 
         useEffect(() => {
             if (isCategorySuccess && categories) {
@@ -84,11 +122,23 @@ const ProductForm: React.FC<
 
         return (
             <Card className="card w-100">
-                <CardHeader title={title} className="card-header" />
+                <CardHeader title={formTitle} className="card-header" />
                 <CardContent>
                     <Box component="form" className="w-100 card-form" noValidate onSubmit={formik.handleSubmit}>
+                        <FormGroup className="d-none">
+                            <TextField
+                                type="hidden"
+                                size="small"
+                                margin="normal"
+                                required
+                                fullWidth
+                                {...formik.getFieldProps("avatar")}
+                                className="d-none"
+                            />
+                        </FormGroup>
                         <FormGroup>
                             <TextField
+                                size="small"
                                 margin="normal"
                                 required
                                 fullWidth
@@ -103,6 +153,7 @@ const ProductForm: React.FC<
                         </FormGroup>
                         <FormGroup>
                             <TextField
+                                size="small"
                                 margin="normal"
                                 required
                                 fullWidth
@@ -117,9 +168,10 @@ const ProductForm: React.FC<
                             ) : null}
                         </FormGroup>
                         <FormGroup>
-                            <InputLabel id="role-label">Category</InputLabel>
+                            <InputLabel id="category-label">Category</InputLabel>
                             <Select
-                                labelId="role-label"
+                                size="small"
+                                labelId="category-label"
                                 id="ddlCategory"
                                 {...formik.getFieldProps("categoryId")}
                                 label="Role"
@@ -137,15 +189,22 @@ const ProductForm: React.FC<
                         </FormGroup>
                         <FormGroup>
                             <TextField
+                                size="small"
                                 margin="normal"
                                 fullWidth
                                 id="txtDescription"
                                 label="Description"
                                 multiline
-                                rows={4}
+                                rows={3}
                                 {...formik.getFieldProps("description")}
                                 InputLabelProps={{ shrink: getShrink(formik.values.description) }}
                             />
+                        </FormGroup>
+                        <FormGroup className="img-preview">
+                            <input type="file" className="d-none" id="fileProductImage" onChange={handleFileChange} />
+                            <label htmlFor="fileProductImage" className="preview-label">
+                                <img src={preview as string} alt="File Preview" className="img-prev-elem" />
+                            </label>
                         </FormGroup>
                         <Button
                             type="submit"

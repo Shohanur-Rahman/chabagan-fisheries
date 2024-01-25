@@ -3,16 +3,15 @@ import AddEditUser from "../pages/administration/AddEditUser";
 import Role from "../pages/administration/Role";
 import User from "../pages/administration/User";
 import Dashboard from "../pages/dashboard/Dashboard";
-import FishSetup from "../pages/setup/FishSetup";
-import Setup from "../pages/setup/Setup";
-import Brands from "../pages/stock/Brands";
-import Product from "../pages/stock/Product";
+import Brands from "../pages/setup/Brands";
+import Product from "../pages/setup/Product";
 import Purchase from "../pages/stock/Purchase";
 import PurchaseReturn from "../pages/stock/PurchaseReturn";
 import Sales from "../pages/stock/Sales";
 import SalesReturn from "../pages/stock/SalesReturn";
-import StockCategory from "../pages/stock/StockCategory";
-import Supplier from "../pages/stock/Supplier";
+import StockCategory from "../pages/setup/StockCategory";
+import Supplier from "../pages/setup/Supplier";
+import Project from "../pages/setup/Project";
 
 const privateRoutes: IRouteConfig[] = [
     {
@@ -36,12 +35,8 @@ const privateRoutes: IRouteConfig[] = [
         element: <Product />,
     },
     {
-        path: 'setup/fishes',
-        element: <FishSetup />,
-    },
-    {
-        path: 'setup/feeds',
-        element: <Setup />,
+        path: 'setup/projects',
+        element: <Project />,
     },
     {
         path: 'admin/roles',

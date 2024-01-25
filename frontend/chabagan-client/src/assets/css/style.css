@@ -148,14 +148,50 @@ sidebar
 .mt-15 {
     margin-top: 15px;
 }
+
 .mt-0 {
     margin-top: 0px !important;
 }
+
 .bg-tblue {
     background-color: #d9edf7;
 }
 
-.hov-table tr:hover{
+.hov-table tr:hover {
     background-color: #eeeeee;
     cursor: pointer;
+}
+
+.d-none {
+    display: none !important;
+}
+
+.img-prev-elem {
+    max-height: 120px;
+    cursor: pointer;
+}
+
+.grid-photo {
+    max-width: 50px;
+    max-height: 30px;
+}
+
+.preview-label {
+    display: block;
+    width: fit-content;
+}
+
+.disabled-control {
+    background: #ececec !important;
+}
+
+.mx-250 {
+    max-width: 250px !important;
+}
+.pt-0{
+    padding-top: 0 !important;
+}
+.datepicker-sm input {
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
