@@ -6,11 +6,6 @@ using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup
 {

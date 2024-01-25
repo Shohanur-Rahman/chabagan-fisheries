@@ -8,6 +8,8 @@ using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Chabagan.Fisheries.Common.Models;
+using Chabagan.Fisheries.Common.Enums;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -139,12 +141,19 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPost]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwPond>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPond>>> SavePondAsync([FromBody] VwPond model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwPond>>> SavePondAsync([FromForm] VwPond model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (model.Attachment is not null)
+                    {
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Ponds.ToString());
+
+                        model.Avatar = fileResponse?.FilePath;
+                    }
+
                     model.CreatedBy = GetLoggedInUserId();
                     return Ok(APIOperationResult.Success(await _pondRepo.SavePondAsync(model)));
                 }
@@ -166,12 +175,18 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPut]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwPond>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPond>>> UpdatePondAsync([FromBody] VwPond model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwPond>>> UpdatePondAsync([FromForm] VwPond model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (model.Attachment is not null)
+                    {
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Ponds.ToString());
+
+                        model.Avatar = fileResponse?.FilePath;
+                    }
                     model.UpdatedBy = GetLoggedInUserId();
                     return Ok(APIOperationResult.Success(await _pondRepo.UpdatePondAsync(model)));
                 }
