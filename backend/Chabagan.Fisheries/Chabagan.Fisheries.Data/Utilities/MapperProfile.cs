@@ -10,6 +10,7 @@ using Chabagan.Chabagan.Fisheries.Models.User;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Mapping.User;
 using Chabagan.Fisheries.Entities.Models.Stock;
+using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.Mapping.Area;
 using Chabagan.Fisheries.Mapping.Fish;
 using Chabagan.Fisheries.Mapping.User;
@@ -47,6 +48,10 @@ namespace Chabagan.Fisheries.Data.Utilities
             CreateMap<DbPurchase, VwPurchase>().ReverseMap();
             CreateMap<DbPurchaseItem, VwPurchaseItem>().ReverseMap();
             CreateMap<DbSupplier, VwSupplier>().ReverseMap();
+
+
+            CreateMap<DbProduct, DropdownModel>().ReverseMap();
+            CreateMap<DbSupplier, DropdownModel>().ReverseMap();
             #endregion
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Chabagan.Fisheries.Entities.Mapping.Stock;
+using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.Data.Repositories.Stock.Interfaces
 {
@@ -11,6 +12,12 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<VwSupplier>> GetAllSupplierAsync();
+
+        /// <summary>
+        /// Get all supplier dropdown
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<DropdownModel>> GetSupplierDropdownAsync();
 
         /// <summary>
         /// Get a single Supplier data from database by Supplier id
