@@ -5,6 +5,8 @@ using Chabagan.Fisheries.Data.Repositories.Administration.Interfaces;
 using Chabagan.Fisheries.Data.Repositories.Administration;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Data.Repositories.Stock;
+using Chabagan.Fisheries.Data.Repositories.Setup;
+using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 
 namespace Chabagan.Fisheries.Data.Utilities
 {
@@ -24,6 +26,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             services.AddTransient<IPurchaseRepo, PurchaseRepo>();
             services.AddTransient<IPurchaseItemRepo, PurchaseItemRepo>();
             services.AddTransient<ISupplierRepo, SupplierRepo>();
+            services.AddTransient<IProjectRepo, ProjectRepo>();
             return services;
         }
     }

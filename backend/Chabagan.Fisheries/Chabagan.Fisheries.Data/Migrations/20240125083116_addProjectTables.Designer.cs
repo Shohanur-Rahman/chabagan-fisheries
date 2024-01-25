@@ -4,6 +4,7 @@ using Chabagan.Chabagan.Fisheries.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chabagan.Fisheries.Data.Migrations
 {
     [DbContext(typeof(FisheriesDbContext))]
-    partial class FisheriesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240125083116_addProjectTables")]
+    partial class addProjectTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -96,37 +99,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 450, DateTimeKind.Local).AddTicks(5658),
+                            CreatedDate = new DateTime(2024, 1, 25, 14, 31, 14, 228, DateTimeKind.Local).AddTicks(6452),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "gINc8MVVO80vbeWwR0SCVwPDQQF071sZvt2fU8bF4TY=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "5J4xJ9PtQ/T8snFHWnkqCb4Oo4JDm8mGGIx5Zl/YBjE=",
+                            PasswordSalt = "c/MFMrMT++KGQ8Tsj+12yA==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 464, DateTimeKind.Local).AddTicks(8174),
+                            CreatedDate = new DateTime(2024, 1, 25, 14, 31, 14, 245, DateTimeKind.Local).AddTicks(1426),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "LRI/ROFp9loy+1e+s566pzYHXqLc1xq2GfO7RShzbPQ=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "2vD3ds25N5nlCZnjmjiLcSVfgpwXrT+D5PCEx+J12ZM=",
+                            PasswordSalt = "c/MFMrMT++KGQ8Tsj+12yA==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 479, DateTimeKind.Local).AddTicks(3528),
+                            CreatedDate = new DateTime(2024, 1, 25, 14, 31, 14, 260, DateTimeKind.Local).AddTicks(1322),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "gINc8MVVO80vbeWwR0SCVwPDQQF071sZvt2fU8bF4TY=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "5J4xJ9PtQ/T8snFHWnkqCb4Oo4JDm8mGGIx5Zl/YBjE=",
+                            PasswordSalt = "c/MFMrMT++KGQ8Tsj+12yA==",
                             RoleId = 3
                         });
                 });
@@ -182,71 +185,6 @@ namespace Chabagan.Fisheries.Data.Migrations
                             Id = 3L,
                             IsDeleted = false,
                             Name = "Ibn Sina"
-                        });
-                });
-
-            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbPond", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnOrder(1);
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
-
-                    b.Property<string>("Avatar")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("CreatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("CreatedDate")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime2");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<long>("ProjectId")
-                        .HasColumnType("bigint");
-
-                    b.Property<long?>("UpdatedBy")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime?>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProjectId");
-
-                    b.ToTable("Ponds");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            IsDeleted = false,
-                            Name = "মধুমতি",
-                            ProjectId = 1L
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            IsDeleted = false,
-                            Name = "সূর্যমুখী",
-                            ProjectId = 1L
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            IsDeleted = false,
-                            Name = "নীলকন্যা",
-                            ProjectId = 2L
                         });
                 });
 
@@ -652,17 +590,6 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbPond", b =>
-                {
-                    b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbProject", "Project")
-                        .WithMany()
-                        .HasForeignKey("ProjectId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Project");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbProduct", b =>
