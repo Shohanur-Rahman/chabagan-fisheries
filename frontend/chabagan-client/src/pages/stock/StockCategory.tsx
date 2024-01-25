@@ -41,7 +41,7 @@ export default function StockCategory() {
         { field: 'id', headerName: 'ID', width: 90, filterable: true },
         {
             field: 'name',
-            headerName: 'Brand',
+            headerName: 'Category',
             width: 500
         },
         {

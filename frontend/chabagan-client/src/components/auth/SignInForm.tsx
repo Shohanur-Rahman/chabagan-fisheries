@@ -18,7 +18,7 @@ export default function SignInForm() {
     const navigate = useNavigate();
 
     const validationSchema = Yup.object({
-        email: Yup.string().required('Emial is required'),
+        email: Yup.string().required('Email is required'),
         password: Yup.string().required('Password is required'),
     });
 

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using Chabagan.Fisheries.Entities.Models.Setup;
 
 namespace Chabagan.Fisheries.Entities.Models.Stock
 {

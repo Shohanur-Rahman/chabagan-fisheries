@@ -23,13 +23,13 @@ const sidebarMenus: IMenu[] = [
         icon: <ChecklistIcon />,
         submenu: [
             {
-                label: "Brands",
-                link: "/setup/brands",
+                label: "Categories",
+                link: "/setup/category",
                 icon: <ArrowRight />
             },
             {
-                label: "Categories",
-                link: "/setup/category",
+                label: "Brands",
+                link: "/setup/brands",
                 icon: <ArrowRight />
             },
             {
@@ -40,21 +40,6 @@ const sidebarMenus: IMenu[] = [
             {
                 label: "Supplier",
                 link: "/setup/suppliers",
-                icon: <ArrowRight />
-            },
-            {
-                label: "Fishes",
-                link: "/setup/fishes",
-                icon: <ArrowRight />
-            },
-            {
-                label: "Feeds",
-                link: "/setup/feeds",
-                icon: <ArrowRight />
-            },
-            {
-                label: "Categories",
-                link: "/setup/categories",
                 icon: <ArrowRight />
             },
             {

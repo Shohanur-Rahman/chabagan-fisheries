@@ -1,6 +1,6 @@
 ﻿using Chabagan.Chabagan.Fisheries.Models.User;
 using Chabagan.Fisheries.Common.Encription;
-using Chabagan.Fisheries.Entities.Models.Stock;
+using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Entities.Models.User;
 using Microsoft.EntityFrameworkCore;
 
@@ -97,6 +97,42 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
         #region Setup Stock Data
         private void SetupStockData()
         {
+
+
+            this.modelBuilder.Entity<DbProject>().HasData(
+                new DbProject
+                {
+                    Id = 1,
+                    Name = "চা বাগান 1"
+                },
+                new DbProject
+                {
+                    Id = 2,
+                    Name = "চা বাগান 2"
+                }
+            );
+
+            this.modelBuilder.Entity<DbPond>().HasData(
+               new DbPond
+               {
+                   Id = 1,
+                   Name = "মধুমতি",
+                   ProjectId = 1
+               },
+               new DbPond
+               {
+                   Id = 2,
+                   Name = "সূর্যমুখী",
+                   ProjectId = 1
+               },
+               new DbPond
+               {
+                   Id = 3,
+                   Name = "নীলকন্যা",
+                   ProjectId = 2
+               }
+           );
+
             this.modelBuilder.Entity<DbBrand>().HasData(
                 new DbBrand
                 {
