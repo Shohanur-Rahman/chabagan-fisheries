@@ -25,6 +25,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             CreateMap<DbProduct, VwProduct>().ReverseMap();
             CreateMap<DbSupplier, VwSupplier>().ReverseMap();
             CreateMap<DbProject, VwProject>().ReverseMap();
+            CreateMap<DbPond, DbPond>().ReverseMap();
             /*
              * 
              * Dropdowns map
@@ -32,6 +33,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             CreateMap<DbProduct, DropdownModel>().ReverseMap();
             CreateMap<DbSupplier, DropdownModel>().ReverseMap();
             CreateMap<DbProject, DropdownModel>().ReverseMap();
+            CreateMap<DbPond, DropdownModel>().ReverseMap();
 
             #endregion
 

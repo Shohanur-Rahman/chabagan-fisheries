@@ -117,7 +117,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPost]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwProduct>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> SaveProductAsync([FromBody] VwProduct model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> SaveProductAsync([FromForm] VwProduct model)
         {
             try
             {
@@ -125,7 +125,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
                 {
                     if (model.Attachment is not null)
                     {
-                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Users.ToString());
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Products.ToString());
 
                         model.Avatar = fileResponse?.FilePath;
                     }
@@ -150,7 +150,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPut]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwProduct>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> UpdateProductAsync([FromBody] VwProduct model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwProduct>>> UpdateProductAsync([FromForm] VwProduct model)
         {
             try
             {
@@ -158,7 +158,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
                 {
                     if (model.Attachment is not null)
                     {
-                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Users.ToString());
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Products.ToString());
 
                         model.Avatar = fileResponse?.FilePath;
                     }

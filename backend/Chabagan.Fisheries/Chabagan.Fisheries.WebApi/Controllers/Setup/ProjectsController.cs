@@ -6,6 +6,8 @@ using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Chabagan.Fisheries.Common.Enums;
+using Chabagan.Fisheries.Common.Models;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -112,12 +114,18 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPost]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwProject>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwProject>>> SaveProjectAsync([FromBody] VwProject model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwProject>>> SaveProjectAsync([FromForm] VwProject model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (model.Attachment is not null)
+                    {
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Projects.ToString());
+
+                        model.Avatar = fileResponse?.FilePath;
+                    }
                     model.CreatedBy = GetLoggedInUserId();
                     return Ok(APIOperationResult.Success(await _projectRepo.SaveProjectAsync(model)));
                 }
@@ -139,12 +147,18 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpPut]
         [ProducesResponseType(typeof(APIOperationResultGeneric<VwProject>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwProject>>> UpdateProjectAsync([FromBody] VwProject model)
+        public async Task<ActionResult<APIOperationResultGeneric<VwProject>>> UpdateProjectAsync([FromForm] VwProject model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if (model.Attachment is not null)
+                    {
+                        FileResponse? fileResponse = await _helperService.UploadFileLocalyAndGetUrl(model.Attachment, LocalStorageFolders.Projects.ToString());
+
+                        model.Avatar = fileResponse?.FilePath;
+                    }
                     model.UpdatedBy = GetLoggedInUserId();
                     return Ok(APIOperationResult.Success(await _projectRepo.UpdateProjectAsync(model)));
                 }

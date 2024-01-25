@@ -8,6 +8,8 @@
         Projects,
         Users,
         Categories,
-        Expenses
+        Expenses,
+        Products,
+        Ponds
     }
 }
