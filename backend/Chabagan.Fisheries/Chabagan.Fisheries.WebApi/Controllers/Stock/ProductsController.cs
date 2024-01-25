@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Common.Models;
 using Microsoft.AspNetCore.Authorization;
+using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 {
@@ -58,6 +59,28 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
             try
             {
                 return Ok(APIOperationResult.Success(await _productRepo.GetAllProductsAsync()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+        /// <summary>
+        /// Get product dropdown
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [Route("dropdown")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<DropdownModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<DropdownModel>>>> GetProductDropdownAsync()
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(await _productRepo.GetProductDropdownAsync()));
             }
             catch (Exception ex)
             {

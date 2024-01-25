@@ -4,13 +4,9 @@ using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
+using Chabagan.Fisheries.Mapping;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Chabagan.Fisheries.Data.Repositories.Stock
 {
@@ -50,6 +46,16 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         public async Task<IEnumerable<VwSupplier>> GetAllSupplierAsync()
         {
             return _mapper.Map<IEnumerable<VwSupplier>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+        }
+
+
+        /// <summary>
+        /// Get all supplier dropdown
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<DropdownModel>> GetSupplierDropdownAsync()
+        {
+            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
         }
 
         /// <summary>
