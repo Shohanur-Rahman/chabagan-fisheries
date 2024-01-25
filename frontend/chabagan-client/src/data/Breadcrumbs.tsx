@@ -148,6 +148,20 @@ const supplierBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
+const projectBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Projects",
+        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+
 
 export default {
     dashboarBreadCrumb,
@@ -160,5 +174,6 @@ export default {
     productBreadCrumb,
     purchaseBreadCrumb,
     purchaseReturnBreadCrumb,
-    supplierBreadCrumb
+    supplierBreadCrumb,
+    projectBreadCrumb
 }

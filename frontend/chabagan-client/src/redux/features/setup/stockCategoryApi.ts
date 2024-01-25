@@ -15,7 +15,7 @@ const stockCategoryApi = apiSlice.injectEndpoints({
         }),
         addStockCategory: builder.mutation({
             query: (data) => ({
-                url: `/stockcategories`,
+                url: `stockcategories`,
                 method: "POST",
                 body: data
             }),
@@ -23,7 +23,7 @@ const stockCategoryApi = apiSlice.injectEndpoints({
         }),
         updateStockCategory: builder.mutation({
             query: (data) => ({
-                url: `/stockcategories`,
+                url: `stockcategories`,
                 method: "PUT",
                 body: data
             }),

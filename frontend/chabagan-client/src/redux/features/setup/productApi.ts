@@ -7,6 +7,12 @@ const productApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["products-list"]
         }),
+        getProductAutocomplete: builder.query({
+            query: () => ({
+                url: `products/autocomplete`
+            }),
+            providesTags: ["products-list"]
+        }),
         getProduct: builder.mutation({
             query: (id) => ({
                 url: `products/${id}`
@@ -15,7 +21,7 @@ const productApi = apiSlice.injectEndpoints({
         }),
         addProduct: builder.mutation({
             query: (data) => ({
-                url: `/products`,
+                url: `products`,
                 method: "POST",
                 body: data
             }),
@@ -23,7 +29,7 @@ const productApi = apiSlice.injectEndpoints({
         }),
         updateProduct: builder.mutation({
             query: (data) => ({
-                url: `/products`,
+                url: `products`,
                 method: "PUT",
                 body: data
             }),
@@ -31,7 +37,7 @@ const productApi = apiSlice.injectEndpoints({
         }),
         deleteProduct: builder.mutation({
             query: (id) => ({
-                url: `/products/${id}`,
+                url: `products/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["products-list"],
@@ -41,6 +47,7 @@ const productApi = apiSlice.injectEndpoints({
 
 export const {
     useGetProductsQuery,
+    useGetProductAutocompleteQuery,
     useGetProductMutation,
     useAddProductMutation,
     useUpdateProductMutation,

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chabagan.Fisheries.WebApi", "Chabagan.Fisheries.WebApi\Chabagan.Fisheries.WebApi.csproj", "{74378B93-AAF8-4774-9180-BB7D0389DACF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chabagan.Fisheries.WebApi", "Chabagan.Fisheries.WebApi\Chabagan.Fisheries.WebApi.csproj", "{74378B93-AAF8-4774-9180-BB7D0389DACF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chabagan.Fisheries.Common", "Chabagan.Fisheries.Common\Chabagan.Fisheries.Common.csproj", "{1A74E156-9443-4F73-958E-8FE9A3A90B6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chabagan.Fisheries.Common", "Chabagan.Fisheries.Common\Chabagan.Fisheries.Common.csproj", "{1A74E156-9443-4F73-958E-8FE9A3A90B6B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chabagan.Fisheries.Entities", "Chabagan.Fisheries.Entities\Chabagan.Fisheries.Entities.csproj", "{9D0F6BC3-48ED-4DE4-B737-94722AD55A6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chabagan.Fisheries.Entities", "Chabagan.Fisheries.Entities\Chabagan.Fisheries.Entities.csproj", "{9D0F6BC3-48ED-4DE4-B737-94722AD55A6C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chabagan.Fisheries.Data", "Chabagan.Fisheries.Data\Chabagan.Fisheries.Data.csproj", "{E247035C-0945-4404-89CE-8ADC2402B7F0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chabagan.Fisheries.Data", "Chabagan.Fisheries.Data\Chabagan.Fisheries.Data.csproj", "{E247035C-0945-4404-89CE-8ADC2402B7F0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

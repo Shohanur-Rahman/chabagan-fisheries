@@ -4,7 +4,7 @@ const userApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getUsers: builder.query({
             query: () => ({
-                url: `/users`
+                url: `users`
             }),
             providesTags: ["user-list"],
         }),
@@ -16,7 +16,7 @@ const userApi = apiSlice.injectEndpoints({
         }),
         addUser: builder.mutation({
             query: (data) => ({
-                url: `/users`,
+                url: `users`,
                 method: "POST",
                 body: data,
             }),

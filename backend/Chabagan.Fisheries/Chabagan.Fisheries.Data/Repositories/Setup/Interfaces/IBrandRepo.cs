@@ -1,4 +1,5 @@
-﻿using Chabagan.Fisheries.Entities.Mapping.Setup;
+﻿using Chabagan.Fisheries.Entities.Mapping;
+using Chabagan.Fisheries.Entities.Mapping.Setup;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
 {
@@ -10,6 +11,12 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
         /// </summary>
         /// <returns></returns>
         Task<IEnumerable<VwBrand>> GetAllBrandsAsync();
+
+        /// <summary>
+        /// Get brand autocomplete data
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<AutoCompleteModel>> GetBrandAutocompleteAsync();
 
         /// <summary>
         /// Get a single Brand data from database by brand id

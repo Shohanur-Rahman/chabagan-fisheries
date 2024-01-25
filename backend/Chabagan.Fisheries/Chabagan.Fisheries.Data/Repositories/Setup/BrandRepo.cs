@@ -2,6 +2,7 @@
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
+using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Microsoft.EntityFrameworkCore;
@@ -46,6 +47,19 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         public async Task<IEnumerable<VwBrand>> GetAllBrandsAsync()
         {
             return _mapper.Map<IEnumerable<VwBrand>>(await _dbContext.Brands.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+        }
+
+
+        /// <summary>
+        /// Get brand autocomplete data
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AutoCompleteModel>> GetBrandAutocompleteAsync()
+        {
+            return await _dbContext.Brands.Where(x => !x.IsDeleted)
+                .AsNoTracking()
+                .Select(x => new AutoCompleteModel { Label = x.Name, Value = x.Id.ToString() })
+                .ToListAsync();
         }
 
         /// <summary>
@@ -134,5 +148,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         }
 
         #endregion
+   
+    
     }
 }

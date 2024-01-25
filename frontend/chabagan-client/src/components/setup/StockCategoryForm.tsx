@@ -1,9 +1,9 @@
 import { SetStateAction, useEffect } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { IStockCatModel } from "../../interfaces/model/stock/IStockCatModel";
+import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
 import { Box, Button, Card, CardContent, CardHeader, FormGroup, TextField } from "@mui/material";
-import { useAddStockCategoryMutation, useUpdateStockCategoryMutation } from "../../redux/features/stock/stockCategoryApi";
+import { useAddStockCategoryMutation, useUpdateStockCategoryMutation } from "../../redux/features/setup/stockCategoryApi";
 import { showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
 
 const StockCategoryForm: React.FC<{

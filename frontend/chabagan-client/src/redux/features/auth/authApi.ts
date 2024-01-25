@@ -6,7 +6,7 @@ const authApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         signin: builder.mutation({
             query: (signinData) => ({
-                url: `/account/signin`,
+                url: `account/signin`,
                 method: "POST",
                 body: signinData,
             }),
@@ -29,7 +29,7 @@ const authApi = apiSlice.injectEndpoints({
 
         signup: builder.mutation({
             query: (signupData) => ({
-                url: `/account/signup`,
+                url: `account/signup`,
                 method: "POST",
                 body: signupData,
             }),
@@ -51,21 +51,21 @@ const authApi = apiSlice.injectEndpoints({
 
         forgetPasswordRequest: builder.mutation({
             query: (forgetPasswordData) => ({
-                url: `/account/password-request?email=${forgetPasswordData.email}`,
+                url: `account/password-request?email=${forgetPasswordData.email}`,
                 method: "POST",
             })
         }),
 
         validatePasswordToken: builder.mutation({
             query: (tokenObject) => ({
-                url: `/account/validate-password-request?token=${tokenObject.token}`,
+                url: `account/validate-password-request?token=${tokenObject.token}`,
                 method: "POST",
             })
         }),
 
         resetPassword: builder.mutation({
             query: (requestData) => ({
-                url: `/account/complete-password-request`,
+                url: `account/complete-password-request`,
                 method: "POST",
                 body: requestData,
             })

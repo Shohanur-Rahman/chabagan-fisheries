@@ -1,27 +1,28 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
-import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
-import categoryBreadCrumb from '../../data/Breadcrumbs';
-import StockCategoryForm from "../../components/stock/StockCategoryForm";
-import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { useEffect, useState } from "react"; import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
-import { useEffect, useState } from "react";
-import { IStockCatModel } from "../../interfaces/model/stock/IStockCatModel";
-import Swal from "sweetalert2";
+import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
+import projectBreadCrumb from '../../data/Breadcrumbs';
+import { IProjectModel } from "../../interfaces/model/setup/IProjectModel";
+import { useDeleteProjectMutation, useGetProjectMutation, useGetProjectsQuery } from "../../redux/features/setup/projectApi";
+import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import ProjectForm from "../../components/setup/ProjectForm";
 import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
-import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/stock/stockCategoryApi";
-import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
-export default function StockCategory() {
-    const [formTitle, setFormTitle] = useState("Add Category");
-    const [initialValues, setInitialValues] = useState<IStockCatModel>({} as IStockCatModel);
+import { FileURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
+import Swal from "sweetalert2";
+import noImage from './../../assets/img/no-image-found.png';
+
+export default function Project() {
+
     const [rows, setRows] = useState([]);
-    const { data, isSuccess } = useGetStockCategoryQuery(null);
-    const [getStockCategoryById, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetStockCategoryByIdMutation();
-    const [deleteStockCategory, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteStockCategoryMutation();
+    const [initialValues, setInitialValues] = useState<IProjectModel>({} as IProjectModel);
+    const { data, isSuccess } = useGetProjectsQuery(null);
 
-    const onEditClick = (row: GridCellParams<IStockCatModel>) => {
-        getStockCategoryById(row.id);
+    const [getProject, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetProjectMutation();
+    const [deleteProject, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteProjectMutation();
+
+    const onEditClick = (row: GridCellParams<IProjectModel>) => {
+        getProject(row.id);
     }
-
     const onDeleteClickEvent = (row: GridCellParams) => {
         Swal.fire({
             title: "Are you sure?",
@@ -33,16 +34,40 @@ export default function StockCategory() {
             confirmButtonText: "Yes, delete it!"
         }).then((result) => {
             if (result.isConfirmed) {
-                deleteStockCategory(row.id);
+                deleteProject(row.id);
             }
         });
     }
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90, filterable: true },
+        { field: 'id', headerName: 'ID', width: 40, filterable: true },
+        {
+            field: 'avatar', headerName: '', width: 60, renderCell: (params) => {
+                if (params.row?.avatar) {
+                    return (
+                        <img src={`${FileURL}${params.row?.avatar}`} alt="File Preview" className="grid-photo" />
+                    )
+                } else {
+                    return (
+                        <img src={noImage} alt="File Preview" className="grid-photo" />
+                    )
+                }
+
+            }
+        },
         {
             field: 'name',
-            headerName: 'Category',
-            width: 500
+            headerName: 'Name',
+            width: 200
+        },
+        {
+            field: 'union',
+            headerName: 'Union',
+            width: 150
+        },
+        {
+            field: 'wordNumber',
+            headerName: 'Word',
+            width: 150
         },
         {
             field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
@@ -70,48 +95,45 @@ export default function StockCategory() {
     ];
 
     useEffect(() => {
-        document.title = `Categories | ${ProjectTitle}`;
+        document.title = `Projects | ${ProjectTitle}`;
     }, []);
 
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Category");
         }
     }, [data, isSuccess]);
 
     useEffect(() => {
         if (singleError) {
-            showErrorNotification();
+            showErrorNotification(deleteError);
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Category");
-            setInitialValues(singleData.result as IStockCatModel)
+            setInitialValues(singleData.result as IProjectModel || {})
         }
     }, [singleData, isSingleSuccess]);
 
     useEffect(() => {
         if (deleteError) {
-            showErrorNotification();
+            showErrorNotification(deleteError);
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Brand");
-            setInitialValues({} as IStockCatModel)
+            setInitialValues({} as IProjectModel || {})
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
 
     return (
         <>
-            <IconBreadcrumbs props={categoryBreadCrumb.categoryBreadCrumb} />
+            <IconBreadcrumbs props={projectBreadCrumb.projectBreadCrumb} />
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <StockCategoryForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <ProjectForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Categories" className="card-header" />
+                            <CardHeader title="Projects" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
                                     className="data-table"
@@ -126,7 +148,7 @@ export default function StockCategory() {
                                         },
                                         pagination: {
                                             paginationModel: {
-                                                pageSize: 5,
+                                                pageSize: 10,
                                             },
                                         },
                                     }}
@@ -136,6 +158,7 @@ export default function StockCategory() {
                             </CardContent>
                         </Card>
                     </Grid>
+
                 </Grid>
             </Box>
         </>

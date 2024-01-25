@@ -3,7 +3,19 @@ const supplierApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
         getSuppliers: builder.query({
             query: () => ({
-                url: `/suppliers`
+                url: `suppliers`
+            }),
+            providesTags: ["supplier-list"]
+        }),
+        getSupplierDropdown: builder.query({
+            query: () => ({
+                url: `suppliers/dropdown`
+            }),
+            providesTags: ["supplier-list"]
+        }),
+        getSupplierAutocomplete: builder.query({
+            query: () => ({
+                url: `suppliers/autocomplete`
             }),
             providesTags: ["supplier-list"]
         }),
@@ -15,7 +27,7 @@ const supplierApi = apiSlice.injectEndpoints({
         }),
         addSupplier: builder.mutation({
             query: (data) => ({
-                url: `/suppliers`,
+                url: `suppliers`,
                 method: "POST",
                 body: data
             }),
@@ -23,7 +35,7 @@ const supplierApi = apiSlice.injectEndpoints({
         }),
         updateSupplier: builder.mutation({
             query: (data) => ({
-                url: `/suppliers`,
+                url: `suppliers`,
                 method: "PUT",
                 body: data
             }),
@@ -31,7 +43,7 @@ const supplierApi = apiSlice.injectEndpoints({
         }),
         deleteSupplier: builder.mutation({
             query: (id) => ({
-                url: `/suppliers/${id}`,
+                url: `suppliers/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["supplier-list"],
@@ -41,6 +53,8 @@ const supplierApi = apiSlice.injectEndpoints({
 
 export const {
     useGetSuppliersQuery,
+    useGetSupplierDropdownQuery,
+    useGetSupplierAutocompleteQuery,
     useGetSupplierMutation,
     useAddSupplierMutation,
     useUpdateSupplierMutation,

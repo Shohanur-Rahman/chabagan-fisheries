@@ -7,6 +7,12 @@ const brandsApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["brand-list"]
         }),
+        getBrandAutocomplete: builder.query({
+            query: () => ({
+                url: `brands/autocomplete`
+            }),
+            providesTags: ["brand-list"]
+        }),
         getBrand: builder.mutation({
             query: (id) => ({
                 url: `brands/${id}`
@@ -15,7 +21,7 @@ const brandsApi = apiSlice.injectEndpoints({
         }),
         addBrand: builder.mutation({
             query: (data) => ({
-                url: `/brands`,
+                url: `brands`,
                 method: "POST",
                 body: data
             }),
@@ -23,7 +29,7 @@ const brandsApi = apiSlice.injectEndpoints({
         }),
         updateBrand: builder.mutation({
             query: (data) =>({
-                url: `/brands`,
+                url: `brands`,
                 method: "PUT",
                 body: data
             }),
@@ -31,7 +37,7 @@ const brandsApi = apiSlice.injectEndpoints({
         }),
         deleteBrand: builder.mutation({
             query: (id) =>({
-                url: `/brands/${id}`,
+                url: `brands/${id}`,
                 method: "DELETE"
             }),
             invalidatesTags: ["brand-list"],
@@ -40,7 +46,8 @@ const brandsApi = apiSlice.injectEndpoints({
 });
 
 export const { 
-    useGetBrandsQuery, 
+    useGetBrandsQuery,
+    useGetBrandAutocompleteQuery, 
     useGetBrandMutation , 
     useDeleteBrandMutation, 
     useAddBrandMutation, 
