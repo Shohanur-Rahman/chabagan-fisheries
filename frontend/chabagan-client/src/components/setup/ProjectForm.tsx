@@ -25,6 +25,7 @@ const ProjectForm: React.FC<{ info: IProjectModel, setState: React.Dispatch<SetS
     }
     const validationSchema = Yup.object({
         name: Yup.string().required('Project name is required'),
+        union: Yup.string().required('Union is required'),
         wordNumber: Yup.string().required('Word number is required'),
     });
     const formik = useFormik({
@@ -82,6 +83,11 @@ const ProjectForm: React.FC<{ info: IProjectModel, setState: React.Dispatch<SetS
     useEffect(() => {
         setPreview((info.id > 0 && info.avatar) ? `${FileURL}${info.avatar}` : noImage);
         setFormTitle((info.id > 0) ? `Edit Project` : `Add Project`);
+
+        if (!info || !info.id) {
+            setState(emptyModel);
+        }
+
     }, [info]);
 
     useEffect(() => {

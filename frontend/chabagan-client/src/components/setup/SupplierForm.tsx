@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { ISupplierModel } from "../../interfaces/model/setup/ISupplierModel";
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -8,11 +8,10 @@ import { showAddNotification, showErrorNotification, showUpdateNotification } fr
 
 const SupplierForm: React.FC<{
     info: ISupplierModel,
-    title: String,
     setState: React.Dispatch<SetStateAction<ISupplierModel>>
-}> = ({ info, title, setState }) => {
+}> = ({ info, setState }) => {
 
-
+    const [title, setTitle] = useState("Add Supplier");
     const [addSupplier, { isLoading, isError, isSuccess, data, error }] = useAddSupplierMutation();
     const [updateSupplier, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateSupplierMutation();
     const emptyModel: ISupplierModel = {
@@ -42,7 +41,7 @@ const SupplierForm: React.FC<{
 
     const resetFields = () => {
         formik.resetForm();
-        title = "Add Supplier";
+        setTitle("Add Supplier");
         setState(emptyModel);
     }
     const getShrink = (value: any) => {
@@ -69,6 +68,14 @@ const SupplierForm: React.FC<{
         }
     }, [isUpdateSuccess, isUpdateError, updateData, updateError]);
 
+    useEffect(() => {
+        if (info && info.id > 0) {
+            setTitle("Edit Supplier");
+        }
+        else {
+            setState(emptyModel);
+        }
+    }, [info]);
 
     return (
         <Card className="card w-100">

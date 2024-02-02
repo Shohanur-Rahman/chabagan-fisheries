@@ -4,10 +4,10 @@ import { Box, Button, Card, CardContent, CardHeader, FormGroup, TextField } from
 import { IBrandModel } from "../../interfaces/model/setup/IBrandModel";
 import { useAddBrandMutation, useUpdateBrandMutation } from "../../redux/features/setup/brandApi";
 import { showAddNotification, showErrorNotification, showUpdateNotification } from "../../data/Config";
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 
-const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Dispatch<SetStateAction<IBrandModel>> }> = ({ info, title, setState }) => {
-
+const BrandForm: React.FC<{ info: IBrandModel, setState: React.Dispatch<SetStateAction<IBrandModel>> }> = ({ info, setState }) => {
+    const [title, setTitle] = useState("Add Brand");
     const [addBrand, { isLoading, isError, isSuccess, data, error }] = useAddBrandMutation();
     const [updateBrand, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateBrandMutation();
     const emptyModel: IBrandModel = {
@@ -32,7 +32,7 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
 
     const resetFields = () => {
         formik.resetForm();
-        title = "Add Brand";
+        setTitle("Add Brand");
         setState(emptyModel);
     }
     const getShrink = (value: any) => {
@@ -59,6 +59,14 @@ const BrandForm: React.FC<{ info: IBrandModel, title: String, setState: React.Di
         }
     }, [isUpdateSuccess, isUpdateError, updateData, updateError]);
 
+    useEffect(() => {
+        if (info && info.id > 0) {
+            setTitle("Edit Brand");
+        }
+        else{
+            setState(emptyModel);
+        }
+    }, [info]);
     return (
         <Card className="card w-100">
             <CardHeader title={title} className="card-header" />

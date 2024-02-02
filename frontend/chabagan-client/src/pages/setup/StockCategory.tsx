@@ -11,7 +11,6 @@ import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/setup/stockCategoryApi";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 export default function StockCategory() {
-    const [formTitle, setFormTitle] = useState("Add Category");
     const [initialValues, setInitialValues] = useState<IStockCatModel>({} as IStockCatModel);
     const [rows, setRows] = useState([]);
     const { data, isSuccess } = useGetStockCategoryQuery(null);
@@ -53,7 +52,7 @@ export default function StockCategory() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -61,7 +60,7 @@ export default function StockCategory() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -76,7 +75,6 @@ export default function StockCategory() {
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Category");
         }
     }, [data, isSuccess]);
 
@@ -85,7 +83,6 @@ export default function StockCategory() {
             showErrorNotification();
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Category");
             setInitialValues(singleData.result as IStockCatModel)
         }
     }, [singleData, isSingleSuccess]);
@@ -96,7 +93,6 @@ export default function StockCategory() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Brand");
             setInitialValues({} as IStockCatModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
@@ -107,7 +103,7 @@ export default function StockCategory() {
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <StockCategoryForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <StockCategoryForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
@@ -126,11 +122,12 @@ export default function StockCategory() {
                                         },
                                         pagination: {
                                             paginationModel: {
-                                                pageSize: 5,
+                                                pageSize: 10,
                                             },
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

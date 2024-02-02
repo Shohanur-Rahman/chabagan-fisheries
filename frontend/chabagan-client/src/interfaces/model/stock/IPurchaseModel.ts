@@ -1,6 +1,6 @@
 export interface IPurchaseModel {
     id: number,
-    billNo: String,
+    billNo: string,
     purchaseDate: Date,
     supplierId: number,
     totalAmount: number,
@@ -13,12 +13,14 @@ export interface IPurchaseModel {
 
 export interface IPurchaseItems {
     id: number,
-    productId: number,
+    itemName: string | undefined | null,
+    productId: number | undefined | null,
     purchaseId: number,
-    brandId: number,
+    brandName: string | undefined | null,
+    brandId: number | undefined | null,
     qty: number,
     rate: number,
     discount: number,
     totalPrice: number,
-    prodSlNo?: string | null
+    prodSlNo?: string  | undefined | null
 }

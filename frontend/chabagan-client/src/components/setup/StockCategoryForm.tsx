@@ -1,4 +1,4 @@
-import { SetStateAction, useEffect } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
@@ -8,17 +8,17 @@ import { showAddNotification, showErrorNotification, showUpdateNotification } fr
 
 const StockCategoryForm: React.FC<{
     info: IStockCatModel,
-    title: string,
     setState: React.Dispatch<SetStateAction<IStockCatModel>>
 }> = ({
-    info, title, setState
+    info, setState
 }) => {
 
+        const [title, setTitle] = useState("Add Category");
         const [addStockCategory, { isLoading, isError, isSuccess, data, error }] = useAddStockCategoryMutation();
         const [updateStockCategory, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdateStockCategoryMutation();
         const emptyModel: IStockCatModel = {
             id: 0,
-            name: ""
+            name: ''
         }
         const validationSchema = Yup.object({
             name: Yup.string().required('Category name is required')
@@ -39,10 +39,9 @@ const StockCategoryForm: React.FC<{
 
         const resetFields = () => {
             formik.resetForm();
-            title = "Add Category";
+            setTitle("Add Category");
             setState(emptyModel);
         }
-
 
         useEffect(() => {
             if (isSuccess && data) {
@@ -67,18 +66,22 @@ const StockCategoryForm: React.FC<{
         const getShrink = (value: any) => {
             return value ? true : false;
         }
-
+        useEffect(() => {
+            if (info && info.id > 0) {
+                setTitle("Edit Category");
+            }else{
+                setState(emptyModel);
+            }
+        }, [info]);
         return (
             <Card className="card w-100">
                 <CardHeader title={title} className="card-header" />
                 <CardContent>
-                    <Box component="form" className="w-100 card-form" noValidate onSubmit={formik.handleSubmit}>
+                    <Box component="form" className="w-100 card-form" onSubmit={formik.handleSubmit}>
                         <FormGroup>
                             <TextField
                                 margin="normal"
-                                required
                                 fullWidth
-                                id="txtRoleName"
                                 label="Category Name"
                                 {...formik.getFieldProps("name")}
                                 InputLabelProps={{ shrink: getShrink(formik.values.name) }}

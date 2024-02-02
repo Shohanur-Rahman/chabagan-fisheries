@@ -11,7 +11,6 @@ import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material"
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import SupplierForm from "../../components/setup/SupplierForm";
 export default function Supplier() {
-    const [formTitle, setFormTitle] = useState("Add Supplier");
     const [rows, setRows] = useState([]);
     const [initialValues, setInitialValues] = useState<ISupplierModel>({} as ISupplierModel);
     const { data, isSuccess } = useGetSuppliersQuery(null);
@@ -65,7 +64,7 @@ export default function Supplier() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -73,7 +72,7 @@ export default function Supplier() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -89,7 +88,6 @@ export default function Supplier() {
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Supplier");
         }
     }, [data, isSuccess]);
 
@@ -98,7 +96,6 @@ export default function Supplier() {
             showErrorNotification();
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Supplier");
             setInitialValues(singleData.result as ISupplierModel)
         }
     }, [singleData, isSingleSuccess]);
@@ -109,7 +106,6 @@ export default function Supplier() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Supplier");
             setInitialValues({} as ISupplierModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
@@ -121,7 +117,7 @@ export default function Supplier() {
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <SupplierForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <SupplierForm info={initialValues} setState={setInitialValues} />
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={8}>
@@ -141,11 +137,12 @@ export default function Supplier() {
                                         },
                                         pagination: {
                                             paginationModel: {
-                                                pageSize: 5,
+                                                pageSize: 10,
                                             },
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

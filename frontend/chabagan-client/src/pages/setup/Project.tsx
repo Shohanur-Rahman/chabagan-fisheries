@@ -78,7 +78,7 @@ export default function Project() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -86,7 +86,7 @@ export default function Project() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -153,6 +153,7 @@ export default function Project() {
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

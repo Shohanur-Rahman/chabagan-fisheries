@@ -80,7 +80,7 @@ export default function Product() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -88,7 +88,7 @@ export default function Product() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -154,6 +154,7 @@ export default function Product() {
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>
