@@ -6,7 +6,7 @@ import { IProjectModel } from "../../interfaces/model/setup/IProjectModel";
 import { useDeleteProjectMutation, useGetProjectMutation, useGetProjectsQuery } from "../../redux/features/setup/projectApi";
 import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import ProjectForm from "../../components/setup/ProjectForm";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { FileURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import Swal from "sweetalert2";
 import noImage from './../../assets/img/no-image-found.png';
@@ -39,9 +39,9 @@ export default function Project() {
         });
     }
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 40, filterable: true },
+        { field: 'id', headerName: 'ID', flex: 1, filterable: true, headerClassName: "primary-header" },
         {
-            field: 'avatar', headerName: '', width: 60, renderCell: (params) => {
+            field: 'avatar', headerName: '', flex: 1, headerClassName: "primary-header", renderCell: (params) => {
                 if (params.row?.avatar) {
                     return (
                         <img src={`${FileURL}${params.row?.avatar}`} alt="File Preview" className="grid-photo" />
@@ -57,20 +57,24 @@ export default function Project() {
         {
             field: 'name',
             headerName: 'Name',
-            width: 200
+            flex: 4, 
+            headerClassName: "primary-header"
         },
         {
             field: 'union',
             headerName: 'Union',
-            width: 150
+            flex: 3, 
+            headerClassName: "primary-header"
         },
         {
             field: 'wordNumber',
             headerName: 'Word',
-            width: 150
+            flex: 2, 
+            headerClassName: "primary-header"
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', headerName: 'Actions', 
+            headerClassName: "primary-header", flex: 2, renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -139,6 +143,8 @@ export default function Project() {
                                     className="data-table"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
                                     initialState={{
                                         filter: {
                                             filterModel: {
@@ -154,6 +160,8 @@ export default function Project() {
                                     }}
                                     pageSizeOptions={[5]}
                                     rowHeight={40}
+                                    columnHeaderHeight={40}
+                                    disableColumnMenu
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

@@ -7,7 +7,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from "react";
 import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
 import Swal from "sweetalert2";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/setup/stockCategoryApi";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 export default function StockCategory() {
@@ -37,14 +37,15 @@ export default function StockCategory() {
         });
     }
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90, filterable: true },
+        { field: 'id', headerName: 'ID', flex: 1, filterable: true, headerClassName: "primary-header" },
         {
             field: 'name',
             headerName: 'Category',
-            width: 500
+            headerClassName: "primary-header",
+            flex: 4
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', headerName: 'Actions', flex: 1, headerClassName: "primary-header", renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -113,6 +114,8 @@ export default function StockCategory() {
                                     className="data-table"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
                                     initialState={{
                                         filter: {
                                             filterModel: {
@@ -128,6 +131,8 @@ export default function StockCategory() {
                                     }}
                                     pageSizeOptions={[5]}
                                     rowHeight={40}
+                                    columnHeaderHeight={40}
+                                    disableColumnMenu
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

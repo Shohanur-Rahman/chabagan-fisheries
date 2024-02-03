@@ -1,12 +1,13 @@
 import { FormGroup, Grid, TextField } from "@mui/material";
 import { IPurchaseModel } from "../../interfaces/model/stock/IPurchaseModel";
-import { ChangeEvent, SetStateAction, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
+import { FormikValues } from "formik";
 
 
 const PurchaseCalculation: React.FC<{
     info: IPurchaseModel,
-    setState: React.Dispatch<SetStateAction<IPurchaseModel>>
-}> = ({ info, setState }) => {
+    formik: FormikValues
+}> = ({ info, formik }) => {
 
     const [totalPrice, setTotalPrice] = useState<number>(0);
     const [totalDiscount, setTotalDiscount] = useState<number>(0);
@@ -40,12 +41,15 @@ const PurchaseCalculation: React.FC<{
         setNetAmount(netPrice);
         setTotalDues(dues);
 
+        formik.setFieldValue('grandTotal', netPrice);
+        formik.setFieldValue('dues', dues);
+
     }, [totalPrice, totalDiscount, totalPaid]);
 
     useEffect(() => {
         const totalAmount = info.items.reduce((total, item) => total + item.totalPrice, 0);
         setTotalPrice(totalAmount);
-        console.log(setState)
+        formik.setFieldValue('totalAmount', totalAmount);
     }, [info]);
 
     return (
@@ -63,6 +67,9 @@ const PurchaseCalculation: React.FC<{
                         disabled={true}
                         value={totalPrice}
                     />
+                    {formik.touched.totalAmount && formik.errors.totalAmount ? (
+                        <p className="validation-error text-danger">{formik.errors.totalAmount}</p>
+                    ) : null}
                 </FormGroup>
             </Grid>
             <Grid md={12} item xs={12}>

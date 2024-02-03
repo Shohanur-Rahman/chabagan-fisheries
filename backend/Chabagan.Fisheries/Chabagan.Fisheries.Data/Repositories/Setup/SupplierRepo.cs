@@ -46,7 +46,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwSupplier>> GetAllSupplierAsync()
         {
-            return _mapper.Map<IEnumerable<VwSupplier>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwSupplier>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>
@@ -58,6 +58,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
             return await _dbContext.Suppliers.Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .Select(x => new AutoCompleteModel { Label = x.Name, Value = x.Id.ToString() })
+                .OrderByDescending(x => x.Label)
                 .ToListAsync();
         }
 
@@ -67,7 +68,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<DropdownModel>> GetSupplierDropdownAsync()
         {
-            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Suppliers.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>

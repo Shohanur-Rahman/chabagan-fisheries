@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Box, Button, Card, CardContent, CardHeader, Grid} from "@mui/material";
+import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import DoneAllIcon from '@mui/icons-material/DoneAll';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
@@ -30,7 +30,10 @@ export default function Purchase() {
     );
 
     const validationSchema = Yup.object({
-        billNo: Yup.string().required('Bill is required')
+        billNo: Yup.string().required('Bill is required'),
+        supplierId: Yup.number().min(1, 'Supplier is required'),
+        purchaseDate: Yup.date().required('Date is required'),
+        totalAmount: Yup.number().min(1, 'Total is required')
     });
 
     const formik = useFormik({
@@ -56,13 +59,13 @@ export default function Purchase() {
                             <Card sx={{ minWidth: 275 }} className="card w-100">
                                 <CardHeader title="Purchase" className="card-header" />
                                 <CardContent className="table-content">
-                                    <PurchaseInfo info={initialValues} setState={setInitialValues} />
+                                    <PurchaseInfo formik={formik} />
                                     <PurchaseForm info={initialValues} setState={setInitialValues} />
                                     <Grid container spacing={2} mt={0}>
                                         <Grid md={8} item xs={6}>
                                             <PurchaseItems info={initialValues} setState={setInitialValues} />
                                         </Grid>
-                                        <PurchaseCalculation info={initialValues} setState={setInitialValues} />
+                                        <PurchaseCalculation info={initialValues} formik={formik} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <hr />

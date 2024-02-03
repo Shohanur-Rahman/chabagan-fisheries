@@ -28,7 +28,7 @@ const PurchaseForm: React.FC<{
     const addNewItemToList = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsClicked(true);
 
-        console.log(event);
+        console.log(event.type);
         if (!selectedProduct?.value || !selectedBrand?.value || itemRate == 0 || itemQty == 0)
             return false;
 
@@ -92,11 +92,11 @@ const PurchaseForm: React.FC<{
     }
 
     const handleProductChange = (event: React.SyntheticEvent, newValue: IAutocompleteModel | null) => {
-        console.log(event)
+        console.log(event.type);
         setSelectedProduct(newValue);
     }
     const handleBrandChange = (event: React.SyntheticEvent, newValue: IAutocompleteModel | null) => {
-        console.log(event)
+        console.log(event.type);
         setSelectedBrand(newValue);
     }
     const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {

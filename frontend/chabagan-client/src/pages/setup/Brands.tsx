@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IBrandModel } from "../../interfaces/model/setup/IBrandModel";
 import { useEffect, useState } from "react";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/setup/brandApi";
 import Swal from "sweetalert2";
@@ -41,14 +41,15 @@ export default function Brands() {
     }
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90, filterable: true },
+        { field: 'id', headerName: 'ID', filterable: true, headerClassName: "primary-header", flex: 1 },
         {
             field: 'name',
             headerName: 'Brand',
-            width: 500
+            headerClassName: "primary-header", 
+            flex: 4
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', flex: 1, headerName: 'Actions', headerClassName: "primary-header",  renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -118,6 +119,8 @@ export default function Brands() {
                                     className="data-table small"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
                                     initialState={{
                                         filter: {
                                             filterModel: {

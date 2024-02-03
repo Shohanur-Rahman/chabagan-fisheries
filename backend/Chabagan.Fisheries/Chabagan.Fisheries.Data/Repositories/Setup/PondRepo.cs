@@ -44,7 +44,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwPond>> GetAllPondsAsync()
         {
-            return _mapper.Map<IEnumerable<VwPond>>(await _dbContext.Ponds.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwPond>>(await _dbContext.Ponds.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwPond>> GetAllPondsByProjectIdAsync(long projectId)
         {
-            return _mapper.Map<IEnumerable<VwPond>>(await _dbContext.Ponds.Where(x => !x.IsDeleted && x.ProjectId == projectId).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwPond>>(await _dbContext.Ponds.Where(x => !x.IsDeleted && x.ProjectId == projectId).OrderByDescending(x => x.Id).AsNoTracking().ToListAsync());
         }
 
         /// <summary>
@@ -63,7 +63,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<DropdownModel>> GetPondsDropdownAsync()
         {
-            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Ponds.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Ponds.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>

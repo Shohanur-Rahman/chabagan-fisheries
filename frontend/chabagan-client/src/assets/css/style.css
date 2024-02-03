@@ -245,3 +245,12 @@ sidebar
 .f-16 {
     font-size: 16px !important;
 }
+
+.primary-header {
+    background-color: #1976d2;
+    color: #fff;
+}
+
+.primary-header .MuiIconButton-root {
+    color: #fff;
+}

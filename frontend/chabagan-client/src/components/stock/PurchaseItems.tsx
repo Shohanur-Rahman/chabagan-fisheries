@@ -32,6 +32,7 @@ const PurchaseItems: React.FC<{
                     <TableCell align="right">Brand</TableCell>
                     <TableCell align="right">QTY</TableCell>
                     <TableCell align="right">Price</TableCell>
+                    <TableCell align="right">Discount</TableCell>
                     <TableCell align="right">Total</TableCell>
                     <TableCell align="right"></TableCell>
                 </TableRow>
@@ -46,6 +47,7 @@ const PurchaseItems: React.FC<{
                             <TableCell align="right">{row.brandName}</TableCell>
                             <TableCell align="right">{row.qty}</TableCell>
                             <TableCell align="right">{row.rate}</TableCell>
+                            <TableCell align="right">{row.discount}</TableCell>
                             <TableCell align="right">{row.totalPrice}</TableCell>
                             <TableCell align="right">
                                 {/* <span className="cs-btn-edit" onClick={(e) => editCurrentItem(row)}><EditIcon className="f-16" /></span> */}

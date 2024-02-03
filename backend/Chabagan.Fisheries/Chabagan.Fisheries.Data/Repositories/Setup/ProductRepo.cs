@@ -46,7 +46,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwProduct>> GetAllProductsAsync()
         {
-            return _mapper.Map<IEnumerable<VwProduct>>(await _dbContext.Products.Where(x => !x.IsDeleted).Include(x => x.Category).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwProduct>>(await _dbContext.Products.Where(x => !x.IsDeleted).Include(x => x.Category).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>
@@ -58,6 +58,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
             return await _dbContext.Products.Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .Select(x => new AutoCompleteModel { Label = x.Name, Value=x.Id.ToString()})
+                .OrderByDescending(x => x.Label)
                 .ToListAsync();
         }
 

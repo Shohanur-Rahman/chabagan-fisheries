@@ -6,11 +6,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ISupplierModel } from "../../interfaces/model/setup/ISupplierModel";
 import Swal from "sweetalert2";
 import { useDeleteSupplierMutation, useGetSupplierMutation, useGetSuppliersQuery } from "../../redux/features/setup/supplierApi";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import SupplierForm from "../../components/setup/SupplierForm";
 export default function Supplier() {
+
     const [rows, setRows] = useState([]);
     const [initialValues, setInitialValues] = useState<ISupplierModel>({} as ISupplierModel);
     const { data, isSuccess } = useGetSuppliersQuery(null);
@@ -39,24 +40,27 @@ export default function Supplier() {
 
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90, filterable: true },
+        { field: 'id', flex: 1, headerName: 'ID', headerClassName: "primary-header", filterable: true },
         {
             field: 'name',
             headerName: 'Brand',
-            width: 200
+            headerClassName: "primary-header",
+            flex: 4
         },
         {
             field: 'shopName',
             headerName: 'Shop',
-            width: 250
+            headerClassName: "primary-header",
+            flex: 4
         },
         {
             field: 'mobile',
             headerName: 'Mobile',
-            width: 150
+            headerClassName: "primary-header",
+            flex: 2
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', flex: 2, headerName: 'Actions', headerClassName: "primary-header", renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -128,6 +132,9 @@ export default function Supplier() {
                                     className="data-table"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
+                                    ignoreDiacritics
                                     initialState={{
                                         filter: {
                                             filterModel: {
@@ -143,6 +150,8 @@ export default function Supplier() {
                                     }}
                                     pageSizeOptions={[5]}
                                     rowHeight={40}
+                                    columnHeaderHeight={40}
+                                    disableColumnMenu
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

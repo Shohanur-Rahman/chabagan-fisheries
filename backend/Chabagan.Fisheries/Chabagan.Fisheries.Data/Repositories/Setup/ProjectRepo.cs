@@ -46,7 +46,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwProject>> GetAllProjectsAsync()
         {
-            return _mapper.Map<IEnumerable<VwProject>>(await _dbContext.Projects.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwProject>>(await _dbContext.Projects.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>
@@ -55,7 +55,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<DropdownModel>> GetProjectsDropdownAsync()
         {
-            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Projects.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<DropdownModel>>(await _dbContext.Projects.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>

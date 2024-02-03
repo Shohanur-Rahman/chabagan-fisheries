@@ -22,5 +22,5 @@ export interface IPurchaseItems {
     rate: number,
     discount: number,
     totalPrice: number,
-    prodSlNo?: string  | undefined | null
+    prodSlNo?: string | undefined | null
 }
