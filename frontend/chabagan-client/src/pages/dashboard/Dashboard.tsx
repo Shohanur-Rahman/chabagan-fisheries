@@ -14,7 +14,6 @@ export default function Dashboard() {
                 label: 'Fish and Feeds Sales',
             },
         ],
-        width: 600,
         height: 300,
     };
     const dataset = [
@@ -89,7 +88,6 @@ export default function Dashboard() {
     ];
 
     const size = {
-        width: 550,
         height: 300,
     };
 

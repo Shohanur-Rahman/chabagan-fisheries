@@ -182,16 +182,75 @@ sidebar
 }
 
 .disabled-control {
-    background: #ececec !important;
+    background: #f4f4f4 !important;
+}
+
+.disabled-control input {
+    color: #000 !important;
+    font-weight: bold !important;
 }
 
 .mx-250 {
     max-width: 250px !important;
 }
-.pt-0{
+
+.pt-0 {
     padding-top: 0 !important;
 }
+
 .datepicker-sm input {
     padding-top: 8px;
     padding-bottom: 8px;
+}
+
+.rs-chart {
+    height: 250px;
+}
+
+.cs-btn-edit {
+    background: #1976d2;
+    display: block;
+    color: #fff;
+    width: 30px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 14px;
+    padding: 5px 0 0px;
+    float: left;
+    margin: 1px;
+    border-radius: 3px;
+}
+
+.cs-btn-edit:hover {
+    background: #0d4985;
+}
+
+.cs-btn-delete {
+    background: #d32f2f;
+    display: block;
+    color: #fff;
+    width: 30px;
+    text-align: center;
+    line-height: 18px;
+    font-size: 14px;
+    padding: 5px 0 0px;
+    float: left;
+    margin: 1px;
+}
+
+.cs-btn-delete:hover {
+    background: #8a1212;
+}
+
+.f-16 {
+    font-size: 16px !important;
+}
+
+.primary-header {
+    background-color: #1976d2;
+    color: #fff;
+}
+
+.primary-header .MuiIconButton-root {
+    color: #fff;
 }

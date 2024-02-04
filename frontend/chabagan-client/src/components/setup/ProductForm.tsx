@@ -34,7 +34,7 @@ const ProductForm: React.FC<
 
         const validationSchema = Yup.object({
             name: Yup.string().required('Product name is required'),
-            mrp: Yup.number().min(1).required('Price is required'),
+            mrp: Yup.number().min(1, "You must need to set price").required('Price is required'),
             categoryId: Yup.number().min(1).required('Category is required'),
         });
         const formik = useFormik({
@@ -89,8 +89,13 @@ const ProductForm: React.FC<
             return value ? true : false;
         }
         useEffect(() => {
+
             setPreview((info.id > 0 && info.avatar) ? `${FileURL}${info.avatar}` : noImage);
             setFormTitle((info.id > 0) ? `Edit Product` : `Add Product`);
+
+            if (!info || !info.id) {
+                setState(emptyModel);
+            }
         }, [info]);
 
         useEffect(() => {
@@ -158,7 +163,7 @@ const ProductForm: React.FC<
                                 required
                                 fullWidth
                                 id="txtPrice"
-                                label="Price"
+                                placeholder="Price*"
                                 type="number"
                                 {...formik.getFieldProps("mrp")}
                                 InputLabelProps={{ shrink: getShrink(formik.values.mrp) }}

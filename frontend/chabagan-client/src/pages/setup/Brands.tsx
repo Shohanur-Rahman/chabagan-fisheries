@@ -6,20 +6,20 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IBrandModel } from "../../interfaces/model/setup/IBrandModel";
 import { useEffect, useState } from "react";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/setup/brandApi";
 import Swal from "sweetalert2";
 
 export default function Brands() {
-    const [formTitle, setFormTitle] = useState("Add Brand");
-    const [rows, setRows] = useState([]); 
+
+    const [rows, setRows] = useState([]);
     const [initialValues, setInitialValues] = useState<IBrandModel>({} as IBrandModel);
     const { data, isSuccess } = useGetBrandsQuery(null);
     const [getBrand, { isSuccess: isSingleSuccess, data: singleData, error: singleError }] = useGetBrandMutation();
     const [deleteBrand, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeleteBrandMutation();
 
- 
+
     const onEditClick = (row: GridCellParams<IBrandModel>) => {
         getBrand(row.id);
     }
@@ -39,16 +39,17 @@ export default function Brands() {
             }
         });
     }
-    
+
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90, filterable: true },
+        { field: 'id', headerName: 'ID', filterable: true, headerClassName: "primary-header", flex: 1 },
         {
             field: 'name',
             headerName: 'Brand',
-            width: 500
+            headerClassName: "primary-header", 
+            flex: 4
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', flex: 1, headerName: 'Actions', headerClassName: "primary-header",  renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -56,7 +57,7 @@ export default function Brands() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -64,7 +65,7 @@ export default function Brands() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -75,7 +76,6 @@ export default function Brands() {
     useEffect(() => {
         if (isSuccess && data) {
             setRows(data?.result);
-            setFormTitle("Add Brand");
         }
     }, [data, isSuccess]);
 
@@ -88,7 +88,6 @@ export default function Brands() {
             showErrorNotification();
         }
         else if (isSingleSuccess && singleData) {
-            setFormTitle("Edit Brand");
             setInitialValues(singleData.result as IBrandModel)
         }
     }, [singleData, isSingleSuccess]);
@@ -99,7 +98,6 @@ export default function Brands() {
         }
         else if (isDeleteSuccess && deleteData) {
             showDeleteNotification();
-            setFormTitle("Add Brand");
             setInitialValues({} as IBrandModel)
         }
     }, [deleteData, isDeleteSuccess, deleteError]);
@@ -110,7 +108,7 @@ export default function Brands() {
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <BrandForm info={initialValues} title={formTitle} setState={setInitialValues} />
+                        <BrandForm info={initialValues} setState={setInitialValues} />
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={8}>
@@ -118,9 +116,11 @@ export default function Brands() {
                             <CardHeader title="Brands" className="card-header" />
                             <CardContent className="table-content">
                                 <DataGrid
-                                    className="data-table"
+                                    className="data-table small"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
                                     initialState={{
                                         filter: {
                                             filterModel: {
@@ -130,11 +130,14 @@ export default function Brands() {
                                         },
                                         pagination: {
                                             paginationModel: {
-                                                pageSize: 5,
+                                                pageSize: 10,
                                             },
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
+                                    columnHeaderHeight={40}
+                                    disableColumnMenu
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

@@ -81,6 +81,29 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
             }
         }
 
+        [Route("save-demo")]
+        [HttpPost]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchase>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIOperationResultGeneric<VwPurchase>>> SaveDemoPurchaseAsync([FromBody] ProcessPurchase model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    model.CreatedBy = GetLoggedInUserId();
+                    return Ok(APIOperationResult.Success(model));
+                }
+
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
         /// <summary>
         /// Save Purchase information in database
         /// </summary>

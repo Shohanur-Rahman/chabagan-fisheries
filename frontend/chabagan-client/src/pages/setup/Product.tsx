@@ -6,7 +6,7 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IProductModel } from "../../interfaces/model/setup/IProductModel";
 import ProductForm from "../../components/setup/ProductForm";
-import { DataGrid, GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import noImage from './../../assets/img/no-image-found.png';
 import { useDeleteProductMutation, useGetProductMutation, useGetProductsQuery } from "../../redux/features/setup/productApi";
@@ -37,9 +37,9 @@ export default function Product() {
         });
     }
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 40, filterable: true },
+        { field: 'id', headerName: 'ID', flex: 1, headerClassName: "primary-header", filterable: true },
         {
-            field: 'avatar', headerName: '', width: 60, renderCell: (params) => {
+            field: 'avatar', headerName: '', headerClassName: "primary-header", flex: 1, renderCell: (params) => {
                 if (params.row?.avatar) {
                     return (
                         <img src={`${FileURL}${params.row?.avatar}`} alt="File Preview" className="grid-photo" />
@@ -55,15 +55,17 @@ export default function Product() {
         {
             field: 'name',
             headerName: 'Name',
-            width: 200
+            flex: 4,
+            headerClassName: "primary-header"
         },
         {
             field: 'mrp',
             headerName: 'Price',
-            width: 150
+            flex: 2,
+            headerClassName: "primary-header"
         },
         {
-            field: 'category', headerName: 'Category', width: 200, renderCell: (params) => {
+            field: 'category', headerName: 'Category', headerClassName: "primary-header", flex: 3, renderCell: (params) => {
                 return (
                     <>
                         {params.row?.category?.name}
@@ -72,7 +74,7 @@ export default function Product() {
             }
         },
         {
-            field: 'action', headerName: 'Actions', width: 100, renderCell: (params) => {
+            field: 'action', headerName: 'Actions', flex: 2, headerClassName: "primary-header", renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -80,7 +82,7 @@ export default function Product() {
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
-                            <EditIcon />
+                            <EditIcon className="f-16" />
                         </Button>
                         <Button
                             className="grid-btn"
@@ -88,7 +90,7 @@ export default function Product() {
                             variant="contained"
                             color="error"
                         >
-                            <DeleteForeverIcon />
+                            <DeleteForeverIcon className="f-16" />
                         </Button>
                     </>
                 );
@@ -130,7 +132,7 @@ export default function Product() {
             <Box mt={2}>
                 <Grid container spacing={2}>
                     <Grid item xs={12} sm={12} md={4} lg={4}>
-                        <ProductForm info={initialValues} setState={setInitialValues}/>
+                        <ProductForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
@@ -140,6 +142,8 @@ export default function Product() {
                                     className="data-table"
                                     rows={rows}
                                     columns={columns}
+                                    slots={{ toolbar: GridToolbar }}
+                                    slotProps={{ toolbar: { showQuickFilter: true } }}
                                     initialState={{
                                         filter: {
                                             filterModel: {
@@ -154,6 +158,9 @@ export default function Product() {
                                         },
                                     }}
                                     pageSizeOptions={[5]}
+                                    rowHeight={40}
+                                    columnHeaderHeight={40}
+                                    disableColumnMenu
                                     disableRowSelectionOnClick
                                 />
                             </CardContent>

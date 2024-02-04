@@ -44,7 +44,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// <returns></returns>
         public async Task<IEnumerable<VwStockCategory>> GetAllStockCategoriesAsync()
         {
-            return _mapper.Map<IEnumerable<VwStockCategory>>(await _dbContext.StockCategories.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<VwStockCategory>>(await _dbContext.StockCategories.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
         }
 
         /// <summary>
