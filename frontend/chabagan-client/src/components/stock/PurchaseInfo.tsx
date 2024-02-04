@@ -3,26 +3,40 @@ import { Autocomplete, FormGroup, Grid, TextField } from "@mui/material";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { IAutocompleteModel } from "../../interfaces/model/IDropdownModel";
 import { useGetSupplierAutocompleteQuery } from "../../redux/features/setup/supplierApi";
-import dayjs from "dayjs";
-
-
+import { IPurchaseModel } from "../../interfaces/model/stock/IPurchaseModel";
 const PurchaseInfo: React.FC<{
-    formik: FormikValues
-}> = ({ formik }) => {
+    info: IPurchaseModel,
+    formik: FormikValues,
+    setState: React.Dispatch<SetStateAction<IPurchaseModel>>
+}> = ({ info, formik, setState }) => {
 
     const { data: supplierData, isSuccess: isSupplierSuccess } = useGetSupplierAutocompleteQuery(null);
     const [suppliers, setSuppliers] = useState<IAutocompleteModel[]>([] as IAutocompleteModel[]);
 
     const handleSupplierChange = (event: React.SyntheticEvent, newValue: IAutocompleteModel | null) => {
         console.log(event.type);
-        formik.setFieldValue('supplierId', newValue?.value ? parseInt(newValue?.value) : 0);
+        setState((prevState) => ({
+            ...prevState,
+            selectedSupplier: newValue,
+            supplierId: newValue?.value ? parseInt(newValue?.value) : 0,
+        }));
     }
 
     const handlePurchageDateChange = (date: Date | null) => {
-        formik.setFieldValue('purchaseDate', date);
+        setState((prevState) => ({
+            ...prevState,
+            billDate: date
+        }));
+    }
+
+    const onChangeBillNumber = (e: ChangeEvent<HTMLInputElement>) => {
+        setState((prevState) => ({
+            ...prevState,
+            billNo: e.target.value
+        }));
     }
 
     useEffect(() => {
@@ -43,7 +57,8 @@ const PurchaseInfo: React.FC<{
                         label="Bill No"
                         className="mt-0"
                         size="small"
-                        {...formik.getFieldProps("billNo")}
+                        onChange={onChangeBillNumber}
+                        value={info.billNo}
                     />
                     {formik.touched.billNo && formik.errors.billNo ? (
                         <p className="validation-error text-danger">{formik.errors.billNo}</p>
@@ -58,8 +73,8 @@ const PurchaseInfo: React.FC<{
                             onChange={handlePurchageDateChange}
                             className="mt-0 datepicker-sm" />
                     </LocalizationProvider>
-                    {formik.touched.purchaseDate && formik.errors.purchaseDate ? (
-                        <p className="validation-error text-danger">{formik.errors.purchaseDate}</p>
+                    {formik.touched.billDate && formik.errors.billDate ? (
+                        <p className="validation-error text-danger">{formik.errors.billDate}</p>
                     ) : null}
                 </FormGroup>
             </Grid>
@@ -70,6 +85,7 @@ const PurchaseInfo: React.FC<{
                         disablePortal
                         id="combo-box-demo"
                         options={suppliers}
+                        value={info.selectedSupplier}
                         renderInput={(params) => <TextField {...params} label="Supplier" size="small" />}
                     />
                     {formik.touched.supplierId && formik.errors.supplierId ? (

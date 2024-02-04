@@ -1,21 +1,15 @@
 import { FormGroup, Grid, TextField } from "@mui/material";
 import { IPurchaseModel } from "../../interfaces/model/stock/IPurchaseModel";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, SetStateAction, useEffect } from "react";
 import { FormikValues } from "formik";
 
 
 const PurchaseCalculation: React.FC<{
     info: IPurchaseModel,
-    formik: FormikValues
-}> = ({ info, formik }) => {
-
-    const [totalPrice, setTotalPrice] = useState<number>(0);
-    const [totalDiscount, setTotalDiscount] = useState<number>(0);
-    const [netAmount, setNetAmount] = useState<number>(0);
-    const [totalPaid, setTotalPaid] = useState<number>(0);
-    const [totalDues, setTotalDues] = useState<number>(0);
-
-
+    formik: FormikValues,
+    setState: React.Dispatch<SetStateAction<IPurchaseModel>>
+}> = ({ info, formik, setState }) => {
+    
     const getFloatValue = (value: string) => {
         const isValidNumber = /^-?\d*\.?\d*$/.test(value);
         if (isValidNumber) {
@@ -26,30 +20,38 @@ const PurchaseCalculation: React.FC<{
     }
 
     const calculateTotalDiscount = (e: ChangeEvent<HTMLInputElement>) => {
-        setTotalDiscount(getFloatValue(e.target.value));
+        setState((prevState) => ({
+            ...prevState,
+            discount: getFloatValue(e.target.value),
+        }));
     }
     const handlePaidChange = (e: ChangeEvent<HTMLInputElement>) => {
-        setTotalPaid(getFloatValue(e.target.value));
+        setState((prevState) => ({
+            ...prevState,
+            paidAmount: getFloatValue(e.target.value),
+        }));
     }
 
     useEffect(() => {
-        let price = totalPrice ? totalPrice : 0;
-        let discount = totalDiscount ? totalDiscount : 0;
-        let paid = totalPaid ? totalPaid : 0;
+        let price = info.totalAmount ? info.totalAmount : 0;
+        let discount = info.discount ? info.discount : 0;
+        let paid = info.paidAmount ? info.paidAmount : 0;
         let netPrice = (price - discount);
         let dues = (netPrice - paid);
-        setNetAmount(netPrice);
-        setTotalDues(dues);
-
-        formik.setFieldValue('grandTotal', netPrice);
-        formik.setFieldValue('dues', dues);
-
-    }, [totalPrice, totalDiscount, totalPaid]);
+       
+        setState((prevState) => ({
+            ...prevState,
+            grandTotal: netPrice,
+            dues: dues,
+        }));
+    }, [info.totalAmount, info.discount, info.paidAmount]);
 
     useEffect(() => {
         const totalAmount = info.items.reduce((total, item) => total + item.totalPrice, 0);
-        setTotalPrice(totalAmount);
-        formik.setFieldValue('totalAmount', totalAmount);
+        setState((prevState) => ({
+            ...prevState,
+            totalAmount: totalAmount,
+        }));
     }, [info]);
 
     return (
@@ -65,7 +67,7 @@ const PurchaseCalculation: React.FC<{
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}
-                        value={totalPrice}
+                        value={info.totalAmount}
                     />
                     {formik.touched.totalAmount && formik.errors.totalAmount ? (
                         <p className="validation-error text-danger">{formik.errors.totalAmount}</p>
@@ -83,7 +85,7 @@ const PurchaseCalculation: React.FC<{
                         size="small"
                         className="mt-0"
                         onChange={calculateTotalDiscount}
-                        value={totalDiscount}
+                        value={info.discount}
                     />
                 </FormGroup>
             </Grid>
@@ -98,7 +100,7 @@ const PurchaseCalculation: React.FC<{
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}
-                        value={netAmount}
+                        value={info.grandTotal}
                     />
                 </FormGroup>
             </Grid>
@@ -112,7 +114,7 @@ const PurchaseCalculation: React.FC<{
                         placeholder="Paid"
                         size="small"
                         className="mt-0"
-                        value={totalPaid}
+                        value={info.paidAmount}
                         onChange={handlePaidChange}
                     />
                 </FormGroup>
@@ -128,7 +130,7 @@ const PurchaseCalculation: React.FC<{
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}
-                        value={totalDues}
+                        value={info.dues}
                     />
                 </FormGroup>
             </Grid>
