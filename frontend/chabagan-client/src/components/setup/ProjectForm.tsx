@@ -31,6 +31,7 @@ const ProjectForm: React.FC<{ info: IProjectModel, setState: React.Dispatch<SetS
     const formik = useFormik({
         initialValues: info,
         enableReinitialize: true,
+        validateOnBlur: false,
         validationSchema: validationSchema,
         onSubmit: (values) => {
 

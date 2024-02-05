@@ -41,9 +41,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// Get all purchase data from database
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<VwPurchase>> GetAllPurchasesAsync()
+        public async Task<IEnumerable<PurchaaseInfo>> GetAllPurchasesAsync()
         {
-            return _mapper.Map<IEnumerable<VwPurchase>>(await _dbContext.Purchases.Where(x => !x.IsDeleted).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<PurchaaseInfo>>(await _dbContext.Purchases.Where(x => !x.IsDeleted)
+                .Include(x => x.Supplier)
+                .Include(x => x.Project)
+                .AsNoTracking()
+                .ToListAsync());
         }
 
         /// <summary>
@@ -51,11 +55,17 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// </summary>
         /// <param name="purchaseId"></param>
         /// <returns></returns>
-        public async Task<VwPurchase> GetPurchaseByPurchaseIdAsync(long purchaseId)
+        public async Task<DbPurchase?> GetPurchaseByPurchaseIdAsync(long purchaseId)
         {
-            return _mapper.Map<VwPurchase>(await _dbContext.Purchases.Where(x => x.Id == purchaseId)
+            return await _dbContext.Purchases.Where(x => x.Id == purchaseId)
+                .Include(x => x.Supplier)
+                .Include(x => x.Project)
+                .Include(x => x.Items)
+                .ThenInclude(x => x.Brand)
+                .Include(x => x.Items)
+                .ThenInclude(x => x.Product)
                 .AsNoTracking()
-                .SingleOrDefaultAsync());
+                .SingleOrDefaultAsync();
         }
 
         /// <summary>
@@ -64,7 +74,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchase> SavePurchaseAsync(VwPurchase model)
+        public async Task<DbPurchase?> SavePurchaseAsync(ProcessPurchase model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -82,7 +92,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchase> UpdatePurchaseAsync(VwPurchase model)
+        public async Task<DbPurchase?> UpdatePurchaseAsync(ProcessPurchase model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -105,7 +115,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="purchaseId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchase> DeletePurchaseByPurchaseIdAsync(long purchaseId)
+        public async Task<DbPurchase?> DeletePurchaseByPurchaseIdAsync(long purchaseId)
         {
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);

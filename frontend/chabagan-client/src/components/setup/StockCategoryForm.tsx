@@ -27,6 +27,7 @@ const StockCategoryForm: React.FC<{
         const formik = useFormik({
             initialValues: info,
             enableReinitialize: true,
+            validateOnBlur: false,
             validationSchema: validationSchema,
             onSubmit: (values) => {
                 if (values.id > 0) {

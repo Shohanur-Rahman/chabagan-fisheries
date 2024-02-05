@@ -42,9 +42,9 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// Get all purchase items data from database
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<VwPurchaseItem>> GetAllPurchaseItemsByPurchaseIdAsync(long purchaseId)
+        public async Task<IEnumerable<ProcessPurchaseItem>> GetAllPurchaseItemsByPurchaseIdAsync(long purchaseId)
         {
-            return _mapper.Map<IEnumerable<VwPurchaseItem>>(await _dbContext.PurchaseItems.Where(x => x.PurchaseId == purchaseId).AsNoTracking().ToListAsync());
+            return _mapper.Map<IEnumerable<ProcessPurchaseItem>>(await _dbContext.PurchaseItems.Where(x => x.PurchaseId == purchaseId).AsNoTracking().ToListAsync());
         }
 
         /// <summary>
@@ -52,9 +52,9 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>
-        public async Task<VwPurchaseItem> GetPurchaseItemByItemIdAsync(long itemId)
+        public async Task<ProcessPurchaseItem> GetPurchaseItemByItemIdAsync(long itemId)
         {
-            return _mapper.Map<VwPurchaseItem>(await _dbContext.PurchaseItems.Where(x => x.Id == itemId)
+            return _mapper.Map<ProcessPurchaseItem>(await _dbContext.PurchaseItems.Where(x => x.Id == itemId)
                 .AsNoTracking()
                 .SingleOrDefaultAsync());
         }
@@ -65,7 +65,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchaseItem> SavePurchaseItemAsync(VwPurchaseItem model)
+        public async Task<ProcessPurchaseItem> SavePurchaseItemAsync(ProcessPurchaseItem model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -83,7 +83,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchaseItem> UpdatePurchaseItemAsync(VwPurchaseItem model)
+        public async Task<ProcessPurchaseItem> UpdatePurchaseItemAsync(ProcessPurchaseItem model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -106,7 +106,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <param name="purchaseId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<VwPurchase> DeletePurchaseItemByItemIdAsync(long purchaseId)
+        public async Task<ProcessPurchase> DeletePurchaseItemByItemIdAsync(long purchaseId)
         {
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
@@ -118,7 +118,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
 
             _dbContext.PurchaseItems.Remove(dbPurchaseItem);
             await _dbContext.SaveChangesAsync();
-            return new VwPurchase();
+            return new ProcessPurchase();
         }
 
         #endregion

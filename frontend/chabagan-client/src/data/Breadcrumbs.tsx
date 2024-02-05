@@ -2,6 +2,8 @@ import { IIconBreadcrumbs } from "../interfaces/IBreadcrumbs";
 import HomeIcon from '@mui/icons-material/Home';
 import GrainIcon from '@mui/icons-material/Grain';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import AddIcon from '@mui/icons-material/Add';
 
 const dashboarBreadCrumb: IIconBreadcrumbs[] = [
     {
@@ -116,8 +118,26 @@ const purchaseBreadCrumb: IIconBreadcrumbs[] = [
         path: "/dashboard"
     },
     {
-        text: "Purchase",
-        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        text: "Purchases",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+const addPurchaseBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchases",
+        path: "/stock/purchases",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "New Purchase",
+        icon: <AddIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
         isLast: true
     }
 ]
@@ -173,6 +193,7 @@ export default {
     categoryBreadCrumb,
     productBreadCrumb,
     purchaseBreadCrumb,
+    addPurchaseBreadCrumb,
     purchaseReturnBreadCrumb,
     supplierBreadCrumb,
     projectBreadCrumb

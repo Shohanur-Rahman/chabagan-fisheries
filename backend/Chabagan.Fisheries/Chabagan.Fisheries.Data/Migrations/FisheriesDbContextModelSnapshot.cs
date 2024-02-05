@@ -88,6 +88,9 @@ namespace Chabagan.Fisheries.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Email")
+                        .IsUnique();
+
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
@@ -96,37 +99,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 450, DateTimeKind.Local).AddTicks(5658),
+                            CreatedDate = new DateTime(2024, 2, 5, 22, 54, 57, 674, DateTimeKind.Local).AddTicks(8094),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "gINc8MVVO80vbeWwR0SCVwPDQQF071sZvt2fU8bF4TY=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "vmhMCYnylVfAPsNvZ6zIPKvSNg0KgyRg9cBWsWMzn10=",
+                            PasswordSalt = "YYWJpxvLvRhN5Jtbg+U/Kw==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 464, DateTimeKind.Local).AddTicks(8174),
+                            CreatedDate = new DateTime(2024, 2, 5, 22, 54, 57, 702, DateTimeKind.Local).AddTicks(1277),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "LRI/ROFp9loy+1e+s566pzYHXqLc1xq2GfO7RShzbPQ=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "KBi/BY6eSYfiZnIf4qwtRVb81nUifMPt3ukaYNiMyCo=",
+                            PasswordSalt = "YYWJpxvLvRhN5Jtbg+U/Kw==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 1, 25, 14, 56, 33, 479, DateTimeKind.Local).AddTicks(3528),
+                            CreatedDate = new DateTime(2024, 2, 5, 22, 54, 57, 725, DateTimeKind.Local).AddTicks(1912),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "gINc8MVVO80vbeWwR0SCVwPDQQF071sZvt2fU8bF4TY=",
-                            PasswordSalt = "rjsXl/G6YskPK+k8vUm1BA==",
+                            Password = "vmhMCYnylVfAPsNvZ6zIPKvSNg0KgyRg9cBWsWMzn10=",
+                            PasswordSalt = "YYWJpxvLvRhN5Jtbg+U/Kw==",
                             RoleId = 3
                         });
                 });
@@ -524,6 +527,13 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.Property<bool>("ApprovalStatus")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime?>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("BillNo")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<long?>("CreatedBy")
                         .HasColumnType("bigint");
 
@@ -534,20 +544,23 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<decimal>("Dues")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("GrandTotal")
+                    b.Property<decimal>("DuesAmount")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
+                    b.Property<decimal>("NetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<decimal>("PaidAmount")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<DateTime>("RegDate")
-                        .HasColumnType("datetime2");
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
 
                     b.Property<long>("SupplierId")
                         .HasColumnType("bigint");
@@ -563,6 +576,11 @@ namespace Chabagan.Fisheries.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("BillNo")
+                        .IsUnique();
+
+                    b.HasIndex("ProjectId");
+
                     b.HasIndex("SupplierId");
 
                     b.ToTable("Purchases");
@@ -576,14 +594,11 @@ namespace Chabagan.Fisheries.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Brand")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<long?>("BrandId")
+                        .HasColumnType("bigint");
 
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProdSlNo")
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<long>("ProductID")
                         .HasColumnType("bigint");
@@ -601,6 +616,8 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("BrandId");
 
                     b.HasIndex("ProductID");
 
@@ -678,17 +695,29 @@ namespace Chabagan.Fisheries.Data.Migrations
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", b =>
                 {
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbProject", "Project")
+                        .WithMany()
+                        .HasForeignKey("ProjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbSupplier", "Supplier")
                         .WithMany()
                         .HasForeignKey("SupplierId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Project");
+
                     b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchaseItem", b =>
                 {
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbBrand", "Brand")
+                        .WithMany()
+                        .HasForeignKey("BrandId");
+
                     b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
@@ -696,14 +725,21 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", "Purchase")
-                        .WithMany()
+                        .WithMany("Items")
                         .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.Navigation("Brand");
+
                     b.Navigation("Product");
 
                     b.Navigation("Purchase");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", b =>
+                {
+                    b.Navigation("Items");
                 });
 #pragma warning restore 612, 618
         }

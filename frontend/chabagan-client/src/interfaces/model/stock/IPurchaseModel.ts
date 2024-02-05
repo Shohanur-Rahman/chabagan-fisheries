@@ -5,14 +5,16 @@ export interface IPurchaseModel {
     billNo: string,
     billDate?: Date| null,
     supplierId: number,
+    projectId: number,
     totalAmount: number,
     discount: number,
-    grandTotal: number,
+    netAmount: number,
     paidAmount: number,
-    dues: number,
+    duesAmount: number,
     items: IPurchaseItems[],
-    selectedSupplier?: IAutocompleteModel | null,
-    typeId: number
+    supplier?: IAutocompleteModel | null,
+    project?: IAutocompleteModel | null,
+    note?: string
 }
 
 export interface IPurchaseItems {
@@ -25,6 +27,5 @@ export interface IPurchaseItems {
     qty: number,
     rate: number,
     discount: number,
-    totalPrice: number,
-    prodSlNo?: string | undefined | null
+    totalPrice: number
 }

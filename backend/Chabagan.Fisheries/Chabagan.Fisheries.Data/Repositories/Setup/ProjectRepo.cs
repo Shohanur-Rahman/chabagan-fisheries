@@ -2,6 +2,7 @@
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
+using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
@@ -47,6 +48,19 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         public async Task<IEnumerable<VwProject>> GetAllProjectsAsync()
         {
             return _mapper.Map<IEnumerable<VwProject>>(await _dbContext.Projects.Where(x => !x.IsDeleted).AsNoTracking().OrderByDescending(x => x.Id).ToListAsync());
+        }
+
+        /// <summary>
+        /// Get project auto complete
+        /// </summary>
+        /// <returns></returns>
+        public async Task<IEnumerable<AutoCompleteModel>> GetProjectAutocompleteAsync()
+        {
+            return await _dbContext.Projects.Where(x => !x.IsDeleted)
+                .AsNoTracking()
+                .Select(x => new AutoCompleteModel { Label = x.Name, Value = x.Id.ToString() })
+                .OrderBy(x => x.Label)
+                .ToListAsync();
         }
 
         /// <summary>

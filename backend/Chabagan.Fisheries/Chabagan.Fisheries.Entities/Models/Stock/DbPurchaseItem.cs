@@ -11,13 +11,14 @@ namespace Chabagan.Fisheries.Entities.Models.Stock
         public long ProductID { get; set; }
         [ForeignKey(nameof(Purchase))]
         public long PurchaseId { get; set; }
-        public string? Brand { get; set; }
+        [ForeignKey(nameof(Brand))]
+        public long? BrandId { get; set; }
         public decimal Qty { get; set; }
         public decimal Rate { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalPrice { get; set; }
-        public string? ProdSlNo { get; set; }
         public DbPurchase? Purchase { get; set; }
         public DbProduct? Product { get; set; }
+        public DbBrand? Brand { get; set; }
     }
 }

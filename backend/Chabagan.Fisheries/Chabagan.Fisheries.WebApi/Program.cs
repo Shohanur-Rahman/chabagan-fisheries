@@ -10,7 +10,6 @@ using Chabagan.Fisheries.WebApi.Utilities;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Cors;
 using System.Net;
-
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.

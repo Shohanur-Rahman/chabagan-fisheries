@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
 using System.Security.Claims;
 
 namespace Chabagan.Fisheries.WebApi.Controllers
@@ -7,6 +8,18 @@ namespace Chabagan.Fisheries.WebApi.Controllers
     public class BaseController : ControllerBase
     {
         #region public Methods
+
+        protected string GetMimeType(string fileName)
+        {
+
+            var provider = new FileExtensionContentTypeProvider();
+            string contentType;
+            if (!provider.TryGetContentType(fileName, out contentType))
+            {
+                contentType = "application/octet-stream";
+            }
+            return contentType;
+        }
 
         /// <summary>
         /// Get logged in user id

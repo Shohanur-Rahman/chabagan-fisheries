@@ -7,6 +7,12 @@ const projectApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["projects-list"]
         }),
+        getProjectAutoComplete: builder.query({
+            query: () => ({
+                url: `projects/autocomplete`
+            }),
+            providesTags: ["projects-list"]
+        }),
         getProject: builder.mutation({
             query: (id) => ({
                 url: `projects/${id}`
@@ -41,6 +47,7 @@ const projectApi = apiSlice.injectEndpoints({
 
 export const {
     useGetProjectsQuery,
+    useGetProjectAutoCompleteQuery,
     useGetProjectMutation,
     useAddProjectMutation,
     useUpdateProjectMutation,

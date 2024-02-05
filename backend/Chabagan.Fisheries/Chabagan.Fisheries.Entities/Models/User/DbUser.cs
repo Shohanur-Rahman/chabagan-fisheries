@@ -1,9 +1,11 @@
 ﻿using Chabagan.Fisheries.Entities.Models.User;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabagan.Chabagan.Fisheries.Models.User
 {
+    [Index(nameof(Email), IsUnique = true)]
     public class DbUser : BaseClassInfo
     {
         [Required]

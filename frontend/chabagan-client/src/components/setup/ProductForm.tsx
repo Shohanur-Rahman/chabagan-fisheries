@@ -41,6 +41,7 @@ const ProductForm: React.FC<
             initialValues: info,
             enableReinitialize: true,
             validationSchema: validationSchema,
+            validateOnBlur: false,
             onSubmit: (values) => {
                 const submitData: Record<string, any> = {
                     id: values.id ?? 0,

@@ -1,4 +1,5 @@
-﻿using Chabagan.Fisheries.Entities.Mapping.Setup;
+﻿using Chabagan.Fisheries.Entities.Mapping;
+using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
@@ -13,6 +14,11 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
         /// <returns></returns>
         Task<IEnumerable<VwProject>> GetAllProjectsAsync();
 
+        /// <summary>
+        /// Get project auto complete
+        /// </summary>
+        /// <returns></returns>
+        Task<IEnumerable<AutoCompleteModel>> GetProjectAutocompleteAsync();
         /// <summary>
         /// Get project dropdowns
         /// </summary>
