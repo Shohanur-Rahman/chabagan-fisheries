@@ -8,6 +8,7 @@ using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Common.Models;
+using Chabagan.Fisheries.Entities.Mapping;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -62,6 +63,30 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
                 return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
             }
         }
+
+
+        /// <summary>
+        /// Get project auto complete
+        /// </summary>
+        /// <returns></returns>
+        /// 
+        [Route("autoComplete")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<AutoCompleteModel>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<AutoCompleteModel>>>> GetProjectAutocompleteAsync()
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(await _projectRepo.GetProjectAutocompleteAsync()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
 
         /// <summary>
         /// Get all project dropdown

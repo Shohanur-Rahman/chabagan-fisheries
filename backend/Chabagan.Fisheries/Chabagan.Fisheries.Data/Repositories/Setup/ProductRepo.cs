@@ -58,7 +58,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
             return await _dbContext.Products.Where(x => !x.IsDeleted)
                 .AsNoTracking()
                 .Select(x => new AutoCompleteModel { Label = x.Name, Value=x.Id.ToString()})
-                .OrderByDescending(x => x.Label)
+                .OrderBy(x => x.Label)
                 .ToListAsync();
         }
 

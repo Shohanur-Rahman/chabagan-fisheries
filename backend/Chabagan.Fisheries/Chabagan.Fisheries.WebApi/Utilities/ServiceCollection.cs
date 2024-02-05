@@ -1,6 +1,8 @@
 ﻿using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Chabagan.Fisheries.WebApi.Services;
 using Chabagan.Fisheries.WebApi.Utilities.Interfaces;
+using DinkToPdf.Contracts;
+using DinkToPdf;
 
 namespace Chabagan.Fisheries.WebApi.Utilities
 {
@@ -10,6 +12,9 @@ namespace Chabagan.Fisheries.WebApi.Utilities
         {
             services.AddTransient<IHelperService, HelperService>();
             services.AddTransient<IConfigSettings, ConfigSettings>();
+
+            services.AddSingleton(typeof(IConverter), new SynchronizedConverter(new PdfTools()));
+            services.AddScoped<PdfService>();
             return services;
         }
     }

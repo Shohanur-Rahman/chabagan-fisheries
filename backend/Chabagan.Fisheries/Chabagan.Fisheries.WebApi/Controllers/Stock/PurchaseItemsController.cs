@@ -47,9 +47,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<VwPurchaseItem>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<ProcessPurchaseItem>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<VwPurchaseItem>>>> GetAllPurchaseItemsByPurchaseIdAsync(long purchaseId)
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<ProcessPurchaseItem>>>> GetAllPurchaseItemsByPurchaseIdAsync(long purchaseId)
         {
             try
             {
@@ -68,9 +68,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="itemId"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchaseItem>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<ProcessPurchaseItem>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchaseItem>>> GetPurchaseItemByItemIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<ProcessPurchaseItem>>> GetPurchaseItemByItemIdAsync(long id)
         {
             try
             {
@@ -89,9 +89,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchaseItem>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<ProcessPurchaseItem>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchaseItem>>> SavePurchaseItemAsync([FromBody] VwPurchaseItem model)
+        public async Task<ActionResult<APIOperationResultGeneric<ProcessPurchaseItem>>> SavePurchaseItemAsync([FromBody] ProcessPurchaseItem model)
         {
             try
             {
@@ -115,9 +115,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchaseItem>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<ProcessPurchaseItem>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchaseItem>>> UpdatePurchaseItemAsync([FromBody] VwPurchaseItem model)
+        public async Task<ActionResult<APIOperationResultGeneric<ProcessPurchaseItem>>> UpdatePurchaseItemAsync([FromBody] ProcessPurchaseItem model)
         {
             try
             {

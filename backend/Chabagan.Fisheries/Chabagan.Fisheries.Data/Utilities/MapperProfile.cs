@@ -40,8 +40,9 @@ namespace Chabagan.Fisheries.Data.Utilities
 
             #region Stock
 
-            CreateMap<DbPurchase, VwPurchase>().ReverseMap();
-            CreateMap<DbPurchaseItem, VwPurchaseItem>().ReverseMap();
+            CreateMap<DbPurchase, ProcessPurchase>().ReverseMap();
+            CreateMap<DbPurchase, PurchaaseInfo>().ReverseMap();
+            CreateMap<DbPurchaseItem, ProcessPurchaseItem>().ReverseMap();
             
             #endregion
 

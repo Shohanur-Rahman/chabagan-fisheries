@@ -3,9 +3,10 @@ using Chabagan.Fisheries.Common.APIResponse;
 using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
-using Chabagan.Fisheries.WebApi.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using Chabagan.Fisheries.Entities.Models.Stock;
+using Chabagan.Fisheries.WebApi.Services;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 {
@@ -23,18 +24,16 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// Interface for access data
         /// </summary>
         private readonly IPurchaseRepo _purchaseRepo;
-        /// <summary>
-        /// Helper service for access helper methods
-        /// </summary>
-        private readonly IHelperService _helperService;
+
+        private readonly PdfService _pdfService;
         #endregion
 
         #region Constructors
-        public PurchasesController(ILogger<PurchasesController> logger, IPurchaseRepo purchaseRepo, IHelperService helperService)
+        public PurchasesController(ILogger<PurchasesController> logger, IPurchaseRepo purchaseRepo, PdfService pdfService)
         {
             _purchaseRepo = purchaseRepo;
             _logger = logger;
-            _helperService = helperService;
+            _pdfService = pdfService;
 
         }
         #endregion
@@ -46,9 +45,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// </summary>
         /// <returns></returns>
         [HttpGet]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<VwPurchase>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<PurchaaseInfo>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<VwPurchase>>>> GetAllPurchasesAsync()
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<PurchaaseInfo>>>> GetAllPurchasesAsync()
         {
             try
             {
@@ -66,9 +65,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// </summary>
         /// <param name="brandId"></param>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchase>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<ProcessPurchase>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchase>>> GetPurchaseByPurchaseIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<ProcessPurchase>>> GetPurchaseByPurchaseIdAsync(long id)
         {
             try
             {
@@ -81,27 +80,19 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
             }
         }
 
-        [Route("save-demo")]
-        [HttpPost]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchase>), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchase>>> SaveDemoPurchaseAsync([FromBody] ProcessPurchase model)
+        [HttpGet("invoice")]
+        public async Task<IActionResult> Invoice(long id)
         {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    model.CreatedBy = GetLoggedInUserId();
-                    return Ok(APIOperationResult.Success(model));
-                }
+            string randomName = Guid.NewGuid().ToString();
+            var invoiceInfo = await _purchaseRepo.GetPurchaseByPurchaseIdAsync(id);
 
-                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, ex.Message);
-                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
-            }
+            if(invoiceInfo is null)
+                throw new Exception(ResponseMessage.FailRetrieve);
+
+            var pdfBytes = _pdfService.GeneratePdf(PDFContents.GetPurchaseInvoice(invoiceInfo));
+
+            // Return the PDF as a file
+            return File(pdfBytes, "application/pdf", "generated-pdf.pdf");
         }
 
         /// <summary>
@@ -110,14 +101,17 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchase>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbPurchase>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchase>>> SavePurchaseAsync([FromBody] VwPurchase model)
+        public async Task<ActionResult<APIOperationResultGeneric<DbPurchase>>> SavePurchaseAsync([FromBody] ProcessPurchase model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
+                    if(model.Items is null)
+                        throw new ArgumentNullException(nameof(model.Items));
+
                     model.CreatedBy = GetLoggedInUserId();
                     return Ok(APIOperationResult.Success(await _purchaseRepo.SavePurchaseAsync(model)));
                 }
@@ -137,9 +131,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<VwPurchase>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbPurchase>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<VwPurchase>>> UpdatePurchaseAsync([FromBody] VwPurchase model)
+        public async Task<ActionResult<APIOperationResultGeneric<DbPurchase>>> UpdatePurchaseAsync([FromBody] ProcessPurchase model)
         {
             try
             {
@@ -165,9 +159,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<bool>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbPurchase>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<bool>>> DeletePurchaseByPurchaseIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<DbPurchase>>> DeletePurchaseByPurchaseIdAsync(long id)
         {
             try
             {

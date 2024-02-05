@@ -21,6 +21,7 @@ const BrandForm: React.FC<{ info: IBrandModel, setState: React.Dispatch<SetState
         initialValues: info,
         enableReinitialize: true,
         validationSchema: validationSchema,
+        validateOnBlur: false,
         onSubmit: (values) => {
             if (values.id > 0) {
                 updateBrand(values);
