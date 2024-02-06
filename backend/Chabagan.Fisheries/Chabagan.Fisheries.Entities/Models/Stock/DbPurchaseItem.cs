@@ -8,7 +8,7 @@ namespace Chabagan.Fisheries.Entities.Models.Stock
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
         [ForeignKey(nameof(Product))]
-        public long ProductID { get; set; }
+        public long ProductId { get; set; }
         [ForeignKey(nameof(Purchase))]
         public long PurchaseId { get; set; }
         [ForeignKey(nameof(Brand))]

@@ -1,14 +1,15 @@
 import { FormikValues } from "formik";
 import { Autocomplete, FormGroup, Grid, TextField } from "@mui/material";
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import React, { ChangeEvent, SetStateAction, useEffect, useState } from "react";
 import { IAutocompleteModel } from "../../../interfaces/model/IDropdownModel";
 import { useGetSupplierAutocompleteQuery } from "../../../redux/features/setup/supplierApi";
 import { IPurchaseModel } from "../../../interfaces/model/stock/IPurchaseModel";
 import { useGetProjectAutoCompleteQuery } from "../../../redux/features/setup/projectApi";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+
 const PurchaseInfo: React.FC<{
     info: IPurchaseModel,
     formik: FormikValues,
@@ -37,10 +38,10 @@ const PurchaseInfo: React.FC<{
         }));
     }
 
-    const handlePurchageDateChange = (date: Date | null) => {
+    const handlePurchageDateChange = (date: Dayjs | null) => {
         setState((prevState) => ({
             ...prevState,
-            billDate: date
+            billDate: date?.toDate()
         }));
     }
 
@@ -95,6 +96,7 @@ const PurchaseInfo: React.FC<{
                 <FormGroup>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
+                            label="Date"
                             value={dayjs(info.billDate)}
                             onChange={handlePurchageDateChange}
                             className="mt-0 datepicker-sm" />
