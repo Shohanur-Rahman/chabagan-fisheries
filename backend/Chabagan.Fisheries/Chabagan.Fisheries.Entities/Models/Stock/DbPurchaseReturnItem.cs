@@ -1,9 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using Chabagan.Fisheries.Entities.Models.Setup;
+﻿using Chabagan.Fisheries.Entities.Models.Setup;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Chabagan.Fisheries.Entities.Models.Stock
 {
-    public class DbPurchaseItem
+    public class DbPurchaseReturnItem
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
@@ -17,7 +17,7 @@ namespace Chabagan.Fisheries.Entities.Models.Stock
         public decimal Rate { get; set; }
         public decimal Discount { get; set; }
         public decimal TotalPrice { get; set; }
-        public DbPurchase? Purchase { get; set; }
+        public DbPurchaseReturn? Purchase { get; set; }
         public DbProduct? Product { get; set; }
         public DbBrand? Brand { get; set; }
     }

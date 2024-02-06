@@ -49,6 +49,9 @@ namespace Chabagan.Chabagan.Fisheries.DB
 
         public virtual DbSet<DbPurchase> Purchases { get; set; }
         public virtual DbSet<DbPurchaseItem> PurchaseItems { get; set; }
+
+        public virtual DbSet<DbPurchaseReturn> PurchaseReturns { get; set; }
+        public virtual DbSet<DbPurchaseReturnItem> PurchaseReturnItems { get; set; }
         #endregion
     }
 }

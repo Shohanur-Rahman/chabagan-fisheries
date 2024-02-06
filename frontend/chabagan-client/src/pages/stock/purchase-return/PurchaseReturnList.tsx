@@ -4,23 +4,24 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconBreadcrumbs } from "../../../components/common/IconBreadcrumbs";
-import purchaseBreadCrumb from '../../../data/Breadcrumbs';
+import purchaseReturnBreadCrumb from '../../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
 import { ApiBaseURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../../data/Config";
 import { useNavigate } from "react-router-dom";
-import { useDeletePurchaseMutation, useGetPurchasesQuery } from "../../../redux/features/stock/purchaseApi";
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import CustomPDFViwer from "../../../components/common/CustomPDFViwer";
 import { IPdfViwerModel } from "../../../interfaces/model/IPdfViwerModel";
+import { useDeletePurchaseReturnMutation, useGetPurchaseReturnsQuery } from "../../../redux/features/stock/purchaseReturnApi";
 
-export default function PurchaseList() {
+
+export default function PurchaseReturnList() {
     const navigate = useNavigate();
     const [rows, setRows] = useState([]);
     const [viwer, setViwer] = useState({} as IPdfViwerModel);
-    const { data, isSuccess } = useGetPurchasesQuery(null);
-    const [deletePurchase, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeletePurchaseMutation();
+    const { data, isSuccess } = useGetPurchaseReturnsQuery(null);
+    const [deletePurchase, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeletePurchaseReturnMutation();
 
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', filterable: true, headerClassName: "primary-header", flex: 1 },
@@ -123,14 +124,14 @@ export default function PurchaseList() {
         let viwerInfo: IPdfViwerModel = {
             id: row.id.toString(),
             title: `Invoice no ${row?.billNo}`,
-            url: `${ApiBaseURL}purchases/invoice?id=${row.id}`,
+            url: `${ApiBaseURL}purchasereturns/invoice?id=${row.id}`,
             open: true
         }
         setViwer(viwerInfo);
     }
 
     const onEditClick = (row: GridCellParams) => {
-        navigate(`/stock/purchases/edit-purchase/${row.id}`);
+        navigate(`/stock/purchase-returns/edit-purchase-returns/${row.id}`);
     }
 
     const onDeleteClickEvent = (row: GridCellParams) => {
@@ -149,11 +150,11 @@ export default function PurchaseList() {
         });
     }
     const handleAddClick = () => {
-        navigate('/stock/purchases/new-purchase');
+        navigate('/stock/purchase-returns/new-purchase-returns');
     }
 
     useEffect(() => {
-        document.title = `Purchases | ${ProjectTitle}`;
+        document.title = `Purchase Returns | ${ProjectTitle}`;
     }, []);
 
     useEffect(() => {
@@ -173,14 +174,14 @@ export default function PurchaseList() {
 
     return (
         <>
-            <IconBreadcrumbs props={purchaseBreadCrumb.purchaseBreadCrumb} />
+            <IconBreadcrumbs props={purchaseReturnBreadCrumb.purchaseReturnBreadCrumb} />
             <Grid item xs={12} sm={12} md={12} mt={2} className="d-block">
-                <Button variant="contained" className="pull-right" onClick={handleAddClick}><AddIcon /> &nbsp; New Purchase</Button>
+                <Button variant="contained" className="pull-right" onClick={handleAddClick}><AddIcon /> &nbsp; New Purchase Return</Button>
             </Grid>
 
             <Grid item xs={12} sm={12} md={12} mt={2}>
                 <Card sx={{ minWidth: 275 }} className="card w-100">
-                    <CardHeader title="Purchases" className="card-header" />
+                    <CardHeader title="Purchase Returns" className="card-header" />
                     <CardContent className="table-content">
                         <DataGrid
                             className="data-table small"

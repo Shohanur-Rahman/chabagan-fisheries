@@ -43,7 +43,6 @@ const PurchaseForm: React.FC<{
             rate: itemRate,
             discount: itemDiscount,
             totalPrice: itemTotal,
-            prodSlNo: ''
         }
 
         const isItemExist = info?.items.some((item) =>

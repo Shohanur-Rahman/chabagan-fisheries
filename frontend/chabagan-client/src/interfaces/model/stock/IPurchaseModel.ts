@@ -3,7 +3,7 @@ import { IAutocompleteModel } from "../IDropdownModel"
 export interface IPurchaseModel {
     id: number,
     billNo: string,
-    billDate?: Date| null,
+    billDate?: Date | null,
     supplierId: number,
     projectId: number,
     totalAmount: number,
@@ -28,4 +28,39 @@ export interface IPurchaseItems {
     rate: number,
     discount: number,
     totalPrice: number
+}
+
+export const MapPurchaseInfo = (info: any) => {
+    let result = {
+        id: info.id,
+        billNo: info.billNo,
+        billDate: info.billDate,
+        supplierId: info.supplierId,
+        totalAmount: info.totalAmount,
+        discount: info.discount,
+        netAmount: info.netAmount,
+        paidAmount: info.paidAmount,
+        duesAmount: info.duesAmount,
+        items: info.items.map((sub: any) => {
+            let item: IPurchaseItems = {
+                id: 0,
+                itemName: sub.product.name,
+                productId: sub.productId,
+                purchaseId: 0,
+                brandName: sub.brand.name,
+                brandId: sub.brandId,
+                qty: sub.qty,
+                rate: sub.rate,
+                discount: sub.discount,
+                totalPrice: sub.totalPrice
+            }
+            return item;
+        }),
+        supplier: { label: info.supplier.name, value: info.supplier.id },
+        project: { label: info.project.name, value: info.project.id },
+        projectId: info.projectId,
+        note: info.note
+    }
+
+    return result;
 }

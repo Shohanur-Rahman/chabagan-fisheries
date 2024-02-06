@@ -1,9 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { ApiBaseURL } from "../../../data/Config";
 
 export const apiSlice = createApi({
   reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://localhost:7195/api/",
+    baseUrl: ApiBaseURL,
     credentials: "include",
     prepareHeaders: (headers) => {
       let tokenString = localStorage.getItem("result");
@@ -25,6 +26,7 @@ export const apiSlice = createApi({
     "supplier-list",
     "projects-list",
     "purchase-list",
+    "purchases-list",
   ],
   endpoints: (builder) => ({
     getRoles: builder.query({

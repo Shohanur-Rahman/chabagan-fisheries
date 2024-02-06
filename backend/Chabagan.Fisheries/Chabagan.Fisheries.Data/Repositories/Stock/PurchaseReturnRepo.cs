@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chabagan.Fisheries.Data.Repositories.Stock
 {
-    public class PurchaseRepo: IPurchaseRepo
+    public class PurchaseReturnRepo : IPurchaseReturnRepo
     {
         #region Properties and Variables
         /// <summary>
@@ -28,7 +28,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public PurchaseRepo(FisheriesDbContext dbContext, IMapper mapper)
+        public PurchaseReturnRepo(FisheriesDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -38,12 +38,12 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
 
         #region Public Methods
         /// <summary>
-        /// Get all purchase data from database
+        /// Get all purchase returns data from database
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<PurchaaseInfo>> GetAllPurchasesAsync()
+        public async Task<IEnumerable<PurchaaseInfo>> GetAllPurchaseReturnsAsync()
         {
-            return _mapper.Map<IEnumerable<PurchaaseInfo>>(await _dbContext.Purchases.Where(x => !x.IsDeleted)
+            return _mapper.Map<IEnumerable<PurchaaseInfo>>(await _dbContext.PurchaseReturns.Where(x => !x.IsDeleted)
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
@@ -51,13 +51,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         }
 
         /// <summary>
-        /// Get a single Purchase data from database by brand id
+        /// Get a single purchase returns data from database by brand id
         /// </summary>
         /// <param name="purchaseId"></param>
         /// <returns></returns>
-        public async Task<DbPurchase?> GetPurchaseByPurchaseIdAsync(long purchaseId)
+        public async Task<DbPurchaseReturn?> GetPurchaseReturnByPurchaseIdAsync(long purchaseId)
         {
-            return await _dbContext.Purchases.Where(x => x.Id == purchaseId)
+            return await _dbContext.PurchaseReturns.Where(x => x.Id == purchaseId)
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .Include(x => x.Items)
@@ -69,30 +69,39 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         }
 
         /// <summary>
-        /// Save Purchase information in database
+        /// Save purchase returns information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchase?> SavePurchaseAsync(ProcessPurchase model)
+        public async Task<DbPurchaseReturn?> SavePurchaseReturnAsync(ProcessPurchase model)
         {
-            if (model is null)
-                throw new ArgumentNullException(nameof(model));
+            try
+            {
+                if (model is null)
+                    throw new ArgumentNullException(nameof(model));
 
-            DbPurchase dbPurchase = _mapper.Map<DbPurchase>(model);
-            await _dbContext.Purchases.AddAsync(dbPurchase);
-            await _dbContext.SaveChangesAsync();
-            return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
+                DbPurchaseReturn dbPurchase = _mapper.Map<DbPurchaseReturn>(model);
+                await _dbContext.PurchaseReturns.AddAsync(dbPurchase);
+                await _dbContext.SaveChangesAsync();
+                return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
 
         /// <summary>
-        /// Update Purchase information in database
+        /// Update purchase returns information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchase?> UpdatePurchaseAsync(ProcessPurchase model)
+        public async Task<DbPurchaseReturn?> UpdatePurchaseReturnAsync(ProcessPurchase model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
@@ -112,17 +121,17 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbPurchase = _mapper.Map<DbPurchase>(model);
             _dbContext.Purchases.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
+            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
         }
 
 
         /// <summary>
-        /// Delete a Purchase data by User id
+        /// Delete a purchase returns data by User id
         /// </summary>
         /// <param name="purchaseId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchase?> DeletePurchaseByPurchaseIdAsync(long purchaseId)
+        public async Task<DbPurchaseReturn?> DeletePurchaseReturnByPurchaseIdAsync(long purchaseId)
         {
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
@@ -135,11 +144,9 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbPurchase.IsDeleted = true;
             _dbContext.Purchases.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
+            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
         }
 
         #endregion
-
-
     }
 }
