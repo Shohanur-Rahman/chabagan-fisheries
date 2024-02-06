@@ -26,6 +26,7 @@ export const apiSlice = createApi({
     "supplier-list",
     "projects-list",
     "purchase-list",
+    "purchases-list",
   ],
   endpoints: (builder) => ({
     getRoles: builder.query({

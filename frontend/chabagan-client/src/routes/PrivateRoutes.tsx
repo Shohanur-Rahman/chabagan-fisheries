@@ -6,13 +6,14 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Brands from "../pages/setup/Brands";
 import Product from "../pages/setup/Product";
 import PurchaseAction from "../pages/stock/purchase/PurchaseAction";
-import PurchaseReturn from "../pages/stock/PurchaseReturn";
 import Sales from "../pages/stock/Sales";
 import SalesReturn from "../pages/stock/SalesReturn";
 import StockCategory from "../pages/setup/StockCategory";
 import Supplier from "../pages/setup/Supplier";
 import Project from "../pages/setup/Project";
 import PurchaseList from "../pages/stock/purchase/PurchaseList";
+import PurchaseReturnList from "../pages/stock/purchase-return/PurchaseReturnList";
+import PurchaseReturnAction from "../pages/stock/purchase-return/PurchaseReturnAction";
 
 const privateRoutes: IRouteConfig[] = [
     {
@@ -69,7 +70,15 @@ const privateRoutes: IRouteConfig[] = [
     },
     {
         path: 'stock/purchase-returns',
-        element: <PurchaseReturn />,
+        element: <PurchaseReturnList />,
+    },
+    {
+        path: 'stock/purchase-returns/new-purchase-returns',
+        element: <PurchaseReturnAction />,
+    },
+    {
+        path: 'stock/purchase-returns/edit-purchase-returns/:id',
+        element: <PurchaseReturnAction />,
     },
     {
         path: 'stock/sales',

@@ -4,6 +4,7 @@ import GrainIcon from '@mui/icons-material/Grain';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddIcon from '@mui/icons-material/Add';
+import EditIcon from '@mui/icons-material/Edit';
 
 const dashboarBreadCrumb: IIconBreadcrumbs[] = [
     {
@@ -142,6 +143,24 @@ const addPurchaseBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
+const editPurchaseBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchases",
+        path: "/stock/purchases",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "Edit Purchase",
+        icon: <EditIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
 const purchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
     {
         text: "Home",
@@ -150,7 +169,42 @@ const purchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
     },
     {
         text: "Purchase Returns",
-        icon: <AdminPanelSettingsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+const addPurchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchase Returns",
+        path: "/stock/purchase-returns",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "New Purchase Return",
+        icon: <AddIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+const editPurchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Purchase Returns",
+        path: "/stock/purchase-returns",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "Edit Purchase Return",
+        icon: <EditIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
         isLast: true
     }
 ]
@@ -194,7 +248,10 @@ export default {
     productBreadCrumb,
     purchaseBreadCrumb,
     addPurchaseBreadCrumb,
+    editPurchaseBreadCrumb,
     purchaseReturnBreadCrumb,
+    addPurchaseReturnBreadCrumb,
+    editPurchaseReturnBreadCrumb,
     supplierBreadCrumb,
     projectBreadCrumb
 }

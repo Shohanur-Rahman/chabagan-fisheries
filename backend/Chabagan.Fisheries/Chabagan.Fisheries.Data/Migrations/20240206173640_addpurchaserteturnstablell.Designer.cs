@@ -4,6 +4,7 @@ using Chabagan.Chabagan.Fisheries.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chabagan.Fisheries.Data.Migrations
 {
     [DbContext(typeof(FisheriesDbContext))]
-    partial class FisheriesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240206173640_addpurchaserteturnstablell")]
+    partial class addpurchaserteturnstablell
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -99,37 +102,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 2, 6, 23, 39, 28, 234, DateTimeKind.Local).AddTicks(3129),
+                            CreatedDate = new DateTime(2024, 2, 6, 23, 36, 37, 366, DateTimeKind.Local).AddTicks(3005),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "cYlUHDey307il6pdviq5WNakFXrleJjdIlSaFHmcA7c=",
-                            PasswordSalt = "z2KDEWQRLvYtMTvPCd0Cog==",
+                            Password = "aYCxPtaSdSdn8UPLggPgEMYS+1t6zI1ZHNFxDSEnPYs=",
+                            PasswordSalt = "GG+AU56DFHTLelZXU4nYHQ==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 2, 6, 23, 39, 28, 249, DateTimeKind.Local).AddTicks(5853),
+                            CreatedDate = new DateTime(2024, 2, 6, 23, 36, 37, 386, DateTimeKind.Local).AddTicks(8233),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "zkGY+6+zi4CBqkhFwIW2ktg44EOHnA5W0GmWmU1fM0E=",
-                            PasswordSalt = "z2KDEWQRLvYtMTvPCd0Cog==",
+                            Password = "IrH3r7bLIaZyoDKhTVvmBQ3zRthn2qzWfkWUjw6WXX8=",
+                            PasswordSalt = "GG+AU56DFHTLelZXU4nYHQ==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 2, 6, 23, 39, 28, 264, DateTimeKind.Local).AddTicks(3591),
+                            CreatedDate = new DateTime(2024, 2, 6, 23, 36, 37, 405, DateTimeKind.Local).AddTicks(3096),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "cYlUHDey307il6pdviq5WNakFXrleJjdIlSaFHmcA7c=",
-                            PasswordSalt = "z2KDEWQRLvYtMTvPCd0Cog==",
+                            Password = "aYCxPtaSdSdn8UPLggPgEMYS+1t6zI1ZHNFxDSEnPYs=",
+                            PasswordSalt = "GG+AU56DFHTLelZXU4nYHQ==",
                             RoleId = 3
                         });
                 });
@@ -708,6 +711,9 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.Property<long?>("BrandId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("DbPurchaseReturnId")
+                        .HasColumnType("bigint");
+
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
@@ -715,7 +721,8 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<long>("PurchaseId")
-                        .HasColumnType("bigint");
+                        .HasColumnType("bigint")
+                        .HasColumnName("PurchaseReturnId");
 
                     b.Property<decimal>("Qty")
                         .HasColumnType("decimal(18,2)");
@@ -729,6 +736,8 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("BrandId");
+
+                    b.HasIndex("DbPurchaseReturnId");
 
                     b.HasIndex("ProductID");
 
@@ -873,14 +882,18 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .WithMany()
                         .HasForeignKey("BrandId");
 
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Stock.DbPurchaseReturn", null)
+                        .WithMany("Items")
+                        .HasForeignKey("DbPurchaseReturnId");
+
                     b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbProduct", "Product")
                         .WithMany()
                         .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Chabagan.Fisheries.Entities.Models.Stock.DbPurchaseReturn", "Purchase")
-                        .WithMany("Items")
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", "Purchase")
+                        .WithMany()
                         .HasForeignKey("PurchaseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

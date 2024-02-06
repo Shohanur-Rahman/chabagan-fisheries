@@ -23,11 +23,15 @@ namespace Chabagan.Fisheries.Data.Utilities
             services.AddTransient<IStockCategoryRepo, StockCategoryRepo>();
             services.AddTransient<IProductRepo, ProductRepo>();
             services.AddTransient<IProductRepo, ProductRepo>();
-            services.AddTransient<IPurchaseRepo, PurchaseRepo>();
-            services.AddTransient<IPurchaseItemRepo, PurchaseItemRepo>();
             services.AddTransient<ISupplierRepo, SupplierRepo>();
             services.AddTransient<IProjectRepo, ProjectRepo>();
             services.AddTransient<IPondRepo, PondRepo>();
+
+
+            services.AddTransient<IPurchaseRepo, PurchaseRepo>();
+            services.AddTransient<IPurchaseItemRepo, PurchaseItemRepo>();
+            services.AddTransient<IPurchaseReturnRepo, PurchaseReturnRepo>();
+
             return services;
         }
     }

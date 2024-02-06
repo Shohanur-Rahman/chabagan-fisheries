@@ -12,10 +12,10 @@ import PurchaseCalculation from "../../../components/stock/purchase/PurchaseCalc
 import PurchaseForm from "../../../components/stock/purchase/PurchaseForm";
 import { IPurchaseModel, MapPurchaseInfo } from "../../../interfaces/model/stock/IPurchaseModel";
 import PurchaseItems from "../../../components/stock/purchase/PurchaseItems";
-import { useAddPurchaseMutation, useGetPurchaseMutation, useUpdatePurchaseMutation } from "../../../redux/features/stock/purchaseApi";
 import { useNavigate, useParams } from "react-router-dom";
+import { useAddPurchaseReturnMutation, useGetPurchaseReturnMutation, useUpdatePurchaseReturnMutation } from "../../../redux/features/stock/purchaseReturnApi";
 
-export default function PurchaseAction() {
+export default function PurchaseReturnAction() {
 
     const [initialValues, setInitialValues] = useState<IPurchaseModel>(
         {
@@ -37,9 +37,9 @@ export default function PurchaseAction() {
     );
     const { id } = useParams();
     const navigate = useNavigate();
-    const [addPurchase, { isLoading, isError, isSuccess, data, error }] = useAddPurchaseMutation();
-    const [updatePurchase, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdatePurchaseMutation();
-    const [getPurchase, { isError: isPurchaseError, isSuccess: isPurchaseSuccess, data: purchaseData, error: purchaseError }] = useGetPurchaseMutation();
+    const [addPurchaseReturn, { isLoading, isError, isSuccess, data, error }] = useAddPurchaseReturnMutation();
+    const [updatePurchaseReturn, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdatePurchaseReturnMutation();
+    const [getPurchaseReturn, { isError: isPurchaseError, isSuccess: isPurchaseSuccess, data: purchaseData, error: purchaseError }] = useGetPurchaseReturnMutation();
 
     const validationSchema = Yup.object({
         billNo: Yup.string().required('Bill is required'),
@@ -57,9 +57,9 @@ export default function PurchaseAction() {
         validateOnChange: false,
         onSubmit: (values) => {
             if (values.id > 0) {
-                updatePurchase(values);
+                updatePurchaseReturn(values);
             } else {
-                addPurchase(values);
+                addPurchaseReturn(values);
             }
         }
     });
@@ -70,13 +70,13 @@ export default function PurchaseAction() {
 
     useEffect(() => {
         if (id)
-            getPurchase(id);
+            getPurchaseReturn(id);
     }, [id]);
 
     useEffect(() => {
         if (isSuccess && data) {
             showAddNotification()
-            navigate('/stock/purchases');
+            navigate('/stock/purchase-returns');
         }
         if (isError && error) {
             showErrorNotification(error);
@@ -86,7 +86,7 @@ export default function PurchaseAction() {
     useEffect(() => {
         if (isUpdateSuccess && updateData) {
             showUpdateNotification()
-            navigate('/stock/purchases');
+            navigate('/stock/purchase-returns');
         }
         if (isUpdateError && updateError) {
             showErrorNotification(updateError);
@@ -98,6 +98,7 @@ export default function PurchaseAction() {
             showErrorNotification(error);
         }
         else if (isPurchaseSuccess && purchaseData) {
+            console.log("Data", purchaseData)
             let editInfo = MapPurchaseInfo(purchaseData.result);
             setInitialValues(editInfo);
         }
@@ -106,15 +107,15 @@ export default function PurchaseAction() {
     return (
         <>
             {id ? (
-                <IconBreadcrumbs props={addPurchaseBreadCrumb.editPurchaseBreadCrumb} />
+                <IconBreadcrumbs props={addPurchaseBreadCrumb.editPurchaseReturnBreadCrumb} />
             ) : (
-                <IconBreadcrumbs props={addPurchaseBreadCrumb.addPurchaseBreadCrumb} />
+                <IconBreadcrumbs props={addPurchaseBreadCrumb.addPurchaseReturnBreadCrumb} />
             )}
             <Grid item xs={12} sm={12} md={12} mt={2}>
                 <Box component="form" className="w-100 card-form" noValidate onSubmit={formik.handleSubmit}>
                     <Grid item xs={12} sm={12} md={12} lg={12}>
                         <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title={id ? "Edit Purchase" : "New Purchase"} className="card-header" />
+                            <CardHeader title={id ? "Edit Purchase Return" : "New Purchase Return"} className="card-header" />
                             <CardContent className="table-content">
                                 <PurchaseInfo info={initialValues} formik={formik} setState={setInitialValues} />
                                 <PurchaseForm info={initialValues} setState={setInitialValues} />
