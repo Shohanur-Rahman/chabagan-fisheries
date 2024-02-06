@@ -64,6 +64,10 @@ const privateRoutes: IRouteConfig[] = [
         element: <PurchaseAction />,
     },
     {
+        path: 'stock/purchases/edit-purchase/:id',
+        element: <PurchaseAction />,
+    },
+    {
         path: 'stock/purchase-returns',
         element: <PurchaseReturn />,
     },

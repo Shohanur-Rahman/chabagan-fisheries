@@ -8,6 +8,7 @@ import { IAutocompleteModel } from "../../../interfaces/model/IDropdownModel";
 import { useGetSupplierAutocompleteQuery } from "../../../redux/features/setup/supplierApi";
 import { IPurchaseModel } from "../../../interfaces/model/stock/IPurchaseModel";
 import { useGetProjectAutoCompleteQuery } from "../../../redux/features/setup/projectApi";
+import dayjs from "dayjs";
 const PurchaseInfo: React.FC<{
     info: IPurchaseModel,
     formik: FormikValues,
@@ -83,6 +84,7 @@ const PurchaseInfo: React.FC<{
                         size="small"
                         onChange={onChangeBillNumber}
                         value={info.billNo}
+                        disabled={(info.id > 0)}
                     />
                     {formik.touched.billNo && formik.errors.billNo ? (
                         <p className="validation-error text-danger">{formik.errors.billNo}</p>
@@ -93,7 +95,7 @@ const PurchaseInfo: React.FC<{
                 <FormGroup>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            // value={dayjs('2024-01-25T15:30')}
+                            value={dayjs(info.billDate)}
                             onChange={handlePurchageDateChange}
                             className="mt-0 datepicker-sm" />
                     </LocalizationProvider>

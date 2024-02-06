@@ -38,7 +38,7 @@ const purchaseApi = apiSlice.injectEndpoints({
         })
     })
 })
-
+ 
 export const {
     useGetPurchasesQuery,
     useAddPurchaseMutation,

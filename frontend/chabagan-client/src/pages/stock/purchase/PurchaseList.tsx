@@ -1,20 +1,24 @@
 import { Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IconBreadcrumbs } from "../../../components/common/IconBreadcrumbs";
 import purchaseBreadCrumb from '../../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
-import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../../data/Config";
+import { ApiBaseURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../../data/Config";
 import { useNavigate } from "react-router-dom";
 import { useDeletePurchaseMutation, useGetPurchasesQuery } from "../../../redux/features/stock/purchaseApi";
 import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
+import CustomPDFViwer from "../../../components/common/CustomPDFViwer";
+import { IPdfViwerModel } from "../../../interfaces/model/IPdfViwerModel";
 
 export default function PurchaseList() {
     const navigate = useNavigate();
     const [rows, setRows] = useState([]);
+    const [viwer, setViwer] = useState({} as IPdfViwerModel);
     const { data, isSuccess } = useGetPurchasesQuery(null);
     const [deletePurchase, { isSuccess: isDeleteSuccess, data: deleteData, error: deleteError }] = useDeletePurchaseMutation();
 
@@ -89,6 +93,13 @@ export default function PurchaseList() {
                     <>
                         <Button
                             className="grid-btn"
+                            onClick={() => onDownloadClick(params.row)}
+                            variant="contained"
+                        >
+                            <VisibilityIcon className="f-16" />
+                        </Button>
+                        <Button
+                            className="grid-btn"
                             onClick={() => onEditClick(params.row)}
                             variant="contained"
                         >
@@ -108,8 +119,18 @@ export default function PurchaseList() {
         }
     ];
 
+    const onDownloadClick = (row: any) => {
+        let viwerInfo: IPdfViwerModel = {
+            id: row.id.toString(),
+            title: `Invoice no ${row?.billNo}`,
+            url: `${ApiBaseURL}purchases/invoice?id=${row.id}`,
+            open: true
+        }
+        setViwer(viwerInfo);
+    }
+
     const onEditClick = (row: GridCellParams) => {
-        console.log(row.id);
+        navigate(`/stock/purchases/edit-purchase/${row.id}`);
     }
 
     const onDeleteClickEvent = (row: GridCellParams) => {
@@ -189,6 +210,8 @@ export default function PurchaseList() {
                     </CardContent>
                 </Card>
             </Grid>
+
+            <CustomPDFViwer info={viwer} setState={setViwer} />
         </>
     )
 }

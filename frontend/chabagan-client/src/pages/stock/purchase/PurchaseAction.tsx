@@ -6,14 +6,14 @@ import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrow
 import { IconBreadcrumbs } from "../../../components/common/IconBreadcrumbs";
 import addPurchaseBreadCrumb from '../../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
-import { ProjectTitle, showAddNotification, showErrorNotification } from "../../../data/Config";
+import { ProjectTitle, showAddNotification, showErrorNotification, showUpdateNotification } from "../../../data/Config";
 import PurchaseInfo from "../../../components/stock/purchase/PurchaseInfo";
 import PurchaseCalculation from "../../../components/stock/purchase/PurchaseCalculation";
 import PurchaseForm from "../../../components/stock/purchase/PurchaseForm";
-import { IPurchaseModel } from "../../../interfaces/model/stock/IPurchaseModel";
+import { IPurchaseModel, MapPurchaseInfo } from "../../../interfaces/model/stock/IPurchaseModel";
 import PurchaseItems from "../../../components/stock/purchase/PurchaseItems";
-import { useAddPurchaseMutation } from "../../../redux/features/stock/purchaseApi";
-import { useNavigate } from "react-router-dom";
+import { useAddPurchaseMutation, useGetPurchaseMutation, useUpdatePurchaseMutation } from "../../../redux/features/stock/purchaseApi";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function PurchaseAction() {
 
@@ -35,8 +35,11 @@ export default function PurchaseAction() {
             note: ''
         }
     );
+    const { id } = useParams();
     const navigate = useNavigate();
     const [addPurchase, { isLoading, isError, isSuccess, data, error }] = useAddPurchaseMutation();
+    const [updatePurchase, { isLoading: isUpdateLoading, isError: isUpdateError, isSuccess: isUpdateSuccess, data: updateData, error: updateError }] = useUpdatePurchaseMutation();
+    const [getPurchase, { isError: isPurchaseError, isSuccess: isPurchaseSuccess, data: purchaseData, error: purchaseError }] = useGetPurchaseMutation();
 
     const validationSchema = Yup.object({
         billNo: Yup.string().required('Bill is required'),
@@ -53,13 +56,21 @@ export default function PurchaseAction() {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: (values) => {
-            addPurchase(values);
+            if (values.id > 0) {
+                updatePurchase(values);
+            } else {
+                addPurchase(values);
+            }
         }
     });
 
     useEffect(() => {
         document.title = `Purchase | ${ProjectTitle}`;
     }, []);
+
+    useEffect(() => {
+        getPurchase(id);
+    }, [id]);
 
     useEffect(() => {
         if (isSuccess && data) {
@@ -70,6 +81,26 @@ export default function PurchaseAction() {
             showErrorNotification(error);
         }
     }, [isSuccess, isError, data, error]);
+
+    useEffect(() => {
+        if (isUpdateSuccess && updateData) {
+            showUpdateNotification()
+            navigate('/stock/purchases');
+        }
+        if (isUpdateError && updateError) {
+            showErrorNotification(updateError);
+        }
+    }, [isUpdateSuccess, isUpdateError, updateData, updateError]);
+
+    useEffect(() => {
+        if (isPurchaseError && purchaseError) {
+            showErrorNotification(error);
+        }
+        else if (isPurchaseSuccess && purchaseData) {
+            let editInfo = MapPurchaseInfo(purchaseData.result);
+            setInitialValues(editInfo);
+        }
+    }, [isPurchaseSuccess, isPurchaseError, purchaseData, purchaseError]);
 
     return (
         <>
@@ -98,7 +129,7 @@ export default function PurchaseAction() {
                                         variant="contained"
                                         color="success"
                                         className="pull-right"
-                                        disabled={(isLoading)}
+                                        disabled={(isLoading || isUpdateLoading)}
                                     >
                                         Save Changes &nbsp;<DoneAllIcon />
                                     </Button>

@@ -102,6 +102,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (dbPurchase is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
+            var items = await _dbContext.PurchaseItems.Where(x => x.PurchaseId == model.Id).AsNoTracking().ToListAsync();
+            if (items.Any())
+            {
+                _dbContext.PurchaseItems.RemoveRange(items);
+                await _dbContext.SaveChangesAsync();
+            }
+
             dbPurchase = _mapper.Map<DbPurchase>(model);
             _dbContext.Purchases.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();

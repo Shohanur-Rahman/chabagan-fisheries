@@ -12,7 +12,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize]
+   // [Authorize]
     public class PurchasesController : BaseController
     {
         #region Private Properties and Variables
@@ -83,16 +83,17 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         [HttpGet("invoice")]
         public async Task<IActionResult> Invoice(long id)
         {
-            string randomName = Guid.NewGuid().ToString();
+            //string randomName = Guid.NewGuid().ToString();
             var invoiceInfo = await _purchaseRepo.GetPurchaseByPurchaseIdAsync(id);
+            //string fileName = $"Invoice_{id}_{randomName}_.pdf";
 
-            if(invoiceInfo is null)
+            if (invoiceInfo is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
             var pdfBytes = _pdfService.GeneratePdf(PDFContents.GetPurchaseInvoice(invoiceInfo));
 
             // Return the PDF as a file
-            return File(pdfBytes, "application/pdf", "generated-pdf.pdf");
+            return File(pdfBytes, "application/pdf");
         }
 
         /// <summary>
