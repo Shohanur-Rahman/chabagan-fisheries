@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chabagan.Fisheries.Data.Repositories.Stock
 {
-    public class PurchaseReturnRepo : IPurchaseReturnRepo
+    public class SalesRepo: ISalesRepo
     {
         #region Properties and Variables
         /// <summary>
@@ -28,7 +28,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public PurchaseReturnRepo(FisheriesDbContext dbContext, IMapper mapper)
+        public SalesRepo(FisheriesDbContext dbContext, IMapper mapper)
         {
             _dbContext = dbContext;
             _mapper = mapper;
@@ -36,14 +36,15 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
 
         #endregion
 
+
         #region Public Methods
         /// <summary>
-        /// Get all purchase returns data from database
+        /// Get all Sales data from database
         /// </summary>
         /// <returns></returns>
-        public async Task<IEnumerable<PurchaaseInfo>> GetAllPurchaseReturnsAsync()
+        public async Task<IEnumerable<PurchaaseInfo>> GetAllSalesAsync()
         {
-            return _mapper.Map<IEnumerable<PurchaaseInfo>>(await _dbContext.PurchaseReturns.Where(x => !x.IsDeleted)
+            return _mapper.Map<IEnumerable<PurchaaseInfo>>(await _dbContext.Sales.Where(x => !x.IsDeleted)
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
@@ -51,13 +52,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         }
 
         /// <summary>
-        /// Get a single purchase returns data from database by brand id
+        /// Get a single Sales data from database by brand id
         /// </summary>
         /// <param name="purchaseId"></param>
         /// <returns></returns>
-        public async Task<DbPurchaseReturn?> GetPurchaseReturnByPurchaseIdAsync(long purchaseId)
+        public async Task<DbSales?> GetSalesBySalesIdAsync(long purchaseId)
         {
-            return await _dbContext.PurchaseReturns.Where(x => x.Id == purchaseId)
+            return await _dbContext.Sales.Where(x => x.Id == purchaseId)
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .Include(x => x.Items)
@@ -69,84 +70,76 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         }
 
         /// <summary>
-        /// Save purchase returns information in database
+        /// Save Purchase information in database
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchaseReturn?> SavePurchaseReturnAsync(ProcessPurchase model)
-        {
-            try
-            {
-                if (model is null)
-                    throw new ArgumentNullException(nameof(model));
-
-                DbPurchaseReturn dbPurchase = _mapper.Map<DbPurchaseReturn>(model);
-                await _dbContext.PurchaseReturns.AddAsync(dbPurchase);
-                await _dbContext.SaveChangesAsync();
-                return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
-
-        }
-
-
-        /// <summary>
-        /// Update purchase returns information in database
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchaseReturn?> UpdatePurchaseReturnAsync(ProcessPurchase model)
+        public async Task<DbSales?> SaveSalesAsync(ProcessPurchase model)
         {
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
-
-            if (dbPurchase is null)
-                throw new Exception(ResponseMessage.FailRetrieve);
-
-            var items = await _dbContext.PurchaseReturnItems.Where(x => x.PurchaseId == model.Id).AsNoTracking().ToListAsync();
-            if (items.Any())
-            {
-                _dbContext.PurchaseReturnItems.RemoveRange(items);
-                await _dbContext.SaveChangesAsync();
-            }
-
-            dbPurchase = _mapper.Map<DbPurchase>(model);
-            _dbContext.Purchases.Update(dbPurchase);
+            DbSales dbSales = _mapper.Map<DbSales>(model);
+            await _dbContext.Sales.AddAsync(dbSales);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
+            return await GetSalesBySalesIdAsync(dbSales.Id);
         }
 
 
         /// <summary>
-        /// Delete a purchase returns data by User id
+        /// Update Purchase information in database
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public async Task<DbSales?> UpdateSalesAsync(ProcessPurchase model)
+        {
+            if (model is null)
+                throw new ArgumentNullException(nameof(model));
+
+            DbSales? dbPurchase = await _dbContext.Sales.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
+
+            if (dbPurchase is null)
+                throw new Exception(ResponseMessage.FailRetrieve);
+
+            var items = await _dbContext.SalesItems.Where(x => x.PurchaseId == model.Id).AsNoTracking().ToListAsync();
+            if (items.Any())
+            {
+                _dbContext.SalesItems.RemoveRange(items);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            dbPurchase = _mapper.Map<DbSales>(model);
+            _dbContext.Sales.Update(dbPurchase);
+            await _dbContext.SaveChangesAsync();
+            return await GetSalesBySalesIdAsync(dbPurchase.Id);
+        }
+
+
+        /// <summary>
+        /// Delete a Purchase data by User id
         /// </summary>
         /// <param name="purchaseId"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<DbPurchaseReturn?> DeletePurchaseReturnByPurchaseIdAsync(long purchaseId)
+        public async Task<DbSales?> DeleteSalesBySalesIdAsync(long purchaseId)
         {
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
 
-            DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
+            DbSales? dbPurchase = await _dbContext.Sales.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
 
             if (dbPurchase is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
             dbPurchase.IsDeleted = true;
-            _dbContext.Purchases.Update(dbPurchase);
+            _dbContext.Sales.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
+            return await GetSalesBySalesIdAsync(dbPurchase.Id);
         }
 
         #endregion
+
     }
 }

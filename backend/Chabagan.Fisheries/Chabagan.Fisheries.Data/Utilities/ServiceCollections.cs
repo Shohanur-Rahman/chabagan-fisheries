@@ -31,6 +31,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             services.AddTransient<IPurchaseRepo, PurchaseRepo>();
             services.AddTransient<IPurchaseItemRepo, PurchaseItemRepo>();
             services.AddTransient<IPurchaseReturnRepo, PurchaseReturnRepo>();
+            services.AddTransient<ISalesRepo, SalesRepo>();
 
             return services;
         }
