@@ -25,16 +25,13 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// Interface for access data
         /// </summary>
         private readonly IPurchaseReturnRepo _purchaseRepo;
-
-        private readonly PdfService _pdfService;
         #endregion
 
         #region Constructors
-        public PurchaseReturnsController(ILogger<PurchaseReturnsController> logger, IPurchaseReturnRepo purchaseRepo, PdfService pdfService)
+        public PurchaseReturnsController(ILogger<PurchaseReturnsController> logger, IPurchaseReturnRepo purchaseRepo)
         {
             _purchaseRepo = purchaseRepo;
             _logger = logger;
-            _pdfService = pdfService;
 
         }
         #endregion
@@ -92,7 +89,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
             if (invoiceInfo is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            var pdfBytes = _pdfService.GeneratePdf(PDFContents.GetPurchaseReturnInvoice(invoiceInfo));
+            var pdfBytes = PdfService.GeneratePdf(PDFContents.GetPurchaseReturnInvoice(invoiceInfo));
 
             // Return the PDF as a file
             return File(pdfBytes, "application/pdf");

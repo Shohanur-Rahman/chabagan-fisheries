@@ -4,7 +4,7 @@ import ChecklistIcon from '@mui/icons-material/Checklist';
 import { ArrowRight } from "@mui/icons-material";
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-
+import FileCopyIcon from '@mui/icons-material/FileCopy';
 export interface IMenu {
     link?: string,
     label: string;
@@ -71,6 +71,32 @@ const sidebarMenus: IMenu[] = [
             {
                 label: "Sales Returns",
                 link: "/stock/sales-returns",
+                icon: <ArrowRight />
+            }
+        ]
+    },
+    {
+        label: "Reports",
+        icon: <FileCopyIcon />,
+        submenu: [
+            {
+                label: "Purchase",
+                link: "/reports/purchases",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Purchase Return",
+                link: "/reports/purchase-return",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Sales",
+                link: "/reports/sales",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Sales Returns",
+                link: "/reports/sales-returns",
                 icon: <ArrowRight />
             }
         ]
