@@ -1,38 +1,27 @@
-﻿using DinkToPdf.Contracts;
-using DinkToPdf;
+﻿using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Html2pdf;
 
 namespace Chabagan.Fisheries.WebApi.Services
 {
     public class PdfService
     {
-        private readonly IConverter _converter;
-
-        public PdfService(IConverter converter)
+        
+        public static byte[] GeneratePdf(string htmlContent)
         {
-            _converter = converter;
-        }
-
-        public byte[] GeneratePdf(string htmlContent)
-        {
-            var globalSettings = new GlobalSettings
+            byte[] pdfBytes;
+            using (MemoryStream outputStream = new MemoryStream())
             {
-                Orientation = Orientation.Portrait,
-                PaperSize = PaperKind.A4,
-            };
+                PdfWriter writer = new PdfWriter(outputStream);
+                PdfDocument pdf = new PdfDocument(writer);
+                Document document = new Document(pdf);
 
-            var objectSettings = new ObjectSettings
-            {
-                PagesCount = true,
-                HtmlContent = htmlContent,
-            };
+                HtmlConverter.ConvertToPdf(htmlContent, pdf, new ConverterProperties());
 
-            var document = new HtmlToPdfDocument()
-            {
-                GlobalSettings = globalSettings,
-                Objects = { objectSettings }
-            };
-
-            return _converter.Convert(document);
+                document.Close();
+                pdfBytes = outputStream.ToArray();
+            }
+            return pdfBytes;
         }
     }
 }
