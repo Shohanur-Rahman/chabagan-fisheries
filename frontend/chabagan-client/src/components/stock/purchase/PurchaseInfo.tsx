@@ -14,7 +14,8 @@ const PurchaseInfo: React.FC<{
     info: IPurchaseModel,
     formik: FormikValues,
     setState: React.Dispatch<SetStateAction<IPurchaseModel>>
-}> = ({ info, formik, setState }) => {
+    mode?: string
+}> = ({ info, formik, setState, mode }) => {
 
     const { data: supplierData, isSuccess: isSupplierSuccess } = useGetSupplierAutocompleteQuery(null);
     const { data: projectData, isSuccess: isProjectSuccess } = useGetProjectAutoCompleteQuery(null);
@@ -114,7 +115,7 @@ const PurchaseInfo: React.FC<{
                         id="combo-box-demo"
                         options={suppliers}
                         value={info.supplier}
-                        renderInput={(params) => <TextField {...params} label="Supplier" size="small" />}
+                        renderInput={(params) => <TextField {...params} label={(mode ? mode : "Supplier")} size="small" />}
                     />
                     {formik.touched.supplierId && formik.errors.supplierId ? (
                         <p className="validation-error text-danger">{formik.errors.supplierId}</p>

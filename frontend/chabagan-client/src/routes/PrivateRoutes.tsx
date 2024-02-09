@@ -6,14 +6,16 @@ import Dashboard from "../pages/dashboard/Dashboard";
 import Brands from "../pages/setup/Brands";
 import Product from "../pages/setup/Product";
 import PurchaseAction from "../pages/stock/purchase/PurchaseAction";
-import Sales from "../pages/stock/Sales";
-import SalesReturn from "../pages/stock/SalesReturn";
 import StockCategory from "../pages/setup/StockCategory";
 import Supplier from "../pages/setup/Supplier";
 import Project from "../pages/setup/Project";
 import PurchaseList from "../pages/stock/purchase/PurchaseList";
 import PurchaseReturnList from "../pages/stock/purchase-return/PurchaseReturnList";
 import PurchaseReturnAction from "../pages/stock/purchase-return/PurchaseReturnAction";
+import SalesList from "../pages/stock/sales/SalesList";
+import SalesAction from "../pages/stock/sales/SalesAction";
+import SalesReturnsList from "../pages/stock/sales-return/SalesReturnsList";
+import SalesReturnAction from "../pages/stock/sales-return/SalesReturnAction";
 
 const privateRoutes: IRouteConfig[] = [
     {
@@ -82,11 +84,27 @@ const privateRoutes: IRouteConfig[] = [
     },
     {
         path: 'stock/sales',
-        element: <Sales />,
+        element: <SalesList />,
+    },
+    {
+        path: 'stock/sales/new-sales',
+        element: <SalesAction />,
+    },
+    {
+        path: 'stock/sales/edit-sales/:id',
+        element: <SalesAction />,
     },
     {
         path: 'stock/sales-returns',
-        element: <SalesReturn />,
+        element: <SalesReturnsList />,
+    },
+    {
+        path: 'stock/sales-returns/new-sales-returns',
+        element: <SalesReturnAction />,
+    },
+    {
+        path: 'stock/sales-returns/edit-sales-returns/:id',
+        element: <SalesReturnAction />,
     }
 ]
 

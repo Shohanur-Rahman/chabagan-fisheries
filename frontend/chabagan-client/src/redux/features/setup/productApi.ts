@@ -7,6 +7,12 @@ const productApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["products-list"]
         }),
+        getProductStocks: builder.query({
+            query: () => ({
+                url: `products/stocks`
+            }),
+            providesTags: ["products-list"]
+        }),
         getProductAutocomplete: builder.query({
             query: () => ({
                 url: `products/autocomplete`
@@ -47,6 +53,7 @@ const productApi = apiSlice.injectEndpoints({
 
 export const {
     useGetProductsQuery,
+    useGetProductStocksQuery,
     useGetProductAutocompleteQuery,
     useGetProductMutation,
     useAddProductMutation,
