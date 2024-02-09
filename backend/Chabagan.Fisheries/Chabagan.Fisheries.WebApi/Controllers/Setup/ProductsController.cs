@@ -12,6 +12,7 @@ using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Mapping;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -60,6 +61,24 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
             try
             {
                 return Ok(APIOperationResult.Success(await _productRepo.GetAllProductsAsync()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+
+        [Route("stocks")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<ProductStock>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<APIOperationResultGeneric<IEnumerable<ProductStock>>> GetProductStocks()
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(_productRepo.GetProductStocks()));
             }
             catch (Exception ex)
             {

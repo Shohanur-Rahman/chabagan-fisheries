@@ -1,0 +1,10 @@
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\bin\Debug\Chabagan.Fisheries.SqlQueries.dacpac
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\bin\Debug\Chabagan.Fisheries.SqlQueries.dll
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\bin\Debug\Chabagan.Fisheries.SqlQueries.pdb
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\Chabagan.Fisheries.SqlQueries.sqlproj.AssemblyReference.cache
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\Model.xml
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\refactor.xml
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\postdeploy.sql
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\predeploy.sql
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\Chabagan.Fisheries.SqlQueries.dll
+F:\Mamun_Bhai\chabagan-fisheries\backend\Chabagan.Fisheries\Chabagan.Fisheries.SqlQueries\obj\Debug\Chabagan.Fisheries.SqlQueries.pdb

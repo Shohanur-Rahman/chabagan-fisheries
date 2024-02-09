@@ -209,6 +209,101 @@ const editPurchaseReturnBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
+const salesBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+const addSalesBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales",
+        path: "/stock/sales",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "New Sale",
+        icon: <AddIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+const editSalesBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales",
+        path: "/stock/sales",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "Edit Sale",
+        icon: <EditIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+const salesReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales Returns",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+const addSalesReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales Returns",
+        path: "/stock/sales-returns",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "New Sales Returns",
+        icon: <AddIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
+const editSalesReturnBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Sales Returns",
+        path: "/stock/sales-returns",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />
+    },
+    {
+        text: "Edit Sales Returns",
+        icon: <EditIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
 const supplierBreadCrumb: IIconBreadcrumbs[] = [
     {
         text: "Home",
@@ -252,6 +347,12 @@ export default {
     purchaseReturnBreadCrumb,
     addPurchaseReturnBreadCrumb,
     editPurchaseReturnBreadCrumb,
+    salesBreadCrumb,
+    addSalesBreadCrumb,
+    editSalesBreadCrumb,
+    salesReturnBreadCrumb,
+    addSalesReturnBreadCrumb,
+    editSalesReturnBreadCrumb,
     supplierBreadCrumb,
     projectBreadCrumb
 }

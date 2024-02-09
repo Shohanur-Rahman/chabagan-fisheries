@@ -1,5 +1,6 @@
 ﻿using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
@@ -7,6 +8,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
     public interface IProductRepo
     {
         #region Public Methods
+
+        /// <summary>
+        /// Get product stocks
+        /// </summary>
+        /// <returns></returns>
+        List<ProductStock> GetProductStocks();
+
         /// <summary>
         /// Get all products data from database
         /// </summary>

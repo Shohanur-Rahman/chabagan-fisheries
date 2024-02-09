@@ -4,8 +4,10 @@ using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
+using Chabagan.Fisheries.SPMecanism;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -22,6 +24,11 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// Intilize mapping profile
         /// </summary>
         private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Stored procedure
+        /// </summary>
+        protected readonly IStoredProcedure _storedProcedure;
         #endregion
 
         #region Constructors
@@ -31,15 +38,35 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public ProductRepo(FisheriesDbContext dbContext, IMapper mapper)
+        public ProductRepo(FisheriesDbContext dbContext, IMapper mapper, IStoredProcedure storedProcedure)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _storedProcedure = storedProcedure;
         }
 
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Get product stocks
+        /// </summary>
+        /// <returns></returns>
+        public List<ProductStock> GetProductStocks()
+        {
+            List<ProductStock> stocks = new List<ProductStock>();
+
+            _storedProcedure.ProcedureName = ("[dbo].[sp_GetProductNameWithStock]");
+            DataTable dataTable = _storedProcedure.ExecuteQueryToDataTable();
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                stocks.Add(new ProductStock(dataRow));
+            }
+            return stocks.OrderBy(x => x.Stock).ToList();
+        }
+
         /// <summary>
         /// Get all products data from database
         /// </summary>

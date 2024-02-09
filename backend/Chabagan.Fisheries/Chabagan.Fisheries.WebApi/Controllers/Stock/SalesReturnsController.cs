@@ -1,7 +1,6 @@
-﻿using Chabagan.Fisheries.Common.APIResponse;
-using Chabagan.Fisheries.Common.APIResponse.Generic;
+﻿using Chabagan.Fisheries.Common.APIResponse.Generic;
+using Chabagan.Fisheries.Common.APIResponse;
 using Chabagan.Fisheries.Common.Constants;
-using Chabagan.Fisheries.Data.Repositories.Stock;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
@@ -15,7 +14,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
     [Route("api/[controller]")]
     [ApiController]
     [Authorize]
-    public class SalesController : BaseController
+    public class SalesReturnsController : BaseController
     {
         #region Private Properties and Variables
         /// <summary>
@@ -25,20 +24,21 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <summary>
         /// Interface for access data
         /// </summary>
-        private readonly ISalesRepo _salesRepo;
+        private readonly ISalesReturnRepo _salesReturnRepo;
 
         private readonly PdfService _pdfService;
         #endregion
 
         #region Constructors
-        public SalesController(ILogger<SalesController> logger, ISalesRepo salesRepo, PdfService pdfService)
+        public SalesReturnsController(ILogger<SalesReturnsController> logger, ISalesReturnRepo salesReturnRepo, PdfService pdfService)
         {
-            _salesRepo = salesRepo;
+            _salesReturnRepo = salesReturnRepo;
             _logger = logger;
             _pdfService = pdfService;
 
         }
         #endregion
+
 
         #region Public Methods and Endpoints
         /// <summary>
@@ -48,11 +48,11 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         [HttpGet]
         [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<PurchaaseInfo>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<PurchaaseInfo>>>> GetAllSalesAsync()
+        public async Task<ActionResult<APIOperationResultGeneric<IEnumerable<PurchaaseInfo>>>> GetAllSalesReturnsAsync()
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _salesRepo.GetAllSalesAsync()));
+                return Ok(APIOperationResult.Success(await _salesReturnRepo.GetAllSalesReturnsAsync()));
             }
             catch (Exception ex)
             {
@@ -66,13 +66,13 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// </summary>
         /// <param name="brandId"></param>
         [HttpGet("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSales>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSalesReturn>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbSales>>> GetSalesBySalesIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<DbSalesReturn>>> GetSalesReturnsBySalesReturnsIdAsync(long id)
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _salesRepo.GetSalesBySalesIdAsync(id)));
+                return Ok(APIOperationResult.Success(await _salesReturnRepo.GetSalesReturnsBySalesReturnsIdAsync(id)));
             }
             catch (Exception ex)
             {
@@ -86,7 +86,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         public async Task<IActionResult> Invoice(long id)
         {
             //string randomName = Guid.NewGuid().ToString();
-            var invoiceInfo = await _salesRepo.GetSalesBySalesIdAsync(id);
+            var invoiceInfo = await _salesReturnRepo.GetSalesReturnsBySalesReturnsIdAsync(id);
             //string fileName = $"Invoice_{id}_{randomName}_.pdf";
 
             if (invoiceInfo is null)
@@ -104,9 +104,9 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSales>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSalesReturn>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbSales>>> SaveSalesAsync([FromBody] ProcessPurchase model)
+        public async Task<ActionResult<APIOperationResultGeneric<DbSalesReturn>>> SaveSalesReturnsAsync([FromBody] ProcessPurchase model)
         {
             try
             {
@@ -116,7 +116,7 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
                         throw new ArgumentNullException(nameof(model.Items));
 
                     model.CreatedBy = GetLoggedInUserId();
-                    return Ok(APIOperationResult.Success(await _salesRepo.SaveSalesAsync(model)));
+                    return Ok(APIOperationResult.Success(await _salesReturnRepo.SaveSalesReturnsAsync(model)));
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
@@ -134,16 +134,16 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPut]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSales>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSalesReturn>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbSales>>> UpdateSalesAsync([FromBody] ProcessPurchase model)
+        public async Task<ActionResult<APIOperationResultGeneric<DbSalesReturn>>> UpdateSalesReturnAsync([FromBody] ProcessPurchase model)
         {
             try
             {
                 if (ModelState.IsValid)
                 {
                     model.UpdatedBy = GetLoggedInUserId();
-                    return Ok(APIOperationResult.Success(await _salesRepo.UpdateSalesAsync(model)));
+                    return Ok(APIOperationResult.Success(await _salesReturnRepo.UpdateSalesReturnAsync(model)));
                 }
 
                 return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ResponseMessage.BadRequest));
@@ -162,13 +162,13 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpDelete("{id}")]
-        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSales>), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<DbSalesReturn>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public async Task<ActionResult<APIOperationResultGeneric<DbSales>>> DeleteSalesBySalesIdAsync(long id)
+        public async Task<ActionResult<APIOperationResultGeneric<DbSalesReturn>>> DeleteSalesReturnBySalesReturnIdAsync(long id)
         {
             try
             {
-                return Ok(APIOperationResult.Success(await _salesRepo.DeleteSalesBySalesIdAsync(id)));
+                return Ok(APIOperationResult.Success(await _salesReturnRepo.DeleteSalesReturnBySalesReturnIdAsync(id)));
             }
             catch (Exception ex)
             {
@@ -178,7 +178,5 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         }
 
         #endregion
-
-
     }
 }

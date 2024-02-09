@@ -17,7 +17,7 @@ namespace Chabagan.Fisheries.SPMecanism
 
         public string GetConnectionString()
         {
-            return _config.GetConnectionString("DefaultConnection");
+            return _config.GetConnectionString("FisherConnection");
         }
     }
 }
