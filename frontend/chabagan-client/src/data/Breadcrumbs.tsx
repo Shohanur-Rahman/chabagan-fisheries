@@ -5,6 +5,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AddIcon from '@mui/icons-material/Add';
 import EditIcon from '@mui/icons-material/Edit';
+import AirlineStopsIcon from '@mui/icons-material/AirlineStops';
 
 const dashboarBreadCrumb: IIconBreadcrumbs[] = [
     {
@@ -330,6 +331,19 @@ const projectBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
+const transectionBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Transection Summaries",
+        icon: <AirlineStopsIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
+
 
 
 export default {
@@ -354,5 +368,6 @@ export default {
     addSalesReturnBreadCrumb,
     editSalesReturnBreadCrumb,
     supplierBreadCrumb,
-    projectBreadCrumb
+    projectBreadCrumb,
+    transectionBreadCrumb
 }

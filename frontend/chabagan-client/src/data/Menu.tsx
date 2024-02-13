@@ -98,6 +98,11 @@ const sidebarMenus: IMenu[] = [
                 label: "Sales Returns",
                 link: "/reports/sales-returns",
                 icon: <ArrowRight />
+            },
+            {
+                label: "Transections",
+                link: "/reports/trasection-summaries",
+                icon: <ArrowRight />
             }
         ]
     },

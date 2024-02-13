@@ -16,7 +16,7 @@ const SideNavigation = () => {
             {sidebarMenus.map((item: IMenu, index) => {
                 if (item.submenu?.length) {
                     return (
-                        <SidebarDropdownMenu key={index} item={item}/>
+                        <SidebarDropdownMenu key={index} item={item} className="fn_dum_nav"/>
                     )
                 } else {
                     return (

@@ -1,6 +1,7 @@
 ﻿CREATE FUNCTION [dbo].[fn_GetStockByProductId]
 (
-	@productId bigint
+	@productId bigint = null,
+	@brandId bigint = null
 )
 RETURNS float
 AS
@@ -13,10 +14,10 @@ BEGIN
 			@result float = 0;
 
 	-- Add the T-SQL statements to compute the return value here
-	set @purchaseQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseItems] where ProductID=@productId);
-	set @purchaseRtnQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseReturnItems] where ProductID=@productId);
-	set @salesSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesItems] where ProductID=@productId);
-	set @salesRtnSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesReturnItems] where ProductID=@productId);
+	set @purchaseQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @purchaseRtnQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseReturnItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @salesSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @salesRtnSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesReturnItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
 	
 	set @result = (@purchaseQty-@purchaseRtnQty-@salesSubQty+@salesRtnSubQty);
 	

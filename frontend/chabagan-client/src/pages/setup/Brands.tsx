@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import brandsBreadCrumb from '../../data/Breadcrumbs';
 import BrandForm from "../../components/setup/BrandForm";
@@ -6,10 +6,11 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IBrandModel } from "../../interfaces/model/setup/IBrandModel";
 import { useEffect, useState } from "react";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import {GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import { useDeleteBrandMutation, useGetBrandMutation, useGetBrandsQuery } from "../../redux/features/setup/brandApi";
 import Swal from "sweetalert2";
+import LoadDataGrid from "../../components/common/LoadDataGrid";
 
 export default function Brands() {
 
@@ -45,11 +46,11 @@ export default function Brands() {
         {
             field: 'name',
             headerName: 'Brand',
-            headerClassName: "primary-header", 
+            headerClassName: "primary-header",
             flex: 4
         },
         {
-            field: 'action', flex: 1, headerName: 'Actions', headerClassName: "primary-header",  renderCell: (params) => {
+            field: 'action', flex: 1, headerName: 'Actions', headerClassName: "primary-header", renderCell: (params) => {
                 return (
                     <>
                         <Button
@@ -112,36 +113,7 @@ export default function Brands() {
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Brands" className="card-header" />
-                            <CardContent className="table-content">
-                                <DataGrid
-                                    className="data-table small"
-                                    rows={rows}
-                                    columns={columns}
-                                    slots={{ toolbar: GridToolbar }}
-                                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                                    initialState={{
-                                        filter: {
-                                            filterModel: {
-                                                items: [],
-                                                quickFilterExcludeHiddenColumns: true,
-                                            },
-                                        },
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
-                                            },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    rowHeight={40}
-                                    columnHeaderHeight={40}
-                                    disableColumnMenu
-                                    disableRowSelectionOnClick
-                                />
-                            </CardContent>
-                        </Card>
+                        <LoadDataGrid title="Brands" rows={rows} columns={columns} />
                     </Grid>
                 </Grid>
             </Box>

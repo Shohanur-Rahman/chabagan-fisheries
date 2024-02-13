@@ -10,10 +10,12 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
         #region Public Methods
 
         /// <summary>
-        /// Get product stocks
+        /// Get product stock
         /// </summary>
+        /// <param name="productId">optional product id</param>
+        /// <param name="brandId">optional brand id</param>
         /// <returns></returns>
-        List<ProductStock> GetProductStocks();
+        List<ProductStock> GetProductStocks(long? productId, long? brandId);
 
         /// <summary>
         /// Get all products data from database

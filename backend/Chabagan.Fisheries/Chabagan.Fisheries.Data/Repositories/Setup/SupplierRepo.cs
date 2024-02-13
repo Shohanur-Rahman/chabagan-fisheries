@@ -4,8 +4,10 @@ using Chabagan.Fisheries.Common.Constants;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 using Chabagan.Fisheries.Entities.Models.Setup;
 using Chabagan.Fisheries.Mapping;
+using Chabagan.Fisheries.SPMecanism;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 
@@ -22,6 +24,11 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// Intilize mapping profile
         /// </summary>
         private readonly IMapper _mapper;
+
+        /// <summary>
+        /// Stored procedure
+        /// </summary>
+        protected readonly IStoredProcedure _storedProcedure;
         #endregion
 
         #region Constructors
@@ -31,15 +38,37 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         /// </summary>
         /// <param name="dbContext"></param>
         /// <param name="mapper"></param>
-        public SupplierRepo(FisheriesDbContext dbContext, IMapper mapper)
+        public SupplierRepo(FisheriesDbContext dbContext, IMapper mapper, IStoredProcedure storedProcedure)
         {
             _dbContext = dbContext;
             _mapper = mapper;
+            _storedProcedure = storedProcedure;
         }
 
         #endregion
 
         #region Public Methods
+
+        /// <summary>
+        /// Get supplier transection summary
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        public List<TransectionSummary> GetSupplierTransectionSummary(long? supplierId)
+        {
+            List<TransectionSummary> transections = new List<TransectionSummary>();
+
+            _storedProcedure.ProcedureName = ("[dbo].[sp_GetTransectionSummary]");
+            _storedProcedure.AddInputParameter("supplierId", supplierId, SqlDbType.BigInt);
+            DataTable dataTable = _storedProcedure.ExecuteQueryToDataTable();
+
+            foreach (DataRow dataRow in dataTable.Rows)
+            {
+                transections.Add(new TransectionSummary(dataRow));
+            }
+            return transections;
+        }
+
         /// <summary>
         /// Get all supplier data from database
         /// </summary>

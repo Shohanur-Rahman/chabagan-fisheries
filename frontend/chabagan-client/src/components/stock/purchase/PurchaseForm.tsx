@@ -2,16 +2,18 @@ import { Autocomplete, Button, FormGroup, Grid, TextField } from "@mui/material"
 import AddIcon from '@mui/icons-material/Add';
 import { SetStateAction, useEffect, useState } from "react";
 import { IAutocompleteModel } from "../../../interfaces/model/IDropdownModel";
-import { useGetProductAutocompleteQuery } from "../../../redux/features/setup/productApi";
+import { useGetProductAutocompleteQuery, useGetProductStockByIdMutation } from "../../../redux/features/setup/productApi";
 import { useGetBrandAutocompleteQuery } from "../../../redux/features/setup/brandApi";
 import { IPurchaseItems, IPurchaseModel } from "../../../interfaces/model/stock/IPurchaseModel";
 import Swal from "sweetalert2";
+import { showErrorNotification } from "../../../data/Config";
 
 
 const PurchaseForm: React.FC<{
     info: IPurchaseModel,
     setState: React.Dispatch<SetStateAction<IPurchaseModel>>
-}> = ({ info, setState }) => {
+    stockValidation?: boolean
+}> = ({ info, setState, stockValidation }) => {
 
     const { data: productData, isSuccess: isProductSuccess } = useGetProductAutocompleteQuery(null);
     const [products, setProducts] = useState<IAutocompleteModel[]>([] as IAutocompleteModel[]);
@@ -23,7 +25,11 @@ const PurchaseForm: React.FC<{
     const [itemRate, setItemRate] = useState<number>(0);
     const [itemDiscount, setItemDiscount] = useState<number>(0);
     const [itemTotal, setItemTotal] = useState<number>(0);
+    const [stock, setStock] = useState<number>(0);
+    const [stockError, setStockError] = useState<boolean>(false);
+    const [isOutOfStock, setOutOfStock] = useState<boolean>(false);
     const [isClicked, setIsClicked] = useState<boolean>(false);
+    const [getProductStockById, { isLoading, isError, isSuccess, data, error }] = useGetProductStockByIdMutation();
 
     const addNewItemToList = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsClicked(true);
@@ -92,10 +98,12 @@ const PurchaseForm: React.FC<{
 
     const handleProductChange = (event: React.SyntheticEvent, newValue: IAutocompleteModel | null) => {
         console.log(event.type);
+        setStockError(false);
         setSelectedProduct(newValue);
     }
     const handleBrandChange = (event: React.SyntheticEvent, newValue: IAutocompleteModel | null) => {
         console.log(event.type);
+        setStockError(false);
         setSelectedBrand(newValue);
     }
     const handleQtyChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,15 +125,29 @@ const PurchaseForm: React.FC<{
         }
     }
 
+    useEffect(() => {
+        let qty: number = itemQty ? itemQty : 0;
+        
+        if (qty > stock) {
+            setOutOfStock(true);
+        } else {
+            setOutOfStock(false);
+        }
+    }, [stock]);
 
     useEffect(() => {
-        let qty = itemQty ? itemQty : 0;
+        let qty: number = itemQty ? itemQty : 0;
         let rate = itemRate ? itemRate : 0;
         let discount = itemDiscount ? itemDiscount : 0;
         let total = ((qty * rate) - (qty * discount));
 
         setItemTotal(total);
 
+        if (qty > stock) {
+            setOutOfStock(true);
+        } else {
+            setOutOfStock(false);
+        }
     }, [itemQty, itemRate, itemDiscount]);
 
     useEffect(() => {
@@ -139,6 +161,27 @@ const PurchaseForm: React.FC<{
             setBrands(brandData?.result as IAutocompleteModel[]);
         }
     }, [brandData, isBrandSuccess]);
+
+    useEffect(() => {
+        if (selectedProduct?.value) {
+            let id = (selectedProduct?.value ? selectedProduct?.value : null);
+            let brandId = (selectedBrand?.value ? selectedBrand?.value : null);
+            getProductStockById({ id, brandId });
+        } else {
+            setStock(0);
+        }
+    }, [selectedBrand, selectedProduct]);
+
+    useEffect(() => {
+        if (isSuccess && data) {
+            setStock(data?.result?.stock);
+            setStockError(true);
+        }
+        if (isError && error) {
+            showErrorNotification(error);
+            setStockError(false);
+        }
+    }, [isSuccess, isError, data, error]);
 
     return (
         <Grid container spacing={2}>
@@ -226,7 +269,7 @@ const PurchaseForm: React.FC<{
                         margin="normal"
                         required
                         fullWidth
-                        placeholder="Total"
+                        label="Total"
                         className=" disabled-control"
                         disabled={true}
                         size="small"
@@ -234,16 +277,39 @@ const PurchaseForm: React.FC<{
                     />
                 </FormGroup>
             </Grid>
-            <Grid md={12} item xs={12} className="pt-0">
-                <FormGroup className="pull-right">
-                    <Button type="button" variant="contained"
-                        color="success"
-                        className="mx-250"
-                        onClick={addNewItemToList}
-                    >
-                        <AddIcon /> &nbsp; Add Item
-                    </Button>
+            <Grid md={2} item xs={6} className="pt-0">
+                <FormGroup>
+                    <TextField
+                        type="number"
+                        margin="normal"
+                        fullWidth
+                        label="Stock"
+                        className="disabled-control mt-0"
+                        disabled={true}
+                        size="small"
+                        value={stock}
+                    />
                 </FormGroup>
+            </Grid>
+            <Grid md={10} item xs={6} className="pt-0">
+                {(stockError && stockValidation && stock <= 0 && !isLoading) || (stockValidation && isOutOfStock) ? (
+                    <FormGroup className="pull-left">
+                        <span className="validation-error text-danger pt-10px">Product out of stock</span>
+                    </FormGroup>
+                ) : (
+                    <FormGroup className="pull-right">
+                        <Button type="button" variant="contained"
+                            color="success"
+                            className="mx-250"
+                            onClick={addNewItemToList}
+                            disabled={isLoading || (stockError && stockValidation && stock <= 0 && !isLoading) || (stockValidation && isOutOfStock)}
+                        >
+                            <AddIcon /> &nbsp; Add Item
+                        </Button>
+                    </FormGroup>
+                )}
+
+
             </Grid>
         </Grid>
     )

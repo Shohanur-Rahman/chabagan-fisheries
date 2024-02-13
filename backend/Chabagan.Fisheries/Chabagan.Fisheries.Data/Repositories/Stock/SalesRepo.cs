@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
+using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
@@ -48,6 +49,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
+                 .OrderByDescending(x => x.Id)
                 .ToListAsync());
         }
 
@@ -83,6 +85,28 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbSales dbSales = _mapper.Map<DbSales>(model);
             await _dbContext.Sales.AddAsync(dbSales);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+             * ***********
+             * Save transection
+             * *********
+             *******/
+            DbAccountTransection transection = new DbAccountTransection()
+            {
+                BillDate = dbSales.BillDate,
+                BillId = dbSales.Id,
+                SupplierId = dbSales.SupplierId,
+                ProjectId = dbSales.ProjectId,
+                TransTypeId = (int)TransectionTypeEnum.Sales,
+                SalesTotalAmount = dbSales.TotalAmount,
+                SalesDiscount = dbSales.Discount,
+                SalesNetAmount = dbSales.NetAmount,
+                SalesPaidAmount = dbSales.PaidAmount,
+                SalesDuesAmount = dbSales.DuesAmount
+            };
+            await _dbContext.AccountTransections.AddAsync(transection);
+            await _dbContext.SaveChangesAsync();
+
             return await GetSalesBySalesIdAsync(dbSales.Id);
         }
 
@@ -98,9 +122,9 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            DbSales? dbPurchase = await _dbContext.Sales.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
+            DbSales? dbSales = await _dbContext.Sales.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
-            if (dbPurchase is null)
+            if (dbSales is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
             var items = await _dbContext.SalesItems.Where(x => x.PurchaseId == model.Id).AsNoTracking().ToListAsync();
@@ -110,10 +134,34 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 await _dbContext.SaveChangesAsync();
             }
 
-            dbPurchase = _mapper.Map<DbSales>(model);
-            _dbContext.Sales.Update(dbPurchase);
+            dbSales = _mapper.Map<DbSales>(model);
+            _dbContext.Sales.Update(dbSales);
             await _dbContext.SaveChangesAsync();
-            return await GetSalesBySalesIdAsync(dbPurchase.Id);
+
+            /***********
+            * ***********
+            * Update transection
+            * *********
+            *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbSales.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.Sales).AsNoTracking().SingleOrDefaultAsync();
+
+            if(transection is not null)
+            {
+                transection.BillDate = dbSales.BillDate;
+                transection.SupplierId = dbSales.SupplierId;
+                transection.ProjectId = dbSales.ProjectId;
+                transection.SalesTotalAmount = dbSales.TotalAmount;
+                transection.SalesDiscount = dbSales.Discount;
+                transection.SalesNetAmount = dbSales.NetAmount;
+                transection.SalesPaidAmount = dbSales.PaidAmount;
+                transection.SalesDuesAmount = dbSales.DuesAmount;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+            return await GetSalesBySalesIdAsync(dbSales.Id);
         }
 
 
@@ -128,15 +176,32 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
 
-            DbSales? dbPurchase = await _dbContext.Sales.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
+            DbSales? dbSales = await _dbContext.Sales.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
 
-            if (dbPurchase is null)
+            if (dbSales is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            dbPurchase.IsDeleted = true;
-            _dbContext.Sales.Update(dbPurchase);
+            dbSales.IsDeleted = true;
+            _dbContext.Sales.Update(dbSales);
             await _dbContext.SaveChangesAsync();
-            return await GetSalesBySalesIdAsync(dbPurchase.Id);
+
+            /***********
+           * ***********
+           * Delete transection
+           * *********
+           *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbSales.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.Sales).AsNoTracking().SingleOrDefaultAsync();
+            if (transection is not null)
+            {
+                transection.IsDeleted = true;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return await GetSalesBySalesIdAsync(dbSales.Id);
         }
 
         #endregion

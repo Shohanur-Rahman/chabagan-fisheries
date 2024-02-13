@@ -34,6 +34,9 @@ button:focus-visible {
 .text-danger {
     color: red;
 }
+.text-info{
+    color: green;
+}
 
 .validation-error {
     margin: 0;

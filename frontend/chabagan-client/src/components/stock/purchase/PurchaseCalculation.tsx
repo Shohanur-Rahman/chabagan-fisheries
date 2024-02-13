@@ -63,7 +63,7 @@ const PurchaseCalculation: React.FC<{
                         margin="normal"
                         required
                         fullWidth
-                        placeholder="Total"
+                        label="Total"
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}
@@ -96,7 +96,7 @@ const PurchaseCalculation: React.FC<{
                         margin="normal"
                         required
                         fullWidth
-                        placeholder="Net Amount"
+                        label="Net Amount"
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}
@@ -111,7 +111,7 @@ const PurchaseCalculation: React.FC<{
                         margin="normal"
                         required
                         fullWidth
-                        placeholder="Paid"
+                        label="Paid"
                         size="small"
                         className="mt-0"
                         value={info.paidAmount}
@@ -126,7 +126,7 @@ const PurchaseCalculation: React.FC<{
                         margin="normal"
                         required
                         fullWidth
-                        placeholder="Dues"
+                        label="Dues"
                         size="small"
                         className="mt-0 disabled-control"
                         disabled={true}

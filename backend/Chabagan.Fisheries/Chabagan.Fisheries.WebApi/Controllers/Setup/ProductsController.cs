@@ -74,11 +74,31 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
         [HttpGet]
         [ProducesResponseType(typeof(APIOperationResultGeneric<IEnumerable<ProductStock>>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public ActionResult<APIOperationResultGeneric<IEnumerable<ProductStock>>> GetProductStocks()
+        public ActionResult<APIOperationResultGeneric<IEnumerable<ProductStock>>> GetProductStocks(long? productId, long? brandId)
         {
             try
             {
-                return Ok(APIOperationResult.Success(_productRepo.GetProductStocks()));
+                return Ok(APIOperationResult.Success(_productRepo.GetProductStocks(productId, brandId)));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+        [Route("stock/{productId}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<ProductStock>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<APIOperationResultGeneric<ProductStock>> GetProductStockByProductId(long productId, long? brandId)
+        {
+            try
+            {
+                if(productId <=0)
+                    throw new ArgumentNullException(ResponseMessage.BadRequest);
+
+                return Ok(APIOperationResult.Success(_productRepo.GetProductStocks(productId, brandId).FirstOrDefault()));
             }
             catch (Exception ex)
             {

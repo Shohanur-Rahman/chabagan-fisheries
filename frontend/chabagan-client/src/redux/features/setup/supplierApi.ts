@@ -7,6 +7,12 @@ const supplierApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["supplier-list"]
         }),
+        getSupplerTransections: builder.query({
+            query: () => ({
+                url: `suppliers/transections`
+            }),
+            providesTags: ["supplier-list"]
+        }),
         getSupplierDropdown: builder.query({
             query: () => ({
                 url: `suppliers/dropdown`
@@ -53,6 +59,7 @@ const supplierApi = apiSlice.injectEndpoints({
 
 export const {
     useGetSuppliersQuery,
+    useGetSupplerTransectionsQuery,
     useGetSupplierDropdownQuery,
     useGetSupplierAutocompleteQuery,
     useGetSupplierMutation,

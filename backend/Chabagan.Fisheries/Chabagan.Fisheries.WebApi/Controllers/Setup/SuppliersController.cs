@@ -8,6 +8,7 @@ using Chabagan.Fisheries.Mapping;
 using Chabagan.Fisheries.Data.Repositories.Setup.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
 using Chabagan.Fisheries.Entities.Mapping;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 
 namespace Chabagan.Fisheries.WebApi.Controllers.Setup
 {
@@ -63,6 +64,44 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Setup
             }
         }
 
+
+        /// <summary>
+        /// Get supplier auto complete
+        /// </summary>
+        /// <returns></returns>
+        [Route("transections")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<List<TransectionSummary>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<APIOperationResultGeneric<List<TransectionSummary>>> GetSupplierTransectionSummary()
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(_supplierRepo.GetSupplierTransectionSummary(null)));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
+
+        [Route("transection/{supplierId}")]
+        [HttpGet]
+        [ProducesResponseType(typeof(APIOperationResultGeneric<List<TransectionSummary>>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public ActionResult<APIOperationResultGeneric<List<TransectionSummary>>> GetSupplierTransectionSummaryBySupplierId(long supplierId)
+        {
+            try
+            {
+                return Ok(APIOperationResult.Success(_supplierRepo.GetSupplierTransectionSummary(supplierId).FirstOrDefault()));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(StatusCodes.Status500InternalServerError, APIOperationResult.Failure(ex.Message));
+            }
+        }
 
         /// <summary>
         /// Get supplier auto complete

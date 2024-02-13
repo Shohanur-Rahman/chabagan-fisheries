@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
+using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
@@ -47,6 +48,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
+                .OrderByDescending(x => x.Id)
                 .ToListAsync());
         }
 
@@ -82,6 +84,28 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbPurchase dbPurchase = _mapper.Map<DbPurchase>(model);
             await _dbContext.Purchases.AddAsync(dbPurchase);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+             * ***********
+             * Save transection
+             * *********
+             *******/
+            DbAccountTransection transection = new DbAccountTransection()
+            {
+                BillDate = dbPurchase.BillDate,
+                BillId = dbPurchase.Id,
+                SupplierId = dbPurchase.SupplierId,
+                ProjectId = dbPurchase.ProjectId,
+                TransTypeId = (int)TransectionTypeEnum.Purchase,
+                PurchaseTotalAmount = dbPurchase.TotalAmount,
+                PurchaseDiscount = dbPurchase.Discount,
+                PurchaseNetAmount = dbPurchase.NetAmount,
+                PurchasePaidAmount = dbPurchase.PaidAmount,
+                PurchaseDuesAmount = dbPurchase.DuesAmount
+            };
+            await _dbContext.AccountTransections.AddAsync(transection);
+            await _dbContext.SaveChangesAsync();
+
             return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
         }
 
@@ -112,6 +136,31 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbPurchase = _mapper.Map<DbPurchase>(model);
             _dbContext.Purchases.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+            * ***********
+            * Update transection
+            * *********
+            *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbPurchase.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.Purchase).AsNoTracking().SingleOrDefaultAsync();
+
+            if (transection is not null)
+            {
+                transection.BillDate = dbPurchase.BillDate;
+                transection.SupplierId = dbPurchase.SupplierId;
+                transection.ProjectId = dbPurchase.ProjectId;
+                transection.PurchaseTotalAmount = dbPurchase.TotalAmount;
+                transection.PurchaseDiscount = dbPurchase.Discount;
+                transection.PurchaseNetAmount = dbPurchase.NetAmount;
+                transection.PurchasePaidAmount = dbPurchase.PaidAmount;
+                transection.PurchaseDuesAmount = dbPurchase.DuesAmount;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
         }
 
@@ -135,6 +184,23 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbPurchase.IsDeleted = true;
             _dbContext.Purchases.Update(dbPurchase);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+           * ***********
+           * Delete transection
+           * *********
+           *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbPurchase.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.Purchase).AsNoTracking().SingleOrDefaultAsync();
+            if (transection is not null)
+            {
+                transection.IsDeleted = true;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return await GetPurchaseByPurchaseIdAsync(dbPurchase.Id);
         }
 

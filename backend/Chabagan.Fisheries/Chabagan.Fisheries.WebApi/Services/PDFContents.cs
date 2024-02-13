@@ -4,9 +4,9 @@ namespace Chabagan.Fisheries.WebApi.Services
 {
     public class PDFContents
     {
-        #region Purchase Invoice
+        #region Invoice
 
-        public static string GetPurchaseInvoice(DbPurchase info)
+        public static string GetInvoice(dynamic info)
         {
             string htmlContent = string.Empty;
 
@@ -20,7 +20,7 @@ namespace Chabagan.Fisheries.WebApi.Services
                 $"<table width='100%' border='0' cellpadding='0' cellspacing='0' align='center' style='margin-top: 20px;'><thead>" +
                  $"{GetHeaderRowFromArray(itemHeaders,"14px")}</thead>" +
                  $"<tbody>" +
-                 $"" + GetPurchaseItemsRow(info.Items.ToList()) + 
+                 $"" + GetInvoiceItemsRow(info.Items) + 
                  $"" + GetColSpanRowByTextAndValue(6,1,"Total Price", String.Format("{0:0.00}", info.TotalAmount), "16px") + 
                  $"" + GetColSpanRowByTextAndValue(6,1,"Less Amount", String.Format("{0:0.00}", info.Discount), "16px") + 
                  $"" + GetColSpanRowByTextAndValue(6,1,"Actual Amount", String.Format("{0:0.00}", info.NetAmount), "16px", 700) + 
@@ -32,12 +32,12 @@ namespace Chabagan.Fisheries.WebApi.Services
             return htmlContent;
         }
 
-        public static string GetPurchaseItemsRow(List<DbPurchaseItem> items)
+        public static string GetInvoiceItemsRow(dynamic items)
         {
             string rowString = string.Empty;
 
             int counter = 1;
-            foreach (DbPurchaseItem item in items)
+            foreach (var item in items)
             {
                 string[] itemInfo = { counter.ToString(), item.Product?.Name, item.Brand.Name, String.Format("{0:0.00}", item.Qty), String.Format("{0:0.00}", item.Rate), String.Format("{0:0.00}", item.Discount), String.Format("{0:0.00}", item.TotalPrice) };
 
@@ -50,51 +50,7 @@ namespace Chabagan.Fisheries.WebApi.Services
 
         #endregion
 
-        #region Purchase Invoice
-
-        public static string GetPurchaseReturnInvoice(DbPurchaseReturn info)
-        {
-            string htmlContent = string.Empty;
-
-            string[] itemHeaders = { "SL.", "Item", "Brand", "QTY", "Price", "Discount", "Total" };
-
-            htmlContent = $"<!doctype html><html><head><meta charset='utf-8'><meta http-equiv='Content-Type' content='text/html; charset=utf-8'/></head><body>" +
-                $"<table width='100%' border='0' cellpadding='0' cellspacing='0' align='center'>" +
-                $"{GetSingleColumRow(info.Supplier?.ShopName, "30px", "h1")}" +
-                $"{GetSingleColumRow(info.Supplier?.Name + ", " + info.Project?.Name + ", " + info.Supplier?.Mobile, "16px", "p")}" +
-                $"</table>" +
-                $"<table width='100%' border='0' cellpadding='0' cellspacing='0' align='center' style='margin-top: 20px;'><thead>" +
-                 $"{GetHeaderRowFromArray(itemHeaders, "14px")}</thead>" +
-                 $"<tbody>" +
-                 $"" + GetPurchaseReturnItemsRow(info.Items.ToList()) +
-                 $"" + GetColSpanRowByTextAndValue(6, 1, "Total Price", String.Format("{0:0.00}", info.TotalAmount), "16px") +
-                 $"" + GetColSpanRowByTextAndValue(6, 1, "Less Amount", String.Format("{0:0.00}", info.Discount), "16px") +
-                 $"" + GetColSpanRowByTextAndValue(6, 1, "Actual Amount", String.Format("{0:0.00}", info.NetAmount), "16px", 700) +
-                 $"" + GetColSpanRowByTextAndValue(6, 1, "Paid", String.Format("{0:0.00}", info.PaidAmount), "16px", 700) +
-                 $"" + GetColSpanRowByTextAndValue(6, 1, "Dues", String.Format("{0:0.00}", info.DuesAmount), "16px", 700) +
-                 $"</tbody></table>" +
-                $"</body></html>";
-
-            return htmlContent;
-        }
-
-        public static string GetPurchaseReturnItemsRow(List<DbPurchaseReturnItem> items)
-        {
-            string rowString = string.Empty;
-
-            int counter = 1;
-            foreach (DbPurchaseReturnItem item in items)
-            {
-                string[] itemInfo = { counter.ToString(), item.Product?.Name, item.Brand.Name, String.Format("{0:0.00}", item.Qty), String.Format("{0:0.00}", item.Rate), String.Format("{0:0.00}", item.Discount), String.Format("{0:0.00}", item.TotalPrice) };
-
-                rowString = rowString + GetRowFromArray(itemInfo, "16px");
-                counter++;
-            }
-
-            return rowString;
-        }
-
-        #endregion
+        
 
         #region Private Methods
 

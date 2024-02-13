@@ -83,5 +83,7 @@
     <Build Include="dbo\Tables\SalesReturnItems.sql" />
     <Build Include="dbo\Functions\fn_GetStockByProductId.sql" />
     <Build Include="dbo\Stored Procedures\sp_GetProductNameWithStock.sql" />
+    <Build Include="dbo\Functions\fn_GetSupplierNameById.sql" />
+    <Build Include="dbo\Stored Procedures\sp_GetTransectionSummary.sql" />
   </ItemGroup>
 </Project>

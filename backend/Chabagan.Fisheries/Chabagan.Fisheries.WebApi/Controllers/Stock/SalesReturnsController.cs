@@ -26,15 +26,13 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
         /// </summary>
         private readonly ISalesReturnRepo _salesReturnRepo;
 
-        private readonly PdfService _pdfService;
         #endregion
 
         #region Constructors
-        public SalesReturnsController(ILogger<SalesReturnsController> logger, ISalesReturnRepo salesReturnRepo, PdfService pdfService)
+        public SalesReturnsController(ILogger<SalesReturnsController> logger, ISalesReturnRepo salesReturnRepo)
         {
             _salesReturnRepo = salesReturnRepo;
             _logger = logger;
-            _pdfService = pdfService;
 
         }
         #endregion
@@ -83,19 +81,22 @@ namespace Chabagan.Fisheries.WebApi.Controllers.Stock
 
         [HttpGet("invoice")]
         [AllowAnonymous]
-        public async Task<IActionResult> Invoice(long id)
+        public async Task<IActionResult> Invoice(long id, bool download = false)
         {
-            //string randomName = Guid.NewGuid().ToString();
+            string randomName = Guid.NewGuid().ToString();
             var invoiceInfo = await _salesReturnRepo.GetSalesReturnsBySalesReturnsIdAsync(id);
-            //string fileName = $"Invoice_{id}_{randomName}_.pdf";
+            string fileName = $"Invoice_{id}_{randomName}_.pdf";
 
             if (invoiceInfo is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            //var pdfBytes = new byte[];// _pdfService.GeneratePdf(PDFContents.GetPurchaseInvoice(invoiceInfo));
+            var pdfBytes = PdfService.GeneratePdf(PDFContents.GetInvoice(invoiceInfo));
 
             // Return the PDF as a file
-            return File("", "application/pdf");
+            if (download)
+                return File(pdfBytes, "application/pdf", fileName);
+
+            return File(pdfBytes, "application/pdf");
         }
 
         /// <summary>

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
+using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
@@ -48,6 +49,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
+                 .OrderByDescending(x => x.Id)
                 .ToListAsync());
         }
 
@@ -83,6 +85,28 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             DbSalesReturn dbSalesReturn = _mapper.Map<DbSalesReturn>(model);
             await _dbContext.SalesReturns.AddAsync(dbSalesReturn);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+             * ***********
+             * Save transection
+             * *********
+             *******/
+            DbAccountTransection transection = new DbAccountTransection()
+            {
+                BillDate = dbSalesReturn.BillDate,
+                BillId = dbSalesReturn.Id,
+                SupplierId = dbSalesReturn.SupplierId,
+                ProjectId = dbSalesReturn.ProjectId,
+                TransTypeId = (int)TransectionTypeEnum.SalesReturn,
+                SalesReturnTotalAmount = dbSalesReturn.TotalAmount,
+                SalesReturnDiscount = dbSalesReturn.Discount,
+                SalesReturnNetAmount = dbSalesReturn.NetAmount,
+                SalesReturnPaidAmount = dbSalesReturn.PaidAmount,
+                SalesReturnDuesAmount = dbSalesReturn.DuesAmount
+            };
+            await _dbContext.AccountTransections.AddAsync(transection);
+            await _dbContext.SaveChangesAsync();
+
             return await GetSalesReturnsBySalesReturnsIdAsync(dbSalesReturn.Id);
         }
 
@@ -113,6 +137,31 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbSalesReturn = _mapper.Map<DbSalesReturn>(model);
             _dbContext.SalesReturns.Update(dbSalesReturn);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+            * ***********
+            * Update transection
+            * *********
+            *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbSalesReturn.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.SalesReturn).AsNoTracking().SingleOrDefaultAsync();
+
+            if (transection is not null)
+            {
+                transection.BillDate = dbSalesReturn.BillDate;
+                transection.SupplierId = dbSalesReturn.SupplierId;
+                transection.ProjectId = dbSalesReturn.ProjectId;
+                transection.SalesReturnTotalAmount = dbSalesReturn.TotalAmount;
+                transection.SalesReturnDiscount = dbSalesReturn.Discount;
+                transection.SalesReturnNetAmount = dbSalesReturn.NetAmount;
+                transection.SalesReturnPaidAmount = dbSalesReturn.PaidAmount;
+                transection.SalesReturnDuesAmount = dbSalesReturn.DuesAmount;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return await GetSalesReturnsBySalesReturnsIdAsync(dbSalesReturn.Id);
         }
 
@@ -136,6 +185,23 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             dbSalesReturn.IsDeleted = true;
             _dbContext.SalesReturns.Update(dbSalesReturn);
             await _dbContext.SaveChangesAsync();
+
+            /***********
+           * ***********
+           * Delete transection
+           * *********
+           *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbSalesReturn.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.SalesReturn).AsNoTracking().SingleOrDefaultAsync();
+            if (transection is not null)
+            {
+                transection.IsDeleted = true;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
             return await GetSalesReturnsBySalesReturnsIdAsync(dbSalesReturn.Id);
         }
 
