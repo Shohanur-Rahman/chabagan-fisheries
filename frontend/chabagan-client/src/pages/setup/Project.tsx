@@ -4,12 +4,13 @@ import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import projectBreadCrumb from '../../data/Breadcrumbs';
 import { IProjectModel } from "../../interfaces/model/setup/IProjectModel";
 import { useDeleteProjectMutation, useGetProjectMutation, useGetProjectsQuery } from "../../redux/features/setup/projectApi";
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import ProjectForm from "../../components/setup/ProjectForm";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { FileURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import Swal from "sweetalert2";
 import noImage from './../../assets/img/no-image-found.png';
+import LoadDataGrid from "../../components/common/LoadDataGrid";
 
 export default function Project() {
 
@@ -57,23 +58,23 @@ export default function Project() {
         {
             field: 'name',
             headerName: 'Name',
-            flex: 4, 
+            flex: 4,
             headerClassName: "primary-header"
         },
         {
             field: 'union',
             headerName: 'Union',
-            flex: 3, 
+            flex: 3,
             headerClassName: "primary-header"
         },
         {
             field: 'wordNumber',
             headerName: 'Word',
-            flex: 2, 
+            flex: 2,
             headerClassName: "primary-header"
         },
         {
-            field: 'action', headerName: 'Actions', 
+            field: 'action', headerName: 'Actions',
             headerClassName: "primary-header", flex: 2, renderCell: (params) => {
                 return (
                     <>
@@ -136,38 +137,8 @@ export default function Project() {
                         <ProjectForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Projects" className="card-header" />
-                            <CardContent className="table-content">
-                                <DataGrid
-                                    className="data-table"
-                                    rows={rows}
-                                    columns={columns}
-                                    slots={{ toolbar: GridToolbar }}
-                                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                                    initialState={{
-                                        filter: {
-                                            filterModel: {
-                                                items: [],
-                                                quickFilterExcludeHiddenColumns: true,
-                                            },
-                                        },
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
-                                            },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    rowHeight={40}
-                                    columnHeaderHeight={40}
-                                    disableColumnMenu
-                                    disableRowSelectionOnClick
-                                />
-                            </CardContent>
-                        </Card>
+                        <LoadDataGrid title="Projects" rows={rows} columns={columns} />
                     </Grid>
-
                 </Grid>
             </Box>
         </>

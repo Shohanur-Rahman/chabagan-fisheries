@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Chabagan.Chabagan.Fisheries.DB;
 using Chabagan.Fisheries.Common.Constants;
+using Chabagan.Fisheries.Common.Enums;
 using Chabagan.Fisheries.Data.Repositories.Stock.Interfaces;
 using Chabagan.Fisheries.Entities.Mapping.Stock;
 using Chabagan.Fisheries.Entities.Models.Stock;
@@ -47,6 +48,7 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 .Include(x => x.Supplier)
                 .Include(x => x.Project)
                 .AsNoTracking()
+                 .OrderByDescending(x => x.Id)
                 .ToListAsync());
         }
 
@@ -76,21 +78,35 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
         /// <exception cref="ArgumentNullException"></exception>
         public async Task<DbPurchaseReturn?> SavePurchaseReturnAsync(ProcessPurchase model)
         {
-            try
-            {
-                if (model is null)
-                    throw new ArgumentNullException(nameof(model));
+            if (model is null)
+                throw new ArgumentNullException(nameof(model));
 
-                DbPurchaseReturn dbPurchase = _mapper.Map<DbPurchaseReturn>(model);
-                await _dbContext.PurchaseReturns.AddAsync(dbPurchase);
-                await _dbContext.SaveChangesAsync();
-                return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
-            }
-            catch (Exception ex)
-            {
+            DbPurchaseReturn dbPurchaseReturn = _mapper.Map<DbPurchaseReturn>(model);
+            await _dbContext.PurchaseReturns.AddAsync(dbPurchaseReturn);
+            await _dbContext.SaveChangesAsync();
 
-                throw ex;
-            }
+            /***********
+         * ***********
+         * Save transection
+         * *********
+         *******/
+            DbAccountTransection transection = new DbAccountTransection()
+            {
+                BillDate = dbPurchaseReturn.BillDate,
+                BillId = dbPurchaseReturn.Id,
+                SupplierId = dbPurchaseReturn.SupplierId,
+                ProjectId = dbPurchaseReturn.ProjectId,
+                TransTypeId = (int)TransectionTypeEnum.PurchaseReturn,
+                PurchaseReturnTotalAmount = dbPurchaseReturn.TotalAmount,
+                PurchaseReturnDiscount = dbPurchaseReturn.Discount,
+                PurchaseReturnNetAmount = dbPurchaseReturn.NetAmount,
+                PurchaseReturnPaidAmount = dbPurchaseReturn.PaidAmount,
+                PurchaseReturnDuesAmount = dbPurchaseReturn.DuesAmount
+            };
+            await _dbContext.AccountTransections.AddAsync(transection);
+            await _dbContext.SaveChangesAsync();
+
+            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchaseReturn.Id);
 
         }
 
@@ -106,9 +122,9 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (model is null)
                 throw new ArgumentNullException(nameof(model));
 
-            DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
+            DbPurchase? dbPurchaseReturn = await _dbContext.Purchases.Where(x => x.Id == model.Id).AsNoTracking().SingleOrDefaultAsync();
 
-            if (dbPurchase is null)
+            if (dbPurchaseReturn is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
             var items = await _dbContext.PurchaseReturnItems.Where(x => x.PurchaseId == model.Id).AsNoTracking().ToListAsync();
@@ -118,10 +134,35 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
                 await _dbContext.SaveChangesAsync();
             }
 
-            dbPurchase = _mapper.Map<DbPurchase>(model);
-            _dbContext.Purchases.Update(dbPurchase);
+            dbPurchaseReturn = _mapper.Map<DbPurchase>(model);
+            _dbContext.Purchases.Update(dbPurchaseReturn);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
+
+
+            /***********
+            * ***********
+            * Update transection
+            * *********
+            *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbPurchaseReturn.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.PurchaseReturn).AsNoTracking().SingleOrDefaultAsync();
+
+            if (transection is not null)
+            {
+                transection.BillDate = dbPurchaseReturn.BillDate;
+                transection.SupplierId = dbPurchaseReturn.SupplierId;
+                transection.ProjectId = dbPurchaseReturn.ProjectId;
+                transection.PurchaseReturnTotalAmount = dbPurchaseReturn.TotalAmount;
+                transection.PurchaseReturnDiscount = dbPurchaseReturn.Discount;
+                transection.PurchaseReturnNetAmount = dbPurchaseReturn.NetAmount;
+                transection.PurchaseReturnPaidAmount = dbPurchaseReturn.PaidAmount;
+                transection.PurchaseReturnDuesAmount = dbPurchaseReturn.DuesAmount;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchaseReturn.Id);
         }
 
 
@@ -136,15 +177,32 @@ namespace Chabagan.Fisheries.Data.Repositories.Stock
             if (purchaseId == 0)
                 throw new ArgumentNullException(ResponseMessage.BadRequest);
 
-            DbPurchase? dbPurchase = await _dbContext.Purchases.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
+            DbPurchase? dbPurchaseReturn = await _dbContext.Purchases.Where(x => x.Id == purchaseId).AsNoTracking().SingleOrDefaultAsync();
 
-            if (dbPurchase is null)
+            if (dbPurchaseReturn is null)
                 throw new Exception(ResponseMessage.FailRetrieve);
 
-            dbPurchase.IsDeleted = true;
-            _dbContext.Purchases.Update(dbPurchase);
+            dbPurchaseReturn.IsDeleted = true;
+            _dbContext.Purchases.Update(dbPurchaseReturn);
             await _dbContext.SaveChangesAsync();
-            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchase.Id);
+
+            /***********
+           * ***********
+           * Delete transection
+           * *********
+           *******/
+
+            DbAccountTransection? transection = await _dbContext.AccountTransections.Where(x => x.BillId == dbPurchaseReturn.Id &&
+                x.TransTypeId == (int)TransectionTypeEnum.PurchaseReturn).AsNoTracking().SingleOrDefaultAsync();
+            if (transection is not null)
+            {
+                transection.IsDeleted = true;
+
+                _dbContext.AccountTransections.Update(transection);
+                await _dbContext.SaveChangesAsync();
+            }
+
+            return await GetPurchaseReturnByPurchaseIdAsync(dbPurchaseReturn.Id);
         }
 
         #endregion

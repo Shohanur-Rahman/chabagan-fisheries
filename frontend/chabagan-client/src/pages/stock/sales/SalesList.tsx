@@ -1,4 +1,4 @@
-import { Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
@@ -8,12 +8,13 @@ import salesBreadCrumb from '../../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
 import { ApiBaseURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../../data/Config";
 import { useNavigate } from "react-router-dom";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
 import CustomPDFViwer from "../../../components/common/CustomPDFViwer";
 import { IPdfViwerModel } from "../../../interfaces/model/IPdfViwerModel";
 import { useDeleteSaleMutation, useGetSalesQuery } from "../../../redux/features/stock/SalesApi";
+import LoadDataGrid from "../../../components/common/LoadDataGrid";
 
 export default function SalesList() {
     const navigate = useNavigate();
@@ -179,36 +180,7 @@ export default function SalesList() {
             </Grid>
 
             <Grid item xs={12} sm={12} md={12} mt={2}>
-                <Card sx={{ minWidth: 275 }} className="card w-100">
-                    <CardHeader title="Sales" className="card-header" />
-                    <CardContent className="table-content">
-                        <DataGrid
-                            className="data-table small"
-                            rows={rows}
-                            columns={columns}
-                            slots={{ toolbar: GridToolbar }}
-                            slotProps={{ toolbar: { showQuickFilter: true } }}
-                            initialState={{
-                                filter: {
-                                    filterModel: {
-                                        items: [],
-                                        quickFilterExcludeHiddenColumns: true,
-                                    },
-                                },
-                                pagination: {
-                                    paginationModel: {
-                                        pageSize: 10,
-                                    },
-                                },
-                            }}
-                            pageSizeOptions={[5]}
-                            rowHeight={40}
-                            columnHeaderHeight={40}
-                            disableColumnMenu
-                            disableRowSelectionOnClick
-                        />
-                    </CardContent>
-                </Card>
+                <LoadDataGrid title="Sales" rows={rows} columns={columns} />
             </Grid>
 
             <CustomPDFViwer info={viwer} setState={setViwer} />

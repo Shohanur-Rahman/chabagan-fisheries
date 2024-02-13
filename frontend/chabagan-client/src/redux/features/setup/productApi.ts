@@ -7,11 +7,23 @@ const productApi = apiSlice.injectEndpoints({
             }),
             providesTags: ["products-list"]
         }),
-        getProductStocks: builder.query({
+        getAllProductStocks: builder.query({
             query: () => ({
                 url: `products/stocks`
             }),
             providesTags: ["products-list"]
+        }),
+        getProductStocks: builder.mutation({
+            query: (id?: number, brandId?: number) => ({
+                url: `products/stocks?productId=${id}&brandId=${brandId}`
+            }),
+            invalidatesTags: ["products-list"]
+        }),
+        getProductStockById: builder.mutation({
+            query: ({ id, brandId }) => ({
+                url: `products/stock/${id}${brandId ? `?brandId=${brandId}` : ''}`
+            }),
+            invalidatesTags: ["products-list"]
         }),
         getProductAutocomplete: builder.query({
             query: () => ({
@@ -53,7 +65,9 @@ const productApi = apiSlice.injectEndpoints({
 
 export const {
     useGetProductsQuery,
-    useGetProductStocksQuery,
+    useGetAllProductStocksQuery,
+    useGetProductStocksMutation,
+    useGetProductStockByIdMutation,
     useGetProductAutocompleteQuery,
     useGetProductMutation,
     useAddProductMutation,

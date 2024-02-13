@@ -99,37 +99,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 2, 8, 0, 14, 9, 923, DateTimeKind.Local).AddTicks(698),
+                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 37, 997, DateTimeKind.Local).AddTicks(4156),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "NSn7GD9yBwy/pYas6TWKYIH/odSr/teX0QB0XRhT4/Y=",
-                            PasswordSalt = "AVSdkV1PgyNABi6ll6zoJQ==",
+                            Password = "hIg7YiX4ES1+r1csCOCd1GTenZG7+OsIHeZ3x9Lhpe0=",
+                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 2, 8, 0, 14, 9, 937, DateTimeKind.Local).AddTicks(1364),
+                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 38, 12, DateTimeKind.Local).AddTicks(1358),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "x0gT+A6c3P8f5IX067046woakcKPttbHLlWLty3PI4I=",
-                            PasswordSalt = "AVSdkV1PgyNABi6ll6zoJQ==",
+                            Password = "93SedHkT+Ul/l1hASLtUorSSnthBw7+8OyHWKIGvbi0=",
+                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 2, 8, 0, 14, 9, 951, DateTimeKind.Local).AddTicks(8587),
+                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 38, 26, DateTimeKind.Local).AddTicks(5140),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "NSn7GD9yBwy/pYas6TWKYIH/odSr/teX0QB0XRhT4/Y=",
-                            PasswordSalt = "AVSdkV1PgyNABi6ll6zoJQ==",
+                            Password = "hIg7YiX4ES1+r1csCOCd1GTenZG7+OsIHeZ3x9Lhpe0=",
+                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
                             RoleId = 3
                         });
                 });
@@ -513,6 +513,114 @@ namespace Chabagan.Fisheries.Data.Migrations
                             Name = "Nusrat Imroz",
                             ShopName = "Nusrat Hatchary and Feeds"
                         });
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbAccountTransection", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<bool>("ApprovalStatus")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("BillId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<long>("ProjectId")
+                        .HasColumnType("bigint");
+
+                    b.Property<decimal>("PurchaseDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseDuesAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseNetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchasePaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseReturnDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseReturnDuesAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseReturnNetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseReturnPaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseReturnTotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("PurchaseTotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesDuesAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesNetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesPaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesReturnDiscount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesReturnDuesAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesReturnNetAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesReturnPaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesReturnTotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<decimal>("SalesTotalAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("SupplierId")
+                        .HasColumnType("bigint");
+
+                    b.Property<int>("TransTypeId")
+                        .HasColumnType("int");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("AccountTransections");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", b =>

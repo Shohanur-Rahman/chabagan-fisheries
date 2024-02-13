@@ -6,10 +6,11 @@ import EditIcon from '@mui/icons-material/Edit';
 import { ISupplierModel } from "../../interfaces/model/setup/ISupplierModel";
 import Swal from "sweetalert2";
 import { useDeleteSupplierMutation, useGetSupplierMutation, useGetSuppliersQuery } from "../../redux/features/setup/supplierApi";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
+import { Box, Button, Grid } from "@mui/material";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
 import SupplierForm from "../../components/setup/SupplierForm";
+import LoadDataGrid from "../../components/common/LoadDataGrid";
 export default function Supplier() {
 
     const [rows, setRows] = useState([]);
@@ -125,37 +126,7 @@ export default function Supplier() {
                     </Grid>
 
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Suppliers" className="card-header" />
-                            <CardContent className="table-content">
-                                <DataGrid
-                                    className="data-table"
-                                    rows={rows}
-                                    columns={columns}
-                                    slots={{ toolbar: GridToolbar }}
-                                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                                    ignoreDiacritics
-                                    initialState={{
-                                        filter: {
-                                            filterModel: {
-                                                items: [],
-                                                quickFilterExcludeHiddenColumns: true,
-                                            },
-                                        },
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
-                                            },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    rowHeight={40}
-                                    columnHeaderHeight={40}
-                                    disableColumnMenu
-                                    disableRowSelectionOnClick
-                                />
-                            </CardContent>
-                        </Card>
+                        <LoadDataGrid title="Suppliers" rows={rows} columns={columns} />
                     </Grid>
                 </Grid>
             </Box>

@@ -16,6 +16,8 @@ import SalesList from "../pages/stock/sales/SalesList";
 import SalesAction from "../pages/stock/sales/SalesAction";
 import SalesReturnsList from "../pages/stock/sales-return/SalesReturnsList";
 import SalesReturnAction from "../pages/stock/sales-return/SalesReturnAction";
+import TransectionSummary from "../pages/reports/TransectionSummary";
+import PurchaseReport from "../pages/reports/PurchaseReport";
 
 const privateRoutes: IRouteConfig[] = [
     {
@@ -105,6 +107,14 @@ const privateRoutes: IRouteConfig[] = [
     {
         path: 'stock/sales-returns/edit-sales-returns/:id',
         element: <SalesReturnAction />,
+    },
+    {
+        path: 'reports/purchases',
+        element: <PurchaseReport />,
+    },
+    {
+        path: 'reports/trasection-summaries',
+        element: <TransectionSummary />,
     }
 ]
 

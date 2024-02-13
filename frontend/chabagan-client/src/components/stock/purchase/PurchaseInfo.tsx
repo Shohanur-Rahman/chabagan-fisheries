@@ -97,7 +97,7 @@ const PurchaseInfo: React.FC<{
                 <FormGroup>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            label="Date"
+                            label="Date*"
                             value={dayjs(info.billDate)}
                             onChange={handlePurchageDateChange}
                             className="mt-0 datepicker-sm" />
@@ -112,10 +112,10 @@ const PurchaseInfo: React.FC<{
                     <Autocomplete
                         onChange={handleSupplierChange}
                         disablePortal
-                        id="combo-box-demo"
+                        id="customer-combo"
                         options={suppliers}
                         value={info.supplier}
-                        renderInput={(params) => <TextField {...params} label={(mode ? mode : "Supplier")} size="small" />}
+                        renderInput={(params) => <TextField {...params} label={(mode ? `${mode}*` : "Supplier*")} size="small" />}
                     />
                     {formik.touched.supplierId && formik.errors.supplierId ? (
                         <p className="validation-error text-danger">{formik.errors.supplierId}</p>
@@ -131,7 +131,7 @@ const PurchaseInfo: React.FC<{
                         id="combo-box-demo"
                         options={projects}
                         value={info.project}
-                        renderInput={(params) => <TextField {...params} label="Projects" size="small" />}
+                        renderInput={(params) => <TextField {...params} label="Projects*" size="small" />}
                     />
                     {formik.touched.projectId && formik.errors.projectId ? (
                         <p className="validation-error text-danger">{formik.errors.projectId}</p>

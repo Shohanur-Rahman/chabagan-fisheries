@@ -40,6 +40,7 @@ namespace Chabagan.Chabagan.Fisheries.DB
         public virtual DbSet<DbSupplier> Suppliers { get; set; }
         public virtual DbSet<DbProject> Projects { get; set; }
         public virtual DbSet<DbPond> Ponds { get; set; }
+        public virtual DbSet<DbExpenseType> ExpenseTypes { get; set; }
 
         #endregion
 
@@ -57,6 +58,11 @@ namespace Chabagan.Chabagan.Fisheries.DB
         public virtual DbSet<DbSalesItem> SalesItems { get; set; }
         public virtual DbSet<DbSalesReturn> SalesReturns { get; set; }
         public virtual DbSet<DbSalesReturnItem> SalesReturnItems { get; set; }
+
+        public virtual DbSet<DbAccountTransection> AccountTransections { get; set; }
+        public virtual DbSet<DbPaymentCollection> PaymentCollections { get; set; }
+        public virtual DbSet<DbExpense> Expenses { get; set; }
+        public virtual DbSet<DbIncome> Incomes { get; set; }
         #endregion
     }
 }

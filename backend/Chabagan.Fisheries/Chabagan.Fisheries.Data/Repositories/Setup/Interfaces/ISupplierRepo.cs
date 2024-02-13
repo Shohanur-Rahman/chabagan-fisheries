@@ -1,5 +1,6 @@
 ﻿using Chabagan.Fisheries.Entities.Mapping;
 using Chabagan.Fisheries.Entities.Mapping.Setup;
+using Chabagan.Fisheries.Entities.Mapping.Visualization;
 using Chabagan.Fisheries.Mapping;
 
 namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
@@ -7,6 +8,13 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup.Interfaces
     public interface ISupplierRepo
     {
         #region Public Methods
+
+        /// <summary>
+        /// Get supplier transection summary
+        /// </summary>
+        /// <param name="supplierId"></param>
+        /// <returns></returns>
+        List<TransectionSummary> GetSupplierTransectionSummary(long? supplierId);
 
         /// <summary>
         /// Get all supplier data from database

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import categoryBreadCrumb from '../../data/Breadcrumbs';
 import StockCategoryForm from "../../components/setup/StockCategoryForm";
@@ -7,9 +7,10 @@ import EditIcon from '@mui/icons-material/Edit';
 import { useEffect, useState } from "react";
 import { IStockCatModel } from "../../interfaces/model/setup/IStockCatModel";
 import Swal from "sweetalert2";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import { useDeleteStockCategoryMutation, useGetStockCategoryByIdMutation, useGetStockCategoryQuery } from "../../redux/features/setup/stockCategoryApi";
 import { ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
+import LoadDataGrid from "../../components/common/LoadDataGrid";
 export default function StockCategory() {
     const [initialValues, setInitialValues] = useState<IStockCatModel>({} as IStockCatModel);
     const [rows, setRows] = useState([]);
@@ -107,36 +108,7 @@ export default function StockCategory() {
                         <StockCategoryForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Categories" className="card-header" />
-                            <CardContent className="table-content">
-                                <DataGrid
-                                    className="data-table"
-                                    rows={rows}
-                                    columns={columns}
-                                    slots={{ toolbar: GridToolbar }}
-                                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                                    initialState={{
-                                        filter: {
-                                            filterModel: {
-                                                items: [],
-                                                quickFilterExcludeHiddenColumns: true,
-                                            },
-                                        },
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
-                                            },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    rowHeight={40}
-                                    columnHeaderHeight={40}
-                                    disableColumnMenu
-                                    disableRowSelectionOnClick
-                                />
-                            </CardContent>
-                        </Card>
+                        <LoadDataGrid title="Categories" rows={rows} columns={columns} />
                     </Grid>
                 </Grid>
             </Box>

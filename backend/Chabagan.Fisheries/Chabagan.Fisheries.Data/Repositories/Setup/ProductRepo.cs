@@ -50,14 +50,18 @@ namespace Chabagan.Fisheries.Data.Repositories.Setup
         #region Public Methods
 
         /// <summary>
-        /// Get product stocks
+        /// Get product stock
         /// </summary>
+        /// <param name="productId">optional product id</param>
+        /// <param name="brandId">optional brand id</param>
         /// <returns></returns>
-        public List<ProductStock> GetProductStocks()
+        public List<ProductStock> GetProductStocks(long? productId, long? brandId)
         {
             List<ProductStock> stocks = new List<ProductStock>();
 
             _storedProcedure.ProcedureName = ("[dbo].[sp_GetProductNameWithStock]");
+            _storedProcedure.AddInputParameter("productId", productId, SqlDbType.BigInt);
+            _storedProcedure.AddInputParameter("brandId", brandId, SqlDbType.BigInt);
             DataTable dataTable = _storedProcedure.ExecuteQueryToDataTable();
 
             foreach (DataRow dataRow in dataTable.Rows)

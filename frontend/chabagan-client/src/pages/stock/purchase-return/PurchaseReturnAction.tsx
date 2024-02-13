@@ -98,7 +98,6 @@ export default function PurchaseReturnAction() {
             showErrorNotification(error);
         }
         else if (isPurchaseSuccess && purchaseData) {
-            console.log("Data", purchaseData)
             let editInfo = MapPurchaseInfo(purchaseData.result);
             setInitialValues(editInfo);
         }
@@ -118,7 +117,7 @@ export default function PurchaseReturnAction() {
                             <CardHeader title={id ? "Edit Purchase Return" : "New Purchase Return"} className="card-header" />
                             <CardContent className="table-content">
                                 <PurchaseInfo info={initialValues} formik={formik} setState={setInitialValues} />
-                                <PurchaseForm info={initialValues} setState={setInitialValues} />
+                                <PurchaseForm info={initialValues} setState={setInitialValues} stockValidation={true} />
                                 <Grid container spacing={2} mt={0}>
                                     <Grid md={8} item xs={6}>
                                         <PurchaseItems info={initialValues} setState={setInitialValues} />

@@ -791,6 +791,12 @@
 					<References Name="[dbo].[fn_GetStockByProductId].[@productId]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[PurchaseItems].[BrandId]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[fn_GetStockByProductId].[@brandId]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[PurchaseReturnItems]" />
 				</Entry>
 				<Entry>
@@ -798,6 +804,9 @@
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[PurchaseReturnItems].[ProductId]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[PurchaseReturnItems].[BrandId]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[SalesItems]" />
@@ -809,6 +818,9 @@
 					<References Name="[dbo].[SalesItems].[ProductId]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[SalesItems].[BrandId]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[SalesReturnItems]" />
 				</Entry>
 				<Entry>
@@ -816,6 +828,9 @@
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[SalesReturnItems].[ProductId]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[SalesReturnItems].[BrandId]" />
 				</Entry>
 			</Relationship>
 			<Relationship Name="FunctionBody">
@@ -832,10 +847,10 @@ BEGIN
 			@result float = 0;
 
 	-- Add the T-SQL statements to compute the return value here
-	set @purchaseQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseItems] where ProductID=@productId);
-	set @purchaseRtnQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseReturnItems] where ProductID=@productId);
-	set @salesSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesItems] where ProductID=@productId);
-	set @salesRtnSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesReturnItems] where ProductID=@productId);
+	set @purchaseQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @purchaseRtnQty = (Select ISNULL(sum(qty),0) from [dbo].[PurchaseReturnItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @salesSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
+	set @salesRtnSubQty = (Select ISNULL(sum(qty),0) from [dbo].[SalesReturnItems] where ProductID=@productId and BrandId=ISNULL(@brandId,BrandId));
 	
 	set @result = (@purchaseQty-@purchaseRtnQty-@salesSubQty+@salesRtnSubQty);
 	
@@ -845,10 +860,10 @@ BEGIN
 END]]></Value>
 						</Property>
 						<Annotation Type="SysCommentsObjectAnnotation">
-							<Property Name="Length" Value="921" />
+							<Property Name="Length" Value="1102" />
 							<Property Name="StartLine" Value="1" />
 							<Property Name="StartColumn" Value="1" />
-							<Property Name="HeaderContents" Value="CREATE FUNCTION [dbo].[fn_GetStockByProductId]&#xD;&#xA;(&#xD;&#xA;&#x9;@productId bigint&#xD;&#xA;)&#xD;&#xA;RETURNS float&#xD;&#xA;AS" />
+							<Property Name="HeaderContents" Value="CREATE FUNCTION [dbo].[fn_GetStockByProductId]&#xD;&#xA;(&#xD;&#xA;&#x9;@productId bigint = null,&#xD;&#xA;&#x9;@brandId bigint = null&#xD;&#xA;)&#xD;&#xA;RETURNS float&#xD;&#xA;AS" />
 						</Annotation>
 					</Element>
 				</Entry>
@@ -856,6 +871,27 @@ END]]></Value>
 			<Relationship Name="Parameters">
 				<Entry>
 					<Element Type="SqlSubroutineParameter" Name="[dbo].[fn_GetStockByProductId].[@productId]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[null]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[fn_GetStockByProductId].[@brandId]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[null]]></Value>
+						</Property>
 						<Relationship Name="Type">
 							<Entry>
 								<Element Type="SqlTypeSpecifier">
@@ -882,6 +918,86 @@ END]]></Value>
 						<Relationship Name="Type">
 							<Entry>
 								<References ExternalSource="BuiltIns" Name="[float]" />
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+		</Element>
+		<Element Type="SqlScalarFunction" Name="[dbo].[fn_GetSupplierNameById]">
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[nvarchar]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Suppliers]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Suppliers].[Name]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[Suppliers].[Id]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[fn_GetSupplierNameById].[@supplierId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="FunctionBody">
+				<Entry>
+					<Element Type="SqlScriptFunctionImplementation">
+						<Property Name="BodyScript">
+							<Value><![CDATA[
+BEGIN
+	-- Declare the return variable here
+	DECLARE @name nvarchar(max);
+
+	-- Add the T-SQL statements to compute the return value here
+	SELECT @name = Name from [dbo].[Suppliers] where Id = @supplierId;
+
+	-- Return the result of the function
+	RETURN ISNULL(@name, 'Not Found');
+
+END]]></Value>
+						</Property>
+						<Annotation Type="SysCommentsObjectAnnotation">
+							<Property Name="Length" Value="395" />
+							<Property Name="StartLine" Value="1" />
+							<Property Name="StartColumn" Value="1" />
+							<Property Name="HeaderContents" Value="CREATE FUNCTION [dbo].[fn_GetSupplierNameById]&#xD;&#xA;(&#xD;&#xA;&#x9;@supplierId bigint&#xD;&#xA;)&#xD;&#xA;RETURNS nvarchar(max)&#xD;&#xA;AS" />
+						</Annotation>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[fn_GetSupplierNameById].[@supplierId]">
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Type">
+				<Entry>
+					<Element Type="SqlTypeSpecifier">
+						<Property Name="IsMax" Value="True" />
+						<Relationship Name="Type">
+							<Entry>
+								<References ExternalSource="BuiltIns" Name="[nvarchar]" />
 							</Entry>
 						</Relationship>
 					</Element>
@@ -4035,10 +4151,11 @@ BEGIN
 	select 
 		Id, 
 		Name, 
-		[dbo].[fn_GetStockByProductId](id) as Stock 
+		[dbo].[fn_GetStockByProductId](id,@brandId) as Stock 
 	from [dbo].[Products] 
 	where 
 		[IsDeleted] = 0
+		and Id= ISNULL(@productId, Id)
 END]]></Value>
 			</Property>
 			<Property Name="IsAnsiNullsOn" Value="True" />
@@ -4053,10 +4170,54 @@ END]]></Value>
 					<References Name="[dbo].[Products].[Name]" />
 				</Entry>
 				<Entry>
+					<References Name="[dbo].[sp_GetProductNameWithStock].[@brandId]" />
+				</Entry>
+				<Entry>
 					<References Name="[dbo].[fn_GetStockByProductId]" />
 				</Entry>
 				<Entry>
 					<References Name="[dbo].[Products].[IsDeleted]" />
+				</Entry>
+				<Entry>
+					<References Name="[dbo].[sp_GetProductNameWithStock].[@productId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[sp_GetProductNameWithStock].[@productId]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[null]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[sp_GetProductNameWithStock].[@brandId]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[null]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
 				</Entry>
 			</Relationship>
 			<Relationship Name="Schema">
@@ -4065,10 +4226,82 @@ END]]></Value>
 				</Entry>
 			</Relationship>
 			<Annotation Type="SysCommentsObjectAnnotation">
-				<Property Name="Length" Value="219" />
+				<Property Name="Length" Value="313" />
 				<Property Name="StartLine" Value="1" />
 				<Property Name="StartColumn" Value="1" />
-				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[sp_GetProductNameWithStock]&#xD;&#xA;&#xD;&#xA;AS" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[sp_GetProductNameWithStock]&#xD;&#xA;&#x9;@productId bigint = null,&#xD;&#xA;&#x9;@brandId bigint = null&#xD;&#xA;AS" />
+			</Annotation>
+		</Element>
+		<Element Type="SqlProcedure" Name="[dbo].[sp_GetTransectionSummary]">
+			<Property Name="BodyScript">
+				<Value><![CDATA[
+BEGIN
+	-- SET NOCOUNT ON added to prevent extra result sets from
+	-- interfering with SELECT statements.
+	SET NOCOUNT ON;
+
+    -- Insert statements for procedure here
+	select 
+	t.SupplierId as Id,
+	[dbo].[fn_GetSupplierNameById](t.SupplierId) Supplier, 
+	sum(t.PurchaseDuesAmount) PurchaseAmount, 
+	sum(t.PurchaseReturnDuesAmount) PurchaseReturnAmount,
+	(sum(t.PurchaseReturnDuesAmount)-sum(t.PurchaseDuesAmount)) as PurchaseDues,
+	sum(t.SalesDuesAmount) SalesAmount, 
+	sum(t.SalesReturnDuesAmount) SalesReturnAmount,
+	(sum(t.SalesDuesAmount)-sum(t.SalesReturnDuesAmount)) as SalesDues,
+	((sum(t.PurchaseReturnDuesAmount) + sum(t.SalesDuesAmount)) - (sum(t.PurchaseDuesAmount) + sum(t.SalesReturnDuesAmount))) as Balance
+	from [dbo].[AccountTransections] t
+	where t.SupplierId = ISNULL(@supplierId, t.SupplierId)
+	group by t.SupplierId
+END]]></Value>
+			</Property>
+			<Property Name="IsAnsiNullsOn" Value="True" />
+			<Relationship Name="BodyDependencies">
+				<Entry />
+				<Entry />
+				<Entry />
+				<Entry>
+					<References Name="[dbo].[fn_GetSupplierNameById]" />
+				</Entry>
+				<Entry />
+				<Entry />
+				<Entry />
+				<Entry />
+				<Entry>
+					<References Name="[dbo].[sp_GetTransectionSummary].[@supplierId]" />
+				</Entry>
+			</Relationship>
+			<Relationship Name="Parameters">
+				<Entry>
+					<Element Type="SqlSubroutineParameter" Name="[dbo].[sp_GetTransectionSummary].[@supplierId]">
+						<Property Name="DefaultExpressionScript">
+							<Value><![CDATA[null]]></Value>
+						</Property>
+						<Relationship Name="Type">
+							<Entry>
+								<Element Type="SqlTypeSpecifier">
+									<Relationship Name="Type">
+										<Entry>
+											<References ExternalSource="BuiltIns" Name="[bigint]" />
+										</Entry>
+									</Relationship>
+								</Element>
+							</Entry>
+						</Relationship>
+					</Element>
+				</Entry>
+			</Relationship>
+			<Relationship Name="Schema">
+				<Entry>
+					<References ExternalSource="BuiltIns" Name="[dbo]" />
+				</Entry>
+			</Relationship>
+			<Annotation Type="SysCommentsObjectAnnotation">
+				<Property Name="Length" Value="941" />
+				<Property Name="StartLine" Value="1" />
+				<Property Name="StartColumn" Value="1" />
+				<Property Name="HeaderContents" Value="CREATE PROCEDURE [dbo].[sp_GetTransectionSummary]&#xD;&#xA;&#x9;@supplierId bigint = null&#xD;&#xA;AS" />
 			</Annotation>
 		</Element>
 		<Element Type="SqlTable" Name="[dbo].[StockCategories]">

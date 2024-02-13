@@ -1,11 +1,11 @@
 import { DataGrid, GridColDef, GridToolbar } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
-import { useGetProductStocksQuery } from "../../redux/features/setup/productApi";
 import { Card, CardContent } from "@mui/material";
+import { useGetAllProductStocksQuery } from "../../redux/features/setup/productApi";
 
 const StockList: React.FC<{}> = ({ }) => {
     const [rows, setRows] = useState([]);
-    const { data, isSuccess } = useGetProductStocksQuery(null);
+    const { data, isSuccess } = useGetAllProductStocksQuery(null);
     const columns: GridColDef[] = [
         { field: 'id', headerName: 'ID', flex: 3, headerClassName: "primary-header", filterable: true },
         {

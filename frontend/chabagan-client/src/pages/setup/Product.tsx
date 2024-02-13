@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, CardHeader, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import { IconBreadcrumbs } from "../../components/common/IconBreadcrumbs";
 import productBreadCrumb from '../../data/Breadcrumbs';
 import { useEffect, useState } from "react";
@@ -6,11 +6,12 @@ import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import EditIcon from '@mui/icons-material/Edit';
 import { IProductModel } from "../../interfaces/model/setup/IProductModel";
 import ProductForm from "../../components/setup/ProductForm";
-import { DataGrid, GridCellParams, GridColDef, GridToolbar } from "@mui/x-data-grid";
+import { GridCellParams, GridColDef } from "@mui/x-data-grid";
 import Swal from "sweetalert2";
 import noImage from './../../assets/img/no-image-found.png';
 import { useDeleteProductMutation, useGetProductMutation, useGetProductsQuery } from "../../redux/features/setup/productApi";
 import { FileURL, ProjectTitle, showDeleteNotification, showErrorNotification } from "../../data/Config";
+import LoadDataGrid from "../../components/common/LoadDataGrid";
 export default function Product() {
     const [rows, setRows] = useState([]);
     const [initialValues, setInitialValues] = useState<IProductModel>({} as IProductModel);
@@ -135,36 +136,7 @@ export default function Product() {
                         <ProductForm info={initialValues} setState={setInitialValues} />
                     </Grid>
                     <Grid item xs={12} sm={12} md={8}>
-                        <Card sx={{ minWidth: 275 }} className="card w-100">
-                            <CardHeader title="Products" className="card-header" />
-                            <CardContent className="table-content">
-                                <DataGrid
-                                    className="data-table"
-                                    rows={rows}
-                                    columns={columns}
-                                    slots={{ toolbar: GridToolbar }}
-                                    slotProps={{ toolbar: { showQuickFilter: true } }}
-                                    initialState={{
-                                        filter: {
-                                            filterModel: {
-                                                items: [],
-                                                quickFilterExcludeHiddenColumns: true,
-                                            },
-                                        },
-                                        pagination: {
-                                            paginationModel: {
-                                                pageSize: 10,
-                                            },
-                                        },
-                                    }}
-                                    pageSizeOptions={[5]}
-                                    rowHeight={40}
-                                    columnHeaderHeight={40}
-                                    disableColumnMenu
-                                    disableRowSelectionOnClick
-                                />
-                            </CardContent>
-                        </Card>
+                        <LoadDataGrid title="Products" rows={rows} columns={columns} />
                     </Grid>
 
                 </Grid>
