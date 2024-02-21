@@ -85,5 +85,8 @@
     <Build Include="dbo\Stored Procedures\sp_GetProductNameWithStock.sql" />
     <Build Include="dbo\Functions\fn_GetSupplierNameById.sql" />
     <Build Include="dbo\Stored Procedures\sp_GetTransectionSummary.sql" />
+    <Build Include="dbo\Stored Procedures\sp_ResetTransections.sql" />
+    <Build Include="dbo\Functions\fn_GetLastPurchaseRateByProductId.sql" />
+    <Build Include="dbo\Functions\fn_GetCategoryById.sql" />
   </ItemGroup>
 </Project>

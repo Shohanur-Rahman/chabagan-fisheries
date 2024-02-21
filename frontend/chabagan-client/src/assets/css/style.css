@@ -34,7 +34,8 @@ button:focus-visible {
 .text-danger {
     color: red;
 }
-.text-info{
+
+.text-info {
     color: green;
 }
 
@@ -119,9 +120,13 @@ sidebar
     color: #fff !important;
 }
 
+/* .nav-dropdown.open {
+    border-top: 1px solid #a5a5a5 !important;
+}
+
 .nav-dropdown-items.open {
     border-bottom: 1px solid #a5a5a5 !important;
-}
+} */
 
 .sidebar-link {
     color: #ddd !important;
@@ -257,21 +262,53 @@ sidebar
 .primary-header .MuiIconButton-root {
     color: #fff;
 }
-.full-frame{
+
+.full-frame {
     width: 100%;
     height: 65vh;
 }
-.lg-modal .mdl-box{
+
+.lg-modal .mdl-box {
     width: 60%;
     margin-top: 15px;
     height: 80vh;
 }
-.mb-1{
+
+.mb-1 {
     margin-bottom: 1em !important;
 }
-.mb-2{
+
+.mb-2 {
     margin-bottom: 2em !important;
 }
-.mb-10px{
+
+.mb-10px {
     margin-bottom: 10px !important;
+}
+
+.sidebar-main-nav {
+    padding: 0;
+    margin: 0;
+    height: calc(100vh - 100px);
+    overflow: auto;
+}
+
+.sidebar-main-nav {
+    scrollbar-width: thin;
+    scrollbar-color: #1d2633 #233044;
+}
+
+.sidebar-main-nav::-webkit-scrollbar {
+    width: 1px;
+    height: 2px;
+}
+
+.sidebar-main-nav::-webkit-scrollbar-track {
+    background: #233044;
+}
+
+.sidebar-main-nav::-webkit-scrollbar-thumb {
+    background-color: #1d2633;
+    border-radius: 10px;
+    border: 1px solid #233044;
 }

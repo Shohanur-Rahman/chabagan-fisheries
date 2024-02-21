@@ -21,38 +21,26 @@ export default function TransectionSummary() {
             flex: 3
         },
         {
-            field: 'purchaseAmount',
-            headerName: 'Purchase',
-            headerClassName: "primary-header",
-            flex: 2
-        },
-        {
-            field: 'purchaseReturnAmount',
-            headerName: 'Purchase Ret.',
-            headerClassName: "primary-header",
-            flex: 2
-        },
-        {
             field: 'purchaseDues',
-            headerName: 'Purchase Dues',
+            headerName: 'Pur.Due',
             headerClassName: "primary-header",
             flex: 2
         },
         {
-            field: 'salesAmount',
-            headerName: 'Sales',
-            headerClassName: "primary-header",
-            flex: 2
-        },
-        {
-            field: 'salesReturnAmount',
-            headerName: 'Sales Ret.',
+            field: 'purchaseReturnDues',
+            headerName: 'Pur.Ret.Due',
             headerClassName: "primary-header",
             flex: 2
         },
         {
             field: 'salesDues',
-            headerName: 'Sales Dues',
+            headerName: 'Sale.Due',
+            headerClassName: "primary-header",
+            flex: 2
+        },
+        {
+            field: 'salesReturnDues',
+            headerName: 'Sale.Ret.Due',
             headerClassName: "primary-header",
             flex: 2
         },

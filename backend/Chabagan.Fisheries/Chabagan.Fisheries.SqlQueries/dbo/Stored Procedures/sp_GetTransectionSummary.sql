@@ -10,13 +10,37 @@ BEGIN
 	select 
 	t.SupplierId as Id,
 	[dbo].[fn_GetSupplierNameById](t.SupplierId) Supplier, 
-	sum(t.PurchaseDuesAmount) PurchaseAmount, 
-	sum(t.PurchaseReturnDuesAmount) PurchaseReturnAmount,
-	(sum(t.PurchaseReturnDuesAmount)-sum(t.PurchaseDuesAmount)) as PurchaseDues,
-	sum(t.SalesDuesAmount) SalesAmount, 
-	sum(t.SalesReturnDuesAmount) SalesReturnAmount,
-	(sum(t.SalesDuesAmount)-sum(t.SalesReturnDuesAmount)) as SalesDues,
-	((sum(t.PurchaseReturnDuesAmount) + sum(t.SalesDuesAmount)) - (sum(t.PurchaseDuesAmount) + sum(t.SalesReturnDuesAmount))) as Balance
+
+	sum(t.PurchaseNetAmount) PurchaseAmount, 
+	sum(t.PurchasePaidAmount) PurchasePaidAmount, 
+	(sum(t.PurchaseNetAmount)-sum(t.PurchasePaidAmount)) as PurchaseDues,
+
+	sum(t.PurchaseReturnNetAmount) PurchaseReturnAmount,
+	sum(t.PurchaseReturnPaidAmount) PurchaseReturnPaidAmount,
+	(sum(t.PurchaseReturnNetAmount)-sum(t.PurchaseReturnPaidAmount)) as PurchaseReturnDues,
+
+	sum(t.SalesNetAmount) SalesAmount, 
+	sum(t.SalesPaidAmount) SalesPaidAmount,
+	(sum(t.SalesNetAmount)-sum(t.SalesPaidAmount)) as SalesDues,
+
+	sum(t.SalesReturnNetAmount) SalesReturnAmount,
+	sum(t.SalesReturnPaidAmount) SalesReturnPaidAmount,
+	(sum(t.SalesReturnNetAmount)-sum(t.SalesReturnPaidAmount)) as SalesReturnDues,
+
+	(
+		(
+			(sum(t.PurchaseNetAmount)-sum(t.PurchasePaidAmount)) 
+			+ 
+			(sum(t.SalesReturnNetAmount)-sum(t.SalesReturnPaidAmount))
+		)
+		-
+		(
+			(sum(t.SalesNetAmount)-sum(t.SalesPaidAmount))
+			+
+			(sum(t.PurchaseReturnNetAmount)-sum(t.PurchaseReturnPaidAmount))
+		)
+	) as Balance
+	
 	from [dbo].[AccountTransections] t
 	where t.SupplierId = ISNULL(@supplierId, t.SupplierId)
 	group by t.SupplierId

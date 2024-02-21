@@ -26,6 +26,8 @@ const PurchaseForm: React.FC<{
     const [itemDiscount, setItemDiscount] = useState<number>(0);
     const [itemTotal, setItemTotal] = useState<number>(0);
     const [stock, setStock] = useState<number>(0);
+    const [lpRate, setLpRate] = useState<number>(0);
+    const [category, setCategory] = useState<string>('');
     const [stockError, setStockError] = useState<boolean>(false);
     const [isOutOfStock, setOutOfStock] = useState<boolean>(false);
     const [isClicked, setIsClicked] = useState<boolean>(false);
@@ -33,7 +35,6 @@ const PurchaseForm: React.FC<{
 
     const addNewItemToList = (event: React.MouseEvent<HTMLButtonElement>) => {
         setIsClicked(true);
-
         console.log(event.type);
         if (!selectedProduct?.value || !selectedBrand?.value || itemRate == 0 || itemQty == 0)
             return false;
@@ -127,7 +128,7 @@ const PurchaseForm: React.FC<{
 
     useEffect(() => {
         let qty: number = itemQty ? itemQty : 0;
-        
+
         if (qty > stock) {
             setOutOfStock(true);
         } else {
@@ -169,12 +170,16 @@ const PurchaseForm: React.FC<{
             getProductStockById({ id, brandId });
         } else {
             setStock(0);
+            setLpRate(0);
+            setCategory('');
         }
     }, [selectedBrand, selectedProduct]);
 
     useEffect(() => {
         if (isSuccess && data) {
             setStock(data?.result?.stock);
+            setLpRate(data?.result?.lpRate);
+            setCategory(data?.result?.category);
             setStockError(true);
         }
         if (isError && error) {
@@ -291,7 +296,35 @@ const PurchaseForm: React.FC<{
                     />
                 </FormGroup>
             </Grid>
-            <Grid md={10} item xs={6} className="pt-0">
+            <Grid md={2} item xs={6} className="pt-0">
+                <FormGroup>
+                    <TextField
+                        type="number"
+                        margin="normal"
+                        fullWidth
+                        label="LP Rate"
+                        className="disabled-control mt-0"
+                        disabled={true}
+                        size="small"
+                        value={lpRate}
+                    />
+                </FormGroup>
+            </Grid>
+            <Grid md={2} item xs={6} className="pt-0">
+                <FormGroup>
+                    <TextField
+                        type="text"
+                        margin="normal"
+                        fullWidth
+                        label="Category"
+                        className="disabled-control mt-0"
+                        disabled={true}
+                        size="small"
+                        value={category}
+                    />
+                </FormGroup>
+            </Grid>
+            <Grid md={6} item xs={6} className="pt-0">
                 {(stockError && stockValidation && stock <= 0 && !isLoading) || (stockValidation && isOutOfStock) ? (
                     <FormGroup className="pull-left">
                         <span className="validation-error text-danger pt-10px">Product out of stock</span>

@@ -8,7 +8,9 @@ BEGIN
 	select 
 		Id, 
 		Name, 
-		[dbo].[fn_GetStockByProductId](id,@brandId) as Stock 
+		[dbo].[fn_GetStockByProductId](id,@brandId) as Stock,
+		[dbo].[fn_GetLastPurchaseRateByProductId](id,@brandId) as LpRate,
+		[dbo].[fn_GetCategoryById](CategoryId) as Category 
 	from [dbo].[Products] 
 	where 
 		[IsDeleted] = 0
