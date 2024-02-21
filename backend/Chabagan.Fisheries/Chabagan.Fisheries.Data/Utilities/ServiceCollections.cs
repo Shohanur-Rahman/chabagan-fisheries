@@ -33,6 +33,7 @@ namespace Chabagan.Fisheries.Data.Utilities
             services.AddTransient<IPurchaseReturnRepo, PurchaseReturnRepo>();
             services.AddTransient<ISalesRepo, SalesRepo>();
             services.AddTransient<ISalesReturnRepo, SalesReturnRepo>();
+            services.AddTransient<IPaymentCollectionRepo, PaymentCollectionRepo>();
 
             return services;
         }

@@ -34,6 +34,7 @@ namespace Chabagan.Chabagan.Fisheries.DB
         #endregion
 
         #region Setup Entities
+        public virtual DbSet<DbTransectionType> TransectionTypes { get; set; }
         public virtual DbSet<DbBrand> Brands { get; set; }
         public virtual DbSet<DbStockCategory> StockCategories { get; set; }
         public virtual DbSet<DbProduct> Products { get; set; }

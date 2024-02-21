@@ -54,6 +54,10 @@ namespace Chabagan.Fisheries.Data.Utilities
             CreateMap<DbPurchaseReturnItem, ProcessPurchaseItem>().ReverseMap();
             CreateMap<DbSalesItem, ProcessPurchaseItem>().ReverseMap();
             CreateMap<DbSalesReturnItem, ProcessPurchaseItem>().ReverseMap();
+
+
+            CreateMap<DbPaymentCollection, ProcessPaymentCollection>().ReverseMap();
+            CreateMap<DbPaymentCollection, PaymentCollectionGrid>().ReverseMap();
             
             #endregion
 

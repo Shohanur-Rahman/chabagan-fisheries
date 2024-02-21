@@ -50,7 +50,7 @@ const sidebarMenus: IMenu[] = [
         ]
     },
     {
-        label: "Stock",
+        label: "Transections",
         icon: <AddShoppingCartIcon />,
         submenu: [
             {
@@ -71,6 +71,16 @@ const sidebarMenus: IMenu[] = [
             {
                 label: "Sales Returns",
                 link: "/stock/sales-returns",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Payments",
+                link: "/stock/payments",
+                icon: <ArrowRight />
+            },
+            {
+                label: "Collections",
+                link: "/stock/collections",
                 icon: <ArrowRight />
             }
         ]

@@ -266,3 +266,12 @@ sidebar
     margin-top: 15px;
     height: 80vh;
 }
+.mb-1{
+    margin-bottom: 1em !important;
+}
+.mb-2{
+    margin-bottom: 2em !important;
+}
+.mb-10px{
+    margin-bottom: 10px !important;
+}

@@ -344,7 +344,31 @@ const transectionBreadCrumb: IIconBreadcrumbs[] = [
     }
 ]
 
+const paymentBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Payments",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
 
+const collectionBreadCrumb: IIconBreadcrumbs[] = [
+    {
+        text: "Home",
+        icon: <HomeIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        path: "/dashboard"
+    },
+    {
+        text: "Collections",
+        icon: <ShoppingCartIcon sx={{ mr: 0.5 }} fontSize="inherit" />,
+        isLast: true
+    }
+]
 
 export default {
     dashboarBreadCrumb,
@@ -369,5 +393,7 @@ export default {
     editSalesReturnBreadCrumb,
     supplierBreadCrumb,
     projectBreadCrumb,
-    transectionBreadCrumb
+    transectionBreadCrumb,
+    paymentBreadCrumb,
+    collectionBreadCrumb
 }

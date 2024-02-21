@@ -10,3 +10,5 @@
 /backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/.config
 /backend/Chabagan.Fisheries/.vs
 /backend/Chabagan.Fisheries/Chabagan.Fisheries.WebApi/Properties
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.SqlQueries/Chabagan.Fisheries.SqlQueries.dbmdl
+/backend/Chabagan.Fisheries/Chabagan.Fisheries.SqlQueries/*.jfm

@@ -9,6 +9,7 @@ namespace Chabagan.Fisheries.Entities.Models.Stock
         public DateTime? BillDate { get; set; }
         [ForeignKey(nameof(Supplier))]
         public long SupplierId { get; set; }
+        public int PaymentCollectionType { get; set; }
         public decimal PaidAmount { get; set; }
         public string? Note { get; set; }
         public virtual DbSupplier? Supplier { get; set; }
