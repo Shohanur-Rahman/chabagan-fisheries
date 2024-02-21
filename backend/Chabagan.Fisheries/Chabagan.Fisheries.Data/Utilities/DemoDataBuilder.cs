@@ -26,6 +26,7 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
         /// </summary>
         public void BuildData()
         {
+            this.SetupTransectionTypeData();
             this.SetupRoleData();
             this.SetupUserData();
             this.SetupStockData();
@@ -34,6 +35,52 @@ namespace Chabagan.Chabagan.Fisheries.Utilities
         #endregion
 
         #region Setup Master Data
+
+        private void SetupTransectionTypeData()
+        {
+            this.modelBuilder.Entity<DbTransectionType>().HasData(
+                new DbTransectionType
+                {
+                    Id = 1,
+                    Name = "Purchase"
+                },
+                new DbTransectionType
+                {
+                    Id = 2,
+                    Name = "Purchase Return",
+                },
+                new DbTransectionType
+                {
+                    Id = 3,
+                    Name = "Sales",
+                },
+                new DbTransectionType
+                {
+                    Id = 4,
+                    Name = "Sales Return",
+                },
+                new DbTransectionType
+                {
+                    Id = 5,
+                    Name = "Income",
+                },
+                new DbTransectionType
+                {
+                    Id = 6,
+                    Name = "Expense",
+                },
+                new DbTransectionType
+                {
+                    Id = 7,
+                    Name = "Payment",
+                },
+                new DbTransectionType
+                {
+                    Id = 8,
+                    Name = "Collection",
+                }
+            );
+        }
 
         private void SetupRoleData()
         {

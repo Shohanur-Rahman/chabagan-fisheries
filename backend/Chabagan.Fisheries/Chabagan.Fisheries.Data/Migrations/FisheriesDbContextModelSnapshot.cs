@@ -99,37 +99,37 @@ namespace Chabagan.Fisheries.Data.Migrations
                         new
                         {
                             Id = 1L,
-                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 37, 997, DateTimeKind.Local).AddTicks(4156),
+                            CreatedDate = new DateTime(2024, 2, 21, 19, 49, 22, 846, DateTimeKind.Local).AddTicks(5030),
                             Email = "admin@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Admin User",
-                            Password = "hIg7YiX4ES1+r1csCOCd1GTenZG7+OsIHeZ3x9Lhpe0=",
-                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
+                            Password = "yqFks0YIf8g5HZp4mEaGshaSZGrq2aAd17LeGmWHpI0=",
+                            PasswordSalt = "9USm4RAo4WH1+OOCSgUUMw==",
                             RoleId = 1
                         },
                         new
                         {
                             Id = 2L,
-                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 38, 12, DateTimeKind.Local).AddTicks(1358),
+                            CreatedDate = new DateTime(2024, 2, 21, 19, 49, 22, 865, DateTimeKind.Local).AddTicks(6964),
                             Email = "manager@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Site Manager",
-                            Password = "93SedHkT+Ul/l1hASLtUorSSnthBw7+8OyHWKIGvbi0=",
-                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
+                            Password = "vZSr2Nch0/enjgqkTdcTWsBljnbqGfcBGiiKMoAPECg=",
+                            PasswordSalt = "9USm4RAo4WH1+OOCSgUUMw==",
                             RoleId = 2
                         },
                         new
                         {
                             Id = 3L,
-                            CreatedDate = new DateTime(2024, 2, 13, 22, 42, 38, 26, DateTimeKind.Local).AddTicks(5140),
+                            CreatedDate = new DateTime(2024, 2, 21, 19, 49, 22, 885, DateTimeKind.Local).AddTicks(2536),
                             Email = "user@gmail.com",
                             IsDeleted = false,
                             IsLock = false,
                             Name = "Field User",
-                            Password = "hIg7YiX4ES1+r1csCOCd1GTenZG7+OsIHeZ3x9Lhpe0=",
-                            PasswordSalt = "ECAY0+aEmgR0d6YdV7XTvA==",
+                            Password = "yqFks0YIf8g5HZp4mEaGshaSZGrq2aAd17LeGmWHpI0=",
+                            PasswordSalt = "9USm4RAo4WH1+OOCSgUUMw==",
                             RoleId = 3
                         });
                 });
@@ -186,6 +186,40 @@ namespace Chabagan.Fisheries.Data.Migrations
                             IsDeleted = false,
                             Name = "Ibn Sina"
                         });
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbExpenseType", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExpenseTypes");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbPond", b =>
@@ -515,6 +549,66 @@ namespace Chabagan.Fisheries.Data.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Setup.DbTransectionType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TransectionTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Purchase"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Purchase Return"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Sales"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Sales Return"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Income"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Expense"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Payment"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Collection"
+                        });
+                });
+
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbAccountTransection", b =>
                 {
                     b.Property<long>("Id")
@@ -621,6 +715,136 @@ namespace Chabagan.Fisheries.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("AccountTransections");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbExpense", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ExpenseAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<long>("ExpenseTypeId")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpenseTypeId");
+
+                    b.ToTable("Expenses");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbIncome", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("ExpenseAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Incomes");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPaymentCollection", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnOrder(1);
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<DateTime?>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long?>("CreatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("PaidAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("PaymentCollectionType")
+                        .HasColumnType("int");
+
+                    b.Property<long>("SupplierId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UpdatedBy")
+                        .HasColumnType("bigint");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SupplierId");
+
+                    b.ToTable("PaymentCollections");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", b =>
@@ -1132,6 +1356,28 @@ namespace Chabagan.Fisheries.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbExpense", b =>
+                {
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbExpenseType", "ExpenseType")
+                        .WithMany()
+                        .HasForeignKey("ExpenseTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExpenseType");
+                });
+
+            modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPaymentCollection", b =>
+                {
+                    b.HasOne("Chabagan.Fisheries.Entities.Models.Setup.DbSupplier", "Supplier")
+                        .WithMany()
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("Chabagan.Fisheries.Entities.Models.Stock.DbPurchase", b =>

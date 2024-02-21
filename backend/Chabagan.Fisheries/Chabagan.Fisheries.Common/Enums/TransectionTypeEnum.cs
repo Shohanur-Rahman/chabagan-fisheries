@@ -6,7 +6,7 @@
         PurchaseReturn,
         Sales,
         SalesReturn,
-        Income,
+        Income, 
         Expense,
         Payment,
         Collection
